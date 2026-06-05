@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Student Portal - Awaken IQ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caudex:wght@400;700&family=Literata:wght@400;700&family=Raleway:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#eff1f3",
+                        "tertiary-container": "#eaddff",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#9fd1b9",
+                        "outline-variant": "#c0c9c2",
+                        "on-surface": "#191c1e",
+                        "on-primary-container": "#3f6e5a",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#1E4D3B",
+                        "primary": "#1E4D3B",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#d8dadc",
+                        "primary-fixed": "#bbeed5",
+                        "tertiary": "#1E4D3B",
+                        "gold": "#D4AF37",
+                        "surface-container-highest": "#e0e3e5",
+                        "surface-variant": "#e0e3e5",
+                        "secondary-fixed-dim": "#a3c4b6",
+                        "outline": "#717974",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary-container": "#1E4D3B",
+                        "on-secondary-fixed": "#0a1f18",
+                        "on-primary-fixed": "#002115",
+                        "tertiary-fixed-dim": "#9fd1b9",
+                        "background": "#f7f9fb",
+                        "on-secondary-fixed-variant": "#1e4d3b",
+                        "on-primary-fixed-variant": "#1f4f3d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#002115",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#414944",
+                        "inverse-surface": "#2d3133",
+                        "on-background": "#191c1e",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f7f9fb",
+                        "secondary-container": "#bbeed5",
+                        "inverse-primary": "#9fd1b9",
+                        "surface-container-low": "#f2f4f6",
+                        "on-tertiary-fixed-variant": "#1f4f3d",
+                        "primary-container": "#bbeed5",
+                        "tertiary-fixed": "#bbeed5",
+                        "surface-container": "#eceef0",
+                        "on-secondary-container": "#1E4D3B",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary-fixed": "#bbeed5",
+                        "secondary": "#1E4D3B",
+                        "on-tertiary": "#ffffff",
+                        "gold": "#D4AF37"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Literata", "serif"],
+                        "label-lg": ["Raleway", "sans-serif"],
+                        "headline-md": ["Literata", "serif"],
+                        "label-md": ["Raleway", "sans-serif"],
+                        "body-lg": ["Raleway", "sans-serif"],
+                        "display-lg-mobile": ["Literata", "serif"],
+                        "display-lg": ["Literata", "serif"],
+                        "body-md": ["Raleway", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-lg": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(30, 77, 59, 0.08);
+        }
+        .soft-glow-primary:hover {
+            box-shadow: 0 0 20px rgba(30, 77, 59, 0.3);
+        }
+        .soft-glow-secondary:hover {
+            box-shadow: 0 0 20px rgba(30, 77, 59, 0.2);
+        }
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(30, 77, 59, 0.15);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #1E4D3B, #386754);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .noise-bg {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Ccircle cx='100' cy='100' r='100' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.02;
+        }
+        .ornament {
+            position: absolute;
+            pointer-events: none;
+        }
+        .ornament-1 {
+            top: -5%;
+            right: -5%;
+            width: 15%;
+            height: 15%;
+            background: radial-gradient(circle, rgba(30, 77, 59, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: rotate(10deg);
+        }
+        .ornament-2 {
+            bottom: -5%;
+            left: -5%;
+            width: 12%;
+            height: 12%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: rotate(-15deg);
+        }
+        .stroke-text {
+            -webkit-text-stroke: 1px #1E4D3B;
+            text-fill-color: transparent;
+        }
+        body {
+            background: linear-gradient(135deg, #93c4ad 0%, #ffffff 50%, #a7d2be 100%) !important;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-background selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col relative ">
+    <!-- Decorative Background Elements -->
+    <div class="ornament ornament-1"></div>
+    <div class="ornament ornament-2"></div>
+    <div class="absolute inset-0 noise-bg pointer-events-none"></div>
+
+    <!-- Top Navigation Bar -->
+    <header class="fixed top-0 w-full z-50 bg-white/20 backdrop-blur-md border-b border-white/20">
+        <nav class="flex justify-between items-center px-4 md:px-8 py-4 max-w-container-max mx-auto">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary text-2xl" data-icon="spa">spa</span>
+                <span class="font-headline-lg text-headline-lg text-primary tracking-tight">Awaken IQ</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 font-label-lg text-label-lg" href="course-selection.html">Curriculum</a>
+                <a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 font-label-lg text-label-lg" href="index.html">About Us</a>
+                <a href="student-info.html" class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-lg text-label-lg hover:opacity-90 active:scale-95 transition-all shadow-md">Join Now</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Canvas -->
+    <main class="flex-grow flex items-center justify-center pt-32 pb-12 relative bg-transparent">
+        <!-- Atmospheric Background Elements -->
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary-container opacity-40 blur-[120px] rounded-full"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary-fixed-dim opacity-30 blur-[120px] rounded-full"></div>
+        <div class="container max-w-[1280px] px-4 md:px-8 z-10 flex flex-col items-center">
+            <!-- Login Card -->
+            <div class="w-full max-w-[480px] glass-card rounded-[24px] p-8 md:p-12 transition-transform duration-500 hover:scale-[1.01] hover-lift">
+                <!-- Login Header -->
+                <div class="text-center mb-10">
+                    <h1 class="text-headline-lg text-primary mb-2">Welcome Back</h1>
+                    <p class="font-body-md text-on-surface-variant">Continue your journey of growth and discovery.</p>
+                </div>
+                <!-- Login Form -->
+                <form class="space-y-6" onsubmit="event.preventDefault();">
+                    <!-- Email Field -->
+                    <div class="space-y-2">
+                        <label class="block font-label-lg text-label-lg text-on-surface-variant" for="email">Email Address</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="mail">mail</span>
+                            <input class="w-full pl-12 pr-4 py-3 rounded-[12px] border-outline-variant bg-white/50 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface" id="email" placeholder="alex@example.com" type="email">
+                        </div>
+                    </div>
+                    <!-- Password Field -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <label class="block font-label-lg text-label-lg text-on-surface-variant" for="password">Password</label>
+                            <a class="text-primary font-label-md text-label-md hover:underline font-bold" href="#">Forgot Password?</a>
+                        </div>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="lock">lock</span>
+                            <input class="w-full pl-12 pr-12 py-3 rounded-[12px] border-outline-variant bg-white/50 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface" id="password" placeholder="••••••••" type="password">
+                            <button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary" type="button">
+                                <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Remember Me -->
+                    <div class="flex items-center gap-3">
+                        <input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary transition-all cursor-pointer" id="remember" type="checkbox">
+                        <label class="font-body-md text-on-surface-variant select-none cursor-pointer" for="remember">Keep me logged in</label>
+                    </div>
+                    <!-- CTA Actions -->
+                    <div class="pt-4 space-y-4">
+                        <button class="w-full bg-primary text-on-primary py-4 rounded-full font-headline-md text-headline-md soft-glow-primary active:scale-95 transition-all shadow-lg" type="submit">
+                            Login
+                        </button>
+                        <div class="relative flex items-center py-2">
+                            <div class="flex-grow border-t border-outline-variant/30"></div>
+                            <span class="flex-shrink mx-4 text-outline font-label-md text-label-md uppercase tracking-widest">Or</span>
+                            <div class="flex-grow border-t border-outline-variant/30"></div>
+                        </div>
+                        <button class="w-full flex items-center justify-center gap-3 bg-white/60 border border-outline-variant/50 py-3 rounded-full font-label-lg text-label-lg text-on-surface hover:bg-white/80 active:scale-95 transition-all" type="button">
+                            <img alt="Google Logo" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLUWWc0hCqZsaPtoXMgurAyB7ZNcn9gT0bgjTiRECKRKzf3geDdxYenqy_ASKeRZW3o_NST1SNRGEgoDz6haHlYH0BdbRczznXYwsuK851WEBSOGJ11kPBepG5gIO6r1pfI53yHEKtbYoV_X06R91frhG_tQJHSJ-RIawpogOHCnMSODOuTrm2pGaSvCl5L0up7yAtMlTLvo9WnOhXMjCA2op7tZi4tTjrvOcNW3ux-MPWL8BohxfJGH5w4biCyXMlYzAEyHJWrBfk">
+                            Sign in with Google
+                        </button>
+                    </div>
+                </form>
+                <!-- Sign Up Footer -->
+                <div class="mt-10 text-center">
+                    <p class="font-body-md text-on-surface-variant">
+                        New to the portal?
+                        <a class="text-primary font-bold hover:underline ml-1" href="student-info.html">Create an account</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-on-primary w-full rounded-t-xl mt-auto relative ">
+        <div class="relative px-4 md:px-8 py-12 md:py-16 max-w-container-max mx-auto">
+            <div class="grid gap-6 md:grid-cols-3">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="material-symbols-outlined text-on-primary/80 text-2xl" data-icon="spa">spa</span>
+                        <div class="space-y-0">
+                            <h3 class="headline-md text-headline-md text-on-primary">Awaken IQ</h3>
+                            <p class="text-sm text-on-primary/80">Nurturing the next generation of genius</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-on-primary/70">
+                        Empowering children through advanced cognitive training, emotional intelligence development, and holistic educational approaches that nurture both mind and spirit.
+                    </p>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="label-lg text-on-primary/80 mb-2">Explore</h3>
+                    <nav class="space-y-2">
+                        <a href="#" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">Programs</a>
+                        <a href="#" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">About Us</a>
+                        <a href="#" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">Curriculum</a>
+                        <a href="#" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">Contact</a>
+                        <a href="#" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">Blog</a>
+                    </nav>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="label-lg text-on-primary/80 mb-2">Connect</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-on-primary/60" data-icon="call">call</span>
+                            <span class="text-sm text-on-primary/60">(555) 123-4567</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-on-primary/60" data-icon="mail">mail</span>
+                            <span class="text-sm text-on-primary/60">info@awakeniq.com</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-on-primary/60" data-icon="public">public</span>
+                            <span class="text-sm text-on-primary/60">Follow us on social media</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-on-primary/20 mt-10 pt-8 text-center text-xs text-on-primary/60">
+                © 2024 Awaken IQ. All rights reserved. | Privacy Policy | Terms of Service
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple micro-interaction for password visibility toggle
+        const toggleBtn = document.querySelector('button .material-symbols-outlined[data-icon="visibility"]');
+        const passInput = document.getElementById('password');
+
+        if (toggleBtn && passInput) {
+            toggleBtn.parentElement.addEventListener('click', () => {
+                const isPass = passInput.type === 'password';
+                passInput.type = isPass ? 'text' : 'password';
+                toggleBtn.textContent = isPass ? 'visibility_off' : 'visibility';
+            });
+        }
+
+        // Form submission redirect
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btn = form.querySelector('button[type="submit"]');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="material-symbols-outlined animate-spin" data-icon="progress_activity">progress_activity</span> Logging in...';
+                btn.disabled = true;
+                setTimeout(() => {
+                    window.location.href = "student-info.html";
+                }, 1000);
+            });
+        }
+
+        // Mouse parallax effect for background glows
+        document.addEventListener('mousemove', (e) => {
+            const glows = document.querySelectorAll('.blur-\\[120px\\]');
+            const moveX = (e.clientX - window.innerWidth / 2) / 50;
+            const moveY = (e.clientY - window.innerHeight / 2) / 50;
+
+            glows.forEach((glow, idx) => {
+                const factor = idx === 0 ? 1 : -1;
+                glow.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
+            });
+        });
+
+        // Add subtle float animation to decorative elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const ornaments = document.querySelectorAll('.ornament');
+            ornaments.forEach((ornament, index) => {
+                let offset = 0;
+                let direction = index % 2 === 0 ? 1 : -1;
+                const speed = 0.5 + Math.random() * 0.5;
+
+                function float() {
+                    offset += 0.01 * direction;
+                    if (offset > 1 || offset < -1) {
+                        direction *= -1;
+                    }
+                    ornament.style.transform = `translateY(${offset * 8}px)`;
+                    requestAnimationFrame(float);
+                }
+
+                float();
+            });
+        });
+    </script>
+</body>
+</html>

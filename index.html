@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Awaken IQ - Nurturing Genius Through Cognitive Excellence</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Caudex:wght@400;700&family=Literata:wght@400;700&family=Raleway:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#eff1f3",
+                        "tertiary-container": "#e0ece8",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#9fd1b9",
+                        "outline-variant": "#c0c9c2",
+                        "on-surface": "#191c1e",
+                        "on-primary-container": "#3f6e5a",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#1E4D3B",
+                        "primary": "#1E4D3B",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#d8dadc",
+                        "primary-fixed": "#bbeed5",
+                        "tertiary": "#1E4D3B",
+                        "gold": "#D4AF37",
+                        "surface-container-highest": "#e0e3e5",
+                        "surface-variant": "#e0e3e5",
+                        "secondary-fixed-dim": "#b8cfc5",
+                        "outline": "#717974",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary-container": "#0c2b21",
+                        "on-secondary-fixed": "#0a2119",
+                        "on-primary-fixed": "#002115",
+                        "tertiary-fixed-dim": "#9dbfb1",
+                        "background": "#f7f9fb",
+                        "on-secondary-fixed-variant": "#2d4a3e",
+                        "on-primary-fixed-variant": "#1f4f3d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#002115",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#414944",
+                        "inverse-surface": "#2d3133",
+                        "on-background": "#191c1e",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f7f9fb",
+                        "secondary-container": "#d1e6dd",
+                        "inverse-primary": "#9fd1b9",
+                        "surface-container-low": "#f2f4f6",
+                        "on-tertiary-fixed-variant": "#1f4f3d",
+                        "primary-container": "#bbeed5",
+                        "tertiary-fixed": "#bbeed5",
+                        "surface-container": "#eceef0",
+                        "on-secondary-container": "#1e4d3b",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary-fixed": "#d1e6dd",
+                        "secondary": "#1E4D3B",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Literata", "serif"],
+                        "label-lg": ["Raleway", "sans-serif"],
+                        "headline-md": ["Literata", "serif"],
+                        "label-md": ["Raleway", "sans-serif"],
+                        "body-lg": ["Raleway", "sans-serif"],
+                        "display-lg-mobile": ["Literata", "serif"],
+                        "display-lg": ["Literata", "serif"],
+                        "body-md": ["Raleway", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-lg": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .soft-glow {
+            box-shadow: 0 10px 30px -10px rgba(30, 77, 59, 0.2);
+        }
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(30, 77, 59, 0.15);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #1E4D3B, #386754);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .noise-bg {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Ccircle cx='100' cy='100' r='100' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+        }
+        .ornament {
+            position: absolute;
+            pointer-events: none;
+        }
+        .ornament-1 {
+            top: -10%;
+            right: -10%;
+            width: 20%;
+            height: 20%;
+            background: radial-gradient(circle, rgba(30, 77, 59, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .ornament-2 {
+            bottom: -15%;
+            left: -10%;
+            width: 25%;
+            height: 25%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: rotate(15deg);
+        }
+        .ornament-3 {
+            top: 20%;
+            left: -5%;
+            width: 15%;
+            height: 15%;
+            background: radial-gradient(circle, rgba(30, 77, 59, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: rotate(-10deg);
+        }
+        .stroke-text {
+            -webkit-text-stroke: 1px #1E4D3B;
+            text-fill-color: transparent;
+        }
+        body {
+            background: linear-gradient(135deg, #93c4ad 0%, #ffffff 50%, #a7d2be 100%) !important;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col relative ">
+    <!-- Decorative Background Elements -->
+    <div class="ornament ornament-1"></div>
+    <div class="ornament ornament-2"></div>
+    <div class="ornament ornament-3"></div>
+
+    <!-- Noise Texture Overlay -->
+    <div class="absolute inset-0 noise-bg pointer-events-none"></div>
+
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/60 backdrop-blur-xl border-b border-surface/20">
+        <div class="flex justify-between items-center px-4 md:px-8 py-4 max-w-container-max mx-auto">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary text-2xl" data-icon="spa">spa</span>
+                <div class="space-y-0">
+                    <h1 class="text-headline-lg gradient-text tracking-tight">Awaken IQ</h1>
+                    <p class="font-label-md text-on-surface-variant uppercase tracking-wider">Nurturing Cognitive Excellence</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex gap-6">
+                <a href="course-selection.html" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300">Programs</a>
+                <a href="course-selection.html" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300">About Us</a>
+                <a href="course-selection.html" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300">Curriculum</a>
+                <a href="course-selection.html" class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300">Contact</a>
+            </nav>
+            <a href="login.html" class="bg-primary text-on-primary px-6 py-3 rounded-full font-label-lg transition-all hover:shadow-primary/20 active:scale-95">
+                Begin Journey
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-[100px] md:pt-[140px] pb-16 relative z-10">
+        <div class="max-w-container-max mx-auto px-4 md:px-8">
+            <!-- Hero Section -->
+            <section class="mb-20">
+                <div class="text-center md:text-left space-y-8">
+                    <div class="inline-block mb-4">
+                        <span class="bg-primary/10 text-primary px-4 py-2 rounded-full font-label-md text-[14px] tracking-wider uppercase">Discover the Potential</span>
+                    </div>
+                    <h1 class="display-lg text-headline-lg text-on-surface mb-4 leading-snappy">
+                        Where Cognitive Excellence<br/><span class="bg-gradient-to-tr from-primary via-tertiary to-primary-transparent bg-clip-text text-transparent">Meets Child Development</span>
+                    </h1>
+                    <p class="body-lg max-w-xl text-on-surface-variant">
+                        Awaken IQ represents the pinnacle of child development science, combining neuroscience-backed methodologies with holistic educational approaches to unlock your child's full cognitive potential.
+                    </p>
+                    <div class="flex justify-center md:justify-start space-x-4 mt-6">
+                        <a href="course-selection.html" class="bg-primary text-on-primary px-6 py-3 rounded-full font-label-lg transition-all hover:shadow-primary/20 active:scale-95 transform hover-lift inline-block">
+                            Explore Programs
+                        </a>
+                        <a href="course-selection.html" class="border-2 border-primary text-primary px-6 py-3 rounded-full font-label-lg transition-all hover:bg-primary/10 active:scale-95 transform hover-lift inline-block">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                <div class="relative mt-16 hidden md:block">
+                    <div class="glass-card rounded-[32px] p-8 w-[300px] hover-lift transition-all duration-500">
+                        <div class="space-y-4">
+                            <h2 class="headline-md text-headline-md text-primary">The Awaken IQ Difference</h2>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-primary" data-icon="school">school</span>
+                                    <span class="font-body-md text-on-surface-variant">Neuroscience-Based Curriculum</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-primary" data-icon="psychology">psychology</span>
+                                    <span class="font-body-md text-on-surface-variant">Holistic Development Approach</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-primary" data-icon="psychology_alt">psychology_alt</span>
+                                    <span class="font-body-md text-on-surface-variant">Personalized Learning Paths</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Programs Overview -->
+            <section class="mb-24">
+                <div class="space-y-8">
+                    <h2 class="headline-lg text-headline-lg text-on-surface text-center md:text-left">Our Specialized Programs</h2>
+                    <p class="body-lg max-w-xl mx-auto md:mx-0 text-on-surface-variant">
+                        Each program is meticulously designed to target specific cognitive domains while fostering emotional intelligence and creative thinking.
+                    </p>
+                </div>
+                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <!-- Midbrain Development -->
+                    <div class="glass-card rounded-[24px] p-6 hover-lift transition-all duration-300 relative ">
+                        <div class="absolute inset-0 -z-10 bg-primary/5 blur-[50px] transform rotate-[15deg]"></div>
+                        <div class="relative z-10 space-y-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-primary text-xl" data-icon="psychology">psychology</span>
+                                    <h3 class="headline-md text-headline-md text-primary">Midbrain Development</h3>
+                                </div>
+                                <span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold">12 Weeks</span>
+                            </div>
+                            <p class="body-md text-on-surface-variant line-clamp-3">
+                                Activates the pineal gland to bridge brain hemispheres, enhancing concentration, memory retention, and sensory perception through scientifically validated techniques.
+                            </p>
+                            <div class="mt-4 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary" data-icon="check_circle_outline">check_circle_outline</span>
+                                <span class="font-label-md text-on-surface">Enhanced Intuition & Focus</span>
+                            </div>
+                            <div class="mt-2 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary" data-icon="check_circle_outline">check_circle_outline</span>
+                                <span class="font-label-md text-on-surface">Boosted Confidence & Creativity</span>
+                            </div>
+                            <button class="mt-6 w-full bg-primary text-on-primary py-2 rounded-full font-label-md text-[14px] transition-all hover:shadow-primary/20 active:scale-95 transform hover-lift">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- DMIT Assessment -->
+                    <div class="glass-card rounded-[24px] p-6 hover-lift transition-all duration-300 relative ">
+                        <div class="absolute inset-0 -z-10 bg-primary/5 blur-[50px] transform rotate-[-10deg]"></div>
+                        <div class="relative z-10 space-y-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-primary text-xl" data-icon="fingerprint">fingerprint</span>
+                                    <h3 class="headline-md text-headline-md text-primary">DMIT Assessment</h3>
+                                </div>
+                                <span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold">2 Sessions</span>
+                            </div>
+                            <p class="body-md text-on-surface-variant line-clamp-3">
+                                Dermatoglyphics Multiple Intelligence Test reveals innate talents, personality traits, and optimal learning styles through scientific fingerprint analysis.
+                            </p>
+                            <div class="mt-4 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary" data-icon="check_circle_outline">check_circle_outline</span>
+                                <span class="font-label-md text-on-surface">Personalized Career Guidance</span>
+                            </div>
+                            <div class="mt-2 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary" data-icon="check_circle_outline">check_circle_outline</span>
+                                <span class="font-label-md text-on-surface">Parent-Child Relationship Insights</span>
+                            </div>
+                            <button class="mt-6 w-full bg-primary text-on-primary py-2 rounded-full font-label-md text-[14px] transition-all hover:shadow-primary/20 active:scale-95 transform hover-lift">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quantum Speed Reading -->
+                    <div class="glass-card rounded-[24px] p-6 hover-lift transition-all duration-300 relative ">
+                        <div class="absolute inset-0 -z-10 bg-primary/5 blur-[50px] transform rotate-[5deg]"></div>
+                        <div class="relative z-10 space-y-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-primary text-xl" data-icon="speed">speed</span>
+                                    <h3 class="headline-md text-headline-md text-primary">Quantum Speed Reading</h3>
+                                </div>
+                                <span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold">8 Weeks</span>
+                            </div>
+                            <p class="body-md text-on-surface-variant line-clamp-3">
+                                Revolutionary technique enabling students to read and comprehend books in minutes by transforming static text into dynamic visual information.
+                            </p>
+                            <div class="mt-4 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary" data-icon="check_circle_outline">check_circle_outline</span>
+                                <span class="font-label-md text-on-surface">Ultra-Fast Information Intake</span>
+                            </div>
+                            <div class="mt-2 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary" data-icon="check_circle_outline">check_circle_outline</span>
+                                <span class="font-label-md text-on-surface">Develop Photographic Memory</span>
+                            </div>
+                            <button class="mt-6 w-full bg-primary text-on-primary py-2 rounded-full font-label-md text-[14px] transition-all hover:shadow-primary/20 active:scale-95 transform hover-lift">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Choose Us -->
+            <section class="mb-24 bg-primary/5 rounded-[24px] p-8 md:p-12">
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="headline-lg text-headline-lg text-primary">Why Families Choose Awaken IQ</h2>
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-primary text-xl" data-icon="reviews">reviews</span>
+                            <span class="font-label-md text-primary">4.9/5 Rating (120+ reviews)</span>
+                        </div>
+                    </div>
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary" data-icon="psychology">psychology</span>
+                                <span class="font-body-md">Scientifically Validated</span>
+                            </div>
+                            <p class="text-sm text-on-surface-variant">
+                                All methodologies are peer-reviewed and backed by longitudinal studies in child cognitive development.
+                            </p>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary" data-icon="psychology_alt">psychology_alt</span>
+                                <span class="font-body-md">Holistic Approach</span>
+                            </div>
+                            <p class="text-sm text-on-surface-variant">
+                                We develop not just cognitive skills, but emotional resilience, social intelligence, and creative thinking.
+                            </p>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary" data-icon="school">school</span>
+                                <span class="font-body-md">Expert Instructors</span>
+                            </div>
+                            <p class="text-sm text-on-surface-variant">
+                                Our team comprises neuroscientists, child psychologists, and specialized educators with decades of combined experience.
+                            </p>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-primary" data-icon="psychology">psychology</span>
+                                <span class="font-body-md">Proven Results</span>
+                            </div>
+                            <p class="text-sm text-on-surface-variant">
+                                94% of participants show measurable improvement in targeted cognitive domains within the first 8 weeks.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Call to Action -->
+            <section class="text-center mb-20">
+                <h2 class="headline-lg text-headline-lg text-on-surface mb-6">Ready to Begin the Journey?</h2>
+                <p class="body-lg max-w-xl mx-auto text-on-surface-variant">
+                    Take the first step toward unlocking your child's extraordinary potential. Our expert advisors are ready to guide you through program selection and enrollment.
+                </p>
+                <a href="student-info.html" class="bg-primary text-on-primary px-8 py-4 rounded-full font-headline-md text-[20px] transition-all hover:shadow-primary/20 active:scale-95 transform hover-lift mt-8 inline-block">
+                    Start Your Free Consultation
+                </a>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-on-primary w-full rounded-t-xl mt-auto relative ">
+        <div class="relative px-4 md:px-8 py-12 md:py-16 max-w-container-max mx-auto">
+            <div class="grid gap-6 md:grid-cols-3">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="material-symbols-outlined text-on-primary/80 text-2xl" data-icon="spa">spa</span>
+                        <div class="space-y-0">
+                            <h3 class="headline-md text-headline-md text-on-primary">Awaken IQ</h3>
+                            <p class="text-sm text-on-primary/80">Nurturing the next generation of genius</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-on-primary/70">
+                        Empowering children through advanced cognitive training, emotional intelligence development, and holistic educational approaches that nurture both mind and spirit.
+                    </p>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="label-lg text-on-primary/80 mb-2">Explore</h3>
+                    <nav class="space-y-2">
+                        <a href="course-selection.html" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">Programs</a>
+                        <a href="course-selection.html" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">About Us</a>
+                        <a href="course-selection.html" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">Curriculum</a>
+                        <a href="course-selection.html" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">Contact</a>
+                        <a href="course-selection.html" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">Blog</a>
+                    </nav>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="label-lg text-on-primary/80 mb-2">Connect</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-on-primary/60" data-icon="call">call</span>
+                            <span class="text-sm text-on-primary/60">(555) 123-4567</span>
+                        </div>
+                        <div class="flex items-center gap-2>
+                            <span class="material-symbols-outlined text-on-primary/60" data-icon="mail">mail</span>
+                            <span class="text-sm text-on-primary/60">info@awakeniq.com</span>
+                        </div>
+                        <div class="flex items-center gap-2>
+                            <span class="material-symbols-outlined text-on-primary/60" data-icon="public">public</span>
+                            <span class="text-sm text-on-primary/60">Follow us on social media</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-on-primary/20 mt-10 pt-8 text-center text-xs text-on-primary/60">
+                © 2024 Awaken IQ. All rights reserved. | Privacy Policy | Terms of Service
+            </div>
+        </div>
+    </footer>
+
+    <!-- Subtle Animations -->
+    <script>
+        // Add subtle float animation to decorative elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const ornaments = document.querySelectorAll('.ornament');
+            ornaments.forEach((ornament, index) => {
+                let offset = 0;
+                let direction = index % 2 === 0 ? 1 : -1;
+                const speed = 0.5 + Math.random() * 0.5;
+
+                function float() {
+                    offset += 0.01 * direction;
+                    if (offset > 1 || offset < -1) {
+                        direction *= -1;
+                    }
+                    ornament.style.transform = `translateY(${offset * 8}px)`;
+                    requestAnimationFrame(float);
+                }
+
+                float();
+            });
+
+            // Add interactive hover effects to program cards
+            const cards = document.querySelectorAll('.hover-lift');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-4px)';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

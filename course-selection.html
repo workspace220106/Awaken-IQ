@@ -1,0 +1,398 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Course Enrollment - Awaken IQ</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Caudex:wght@400;700&amp;family=Raleway:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#eff1f3",
+                        "tertiary-container": "#e0ece8",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#9fd1b9",
+                        "outline-variant": "#c0c9c2",
+                        "on-surface": "#191c1e",
+                        "on-primary-container": "#3f6e5a",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#1E4D3B",
+                        "primary": "#1E4D3B",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#d8dadc",
+                        "primary-fixed": "#bbeed5",
+                        "tertiary": "#1E4D3B",
+                        "gold": "#D4AF37",
+                        "surface-container-highest": "#e0e3e5",
+                        "surface-variant": "#e0e3e5",
+                        "secondary-fixed-dim": "#b8cfc5",
+                        "outline": "#717974",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary-container": "#0c2b21",
+                        "on-secondary-fixed": "#0a2119",
+                        "on-primary-fixed": "#002115",
+                        "tertiary-fixed-dim": "#9dbfb1",
+                        "background": "#f7f9fb",
+                        "on-secondary-fixed-variant": "#2d4a3e",
+                        "on-primary-fixed-variant": "#1f4f3d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#002115",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#414944",
+                        "inverse-surface": "#2d3133",
+                        "on-background": "#191c1e",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f7f9fb",
+                        "secondary-container": "#d1e6dd",
+                        "inverse-primary": "#9fd1b9",
+                        "surface-container-low": "#f2f4f6",
+                        "on-tertiary-fixed-variant": "#1f4f3d",
+                        "primary-container": "#bbeed5",
+                        "tertiary-fixed": "#bbeed5",
+                        "surface-container": "#eceef0",
+                        "on-secondary-container": "#1e4d3b",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary-fixed": "#d1e6dd",
+                        "secondary": "#1E4D3B",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Caudex", "serif"],
+                        "label-lg": ["Raleway", "sans-serif"],
+                        "headline-md": ["Caudex", "serif"],
+                        "label-md": ["Raleway", "sans-serif"],
+                        "body-lg": ["Raleway", "sans-serif"],
+                        "display-lg-mobile": ["Caudex", "serif"],
+                        "display-lg": ["Caudex", "serif"],
+                        "body-md": ["Raleway", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-lg": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .soft-glow {
+            box-shadow: 0 10px 30px -10px rgba(30, 77, 59, 0.2);
+        }
+        .step-progress-gradient {
+            background: linear-gradient(90deg, #1E4D3B 0%, #386754 100%);
+        }
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231E4D3B'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.5em;
+        }
+        body {
+            background: linear-gradient(135deg, #93c4ad 0%, #ffffff 50%, #a7d2be 100%) !important;
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-on-surface/70 backdrop-blur-xl shadow-sm">
+<div class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="spa">spa</span>
+<span class="font-headline-lg text-headline-lg text-primary tracking-tight">Awaken IQ</span>
+</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="course-selection.html">Programs</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="index.html">About Us</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="course-selection.html">Curriculum</a>
+</nav>
+<a href="review-submit.html" class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-lg transition-all active:scale-95 active:opacity-80">Join Now</a>
+</div>
+</header>
+<main class="flex-grow pt-[120px] pb-section-gap">
+<div class="max-w-[800px] mx-auto px-margin-mobile md:px-0"><div class="flex justify-between items-center mb-6">
+  <span class="font-label-lg text-primary">Step 3 of 5</span>
+  <span class="font-label-lg text-on-surface-variant">Course Enrollment</span>
+</div>
+<!-- Multi-step Progress Indicator -->
+<div class="mb-12 py-8">
+  <div class="max-w-xl mx-auto relative">
+    <div class="relative flex items-center justify-between">
+      <!-- Background Line -->
+      <div class="absolute left-5 right-5 h-[3px] bg-gold/30 -translate-y-1/2 top-[20px]">
+          <div class="h-full bg-gold" style="width: 50%;"></div>
+      </div>
+
+      <!-- Step 1: Completed -->
+      <a href="student-info.html" class="relative z-10 flex flex-col items-center gap-4 group">
+        <div class="w-10 h-10 rounded-full bg-gold text-white flex items-center justify-center shadow-md font-bold text-sm transition-all group-hover:scale-105">1</div>
+        <span class="font-label-md text-on-surface-variant font-medium font-['Raleway']">Student Info</span>
+      </a>
+
+      <!-- Step 2: Completed -->
+      <a href="parent-info.html" class="relative z-10 flex flex-col items-center gap-4 group">
+        <div class="w-10 h-10 rounded-full bg-gold text-white flex items-center justify-center shadow-md font-bold text-sm transition-all group-hover:scale-105">2</div>
+        <span class="font-label-md text-on-surface-variant font-medium font-['Raleway']">Parent Info</span>
+      </a>
+
+      <!-- Step 3: Active -->
+      <a href="course-selection.html" class="relative z-10 flex flex-col items-center gap-4 group">
+        <div class="w-10 h-10 rounded-full bg-gold text-white flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(212,175,55,0.6)] ring-4 ring-gold/20 transition-all group-hover:scale-105">
+          3
+        </div>
+        <span class="font-label-md text-primary font-bold font-['Raleway']">Programs</span>
+      </a>
+
+      <!-- Step 4: Upcoming -->
+      <a href="payment.html" class="relative z-10 flex flex-col items-center gap-4 group">
+        <div class="w-10 h-10 rounded-full bg-[#E0E3E5] text-on-surface-variant flex items-center justify-center font-bold text-sm transition-all group-hover:scale-105">4</div>
+        <span class="font-label-md text-on-surface-variant font-medium font-['Raleway']">Payment</span>
+      </a>
+
+      <!-- Step 5: Upcoming -->
+      <a href="review-submit.html" class="relative z-10 flex flex-col items-center gap-4 group">
+        <div class="w-10 h-10 rounded-full bg-[#E0E3E5] text-on-surface-variant flex items-center justify-center font-bold text-sm transition-all group-hover:scale-105">5</div>
+        <span class="font-label-md text-on-surface-variant font-medium font-['Raleway']">Review</span>
+      </a>
+    </div>
+  </div>
+</div>
+<!-- Enrollment Section -->
+<div class="space-y-8">
+<header>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Select Your Journey</h1>
+<p class="font-body-md text-on-surface-variant">Choose a specialized program tailored to unlock your child's cognitive potential and emotional intelligence.</p>
+</header>
+<!-- Program Dropdown -->
+<div class="relative">
+<label class="block font-label-lg text-on-surface-variant mb-2" for="program-select">Select Program</label>
+<select class="w-full h-14 px-6 rounded-xl border-none ring-1 ring-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary transition-all font-body-lg text-on-surface outline-none cursor-pointer" id="program-select">
+<option disabled="" selected="" value="">Choose a development program...</option>
+<option value="midbrain">Midbrain Development</option>
+<option value="dmit">DMIT Assessment</option>
+<option value="qsr">Quantum Speed Reading (QSR)</option>
+</select>
+</div>
+<!-- Course Summary Card Container -->
+<div class="opacity-0 translate-y-4 transition-all duration-500 pointer-events-none" id="course-card-container">
+<div class="glass-card rounded-[24px] p-8 soft-glow overflow-hidden relative border-primary/10">
+<!-- Decorative Blob -->
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+<div class="relative z-10">
+<div class="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
+<div class="space-y-2">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[12px] font-bold tracking-widest uppercase" id="course-category">Specialized Program</span>
+<h2 class="font-headline-lg text-headline-lg text-primary" id="course-name">Midbrain Development</h2>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+<span class="font-label-md text-label-md" id="course-duration">12 Weeks</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="school">school</span>
+<span class="font-label-md text-label-md">Ages 5-15</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-label-md text-on-surface-variant uppercase tracking-wider">Tuition Fee</span>
+<span class="text-[32px] font-bold text-primary" id="course-price">$1,299.00</span>
+</div>
+</div>
+<div class="grid md:grid-cols-2 gap-8 mb-8">
+<div class="space-y-4">
+<h3 class="font-headline-md text-headline-md !text-[18px] text-on-surface">Description</h3>
+<p class="font-body-md text-on-surface-variant leading-relaxed" id="course-description">
+                                    Activate the pineal gland to bridge the left and right brain hemispheres. This program enhances concentration, memory retention, and sensory perception through scientifically backed techniques.
+                                </p>
+</div>
+<div class="space-y-4">
+<h3 class="font-headline-md text-headline-md !text-[18px] text-on-surface">Key Benefits</h3>
+<ul class="space-y-2" id="course-benefits">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-body-md text-on-surface-variant">Enhanced Intuition &amp; Sensory Perception</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-body-md text-on-surface-variant">Superior Concentration and Focus</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-body-md text-on-surface-variant">Boosted Confidence and Creativity</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-outline-variant pt-8 w-full">
+<a href="parent-info.html" class="flex items-center gap-2 text-primary font-label-lg hover:opacity-70 transition-opacity">
+    <span class="material-symbols-outlined">arrow_back</span>
+    Back to Parent Details
+</a>
+<div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+<button class="w-full sm:w-auto px-10 h-14 bg-transparent border-2 border-primary text-primary rounded-full font-headline-md text-[18px] hover:bg-primary/5 transition-all">Download Syllabus</button>
+<button id="enrollBtn" class="w-full sm:w-auto px-10 h-14 bg-primary text-on-primary rounded-full font-headline-md text-[18px] hover:shadow-lg hover:shadow-primary/20 transition-all active:scale-95">Enroll in Program</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State (Placeholder when no course selected) -->
+<div class="py-12 flex flex-col items-center text-center space-y-4" id="empty-state">
+<div class="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl" data-icon="auto_stories">auto_stories</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">No Program Selected</h3>
+<p class="font-body-md text-on-surface-variant">Choose a course above to view program details and enrollment options.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="bg-primary text-secondary-fixed-dim w-full rounded-t-xl mt-auto">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter px-margin-desktop py-section-gap max-w-container-max mx-auto">
+<div>
+<span class="font-headline-md text-headline-md text-surface-container-lowest block mb-4">Awaken IQ</span>
+<p class="font-body-md text-secondary-fixed-dim/80 mb-6">Nurturing the next generation of genius through advanced cognitive training and emotional intelligence assessments.</p>
+</div>
+<div>
+<h4 class="font-label-lg text-surface-bright uppercase tracking-widest mb-6">Explore</h4>
+<div class="grid grid-cols-2 gap-4">
+<a class="font-label-md text-secondary-fixed-dim/80 hover:text-surface-bright transition-all" href="#">Programs</a>
+<a class="font-label-md text-secondary-fixed-dim/80 hover:text-surface-bright transition-all" href="#">About Us</a>
+<a class="font-label-md text-secondary-fixed-dim/80 hover:text-surface-bright transition-all" href="#">Curriculum</a>
+<a class="font-label-md text-secondary-fixed-dim/80 hover:text-surface-bright transition-all" href="#">Contact</a>
+</div>
+</div>
+<div>
+<h4 class="font-label-lg text-surface-bright uppercase tracking-widest mb-6">Newsletter</h4>
+<div class="flex gap-2">
+<input class="bg-white/10 border-none rounded-lg px-4 py-2 w-full focus:ring-1 focus:ring-primary text-surface-bright placeholder-secondary-fixed-dim/50 font-body-md" placeholder="Parent's email" type="email">
+<button class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-white material-symbols-outlined transition-colors" data-icon="arrow_forward">arrow_forward</button>
+</div>
+<p class="font-label-md text-secondary-fixed-dim/60 mt-4">© 2024 Awaken IQ. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<script>
+    const programData = {
+        midbrain: {
+            name: "Midbrain Development",
+            duration: "12 Weeks",
+            price: "$1,299.00",
+            category: "Cognitive Enhancement",
+            description: "Activate the pineal gland to bridge the left and right brain hemispheres. This program enhances concentration, memory retention, and sensory perception through scientifically backed techniques.",
+            benefits: [
+                "Enhanced Intuition & Sensory Perception",
+                "Superior Concentration and Focus",
+                "Boosted Confidence and Creativity"
+            ]
+        },
+        dmit: {
+            name: "DMIT Assessment",
+            duration: "2 Sessions",
+            price: "$450.00",
+            category: "Genetics & Potential",
+            description: "Dermatoglyphics Multiple Intelligence Test (DMIT) reveals innate talent, personality traits, and preferred learning styles. A comprehensive scientific study of fingerprints to map the brain's potential.",
+            benefits: [
+                "Detailed Brain Potential Report",
+                "Personalized Career Guidance",
+                "Identify Dominant Intelligences"
+            ]
+        },
+        qsr: {
+            name: "Quantum Speed Reading",
+            duration: "8 Weeks",
+            price: "$899.00",
+            category: "Visual Learning",
+            description: "A revolutionary technique that allows students to read and comprehend entire books in minutes. It transforms static text into dynamic visual information processed at high speeds.",
+            benefits: [
+                "Ultra-Fast Information Intake",
+                "Improved Visualization Skills",
+                "Develop Photographic Memory"
+            ]
+        }
+    };
+
+    const select = document.getElementById('program-select');
+    const cardContainer = document.getElementById('course-card-container');
+    const emptyState = document.getElementById('empty-state');
+    
+    const cName = document.getElementById('course-name');
+    const cDuration = document.getElementById('course-duration');
+    const cPrice = document.getElementById('course-price');
+    const cDesc = document.getElementById('course-description');
+    const cBenefits = document.getElementById('course-benefits');
+    const cCat = document.getElementById('course-category');
+
+    select.addEventListener('change', (e) => {
+        const data = programData[e.target.value];
+        if (data) {
+            cardContainer.classList.add('opacity-0', 'translate-y-4');
+            
+            setTimeout(() => {
+                cName.textContent = data.name;
+                cDuration.textContent = data.duration;
+                cPrice.textContent = data.price;
+                cDesc.textContent = data.description;
+                cCat.textContent = data.category;
+                
+                cBenefits.innerHTML = data.benefits.map(benefit => `
+                    <li class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary text-[20px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        <span class="font-body-md text-on-surface-variant">${benefit}</span>
+                    </li>
+                `).join('');
+
+                emptyState.classList.add('hidden');
+                cardContainer.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+            }, 300);
+        }
+    });
+
+    document.getElementById('enrollBtn').addEventListener('click', () => {
+        window.location.href = "payment.html";
+    });
+</script>
+
+
+
+
+</body></html>
