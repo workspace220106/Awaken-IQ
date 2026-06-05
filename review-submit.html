@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+<html lang="en" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Caudex:wght@400;700&amp;family=Raleway:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#eff1f3",
+                    "tertiary-container": "#d6e6df",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#9fd1b9",
+                    "outline-variant": "#c0c9c2",
+                    "on-surface": "#191c1e",
+                    "on-primary-container": "#3f6e5a",
+                    "on-error": "#ffffff",
+                    "surface-tint": "#386754",
+                    "primary": "#386754",
+                    "error-container": "#ffdad6",
+                    "surface-dim": "#d8dadc",
+                    "primary-fixed": "#bbeed5",
+                    "tertiary": "#1E4D3B",
+                    "surface-container-highest": "#e0e3e5",
+                    "surface-variant": "#e0e3e5",
+                    "secondary-fixed-dim": "#a7c9bc",
+                    "outline": "#717974",
+                    "surface-bright": "#f7f9fb",
+                    "on-tertiary-container": "#0b2018",
+                    "on-secondary-fixed": "#071e16",
+                    "on-primary-fixed": "#002115",
+                    "tertiary-fixed-dim": "#9fd1b9",
+                    "background": "#f7f9fb",
+                    "on-secondary-fixed-variant": "#153328",
+                    "on-primary-fixed-variant": "#1f4f3d",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#002115",
+                    "on-primary": "#ffffff",
+                    "on-surface-variant": "#414944",
+                    "inverse-surface": "#2d3133",
+                    "on-background": "#191c1e",
+                    "error": "#ba1a1a",
+                    "on-secondary": "#ffffff",
+                    "surface": "#f7f9fb",
+                    "secondary-container": "#c4dfd4",
+                    "inverse-primary": "#9fd1b9",
+                    "surface-container-low": "#f2f4f6",
+                    "on-tertiary-fixed-variant": "#153328",
+                    "primary-container": "#bbeed5",
+                    "tertiary-fixed": "#bbeed5",
+                    "surface-container": "#eceef0",
+                    "on-secondary-container": "#153328",
+                    "surface-container-high": "#e6e8ea",
+                    "secondary-fixed": "#bbeed5",
+                    "secondary": "#386754",
+                    "on-tertiary": "#ffffff",
+                    "gold": "#D4AF37"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "64px",
+                    "section-gap": "120px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Caudex", "serif"],
+                    "label-lg": ["Raleway", "sans-serif"],
+                    "headline-md": ["Caudex", "serif"],
+                    "label-md": ["Raleway", "sans-serif"],
+                    "body-lg": ["Raleway", "sans-serif"],
+                    "display-lg": ["Caudex", "serif"],
+                    "body-md": ["Raleway", "sans-serif"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["56px", {"lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+      }
+      .soft-glow-primary {
+        box-shadow: 0 10px 30px -5px rgba(56, 103, 84, 0.1);
+      }
+      .soft-glow-secondary {
+        box-shadow: 0 10px 40px -10px rgba(30, 77, 59, 0.15);
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        background: linear-gradient(135deg, #93c4ad 0%, #ffffff 50%, #a7d2be 100%) !important;
+        min-height: 100dvh;
+      }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface">
+<header class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-outline-variant/20">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="spa">spa</span>
+<span class="font-headline-lg text-headline-lg text-primary tracking-tight">Awaken IQ</span>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors" href="course-selection.html">Curriculum</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors" href="course-selection.html">Programs</a>
+<a class="text-primary font-bold border-b-2 border-primary" href="review-submit.html">Enrollment</a>
+<a href="index.html" class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-lg hover:shadow-lg transition-all active:scale-95">Join Now</a>
+</nav>
+</div>
+</header>
+<main class="pt-32 pb-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="mb-12 text-center max-w-2xl mx-auto">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-4 font-bold">Final Review</h1>
+<p class="text-body-lg text-on-surface-variant">Please take a moment to double-check the information below before finalizing your child's enrollment.</p>
+</div>
+<!-- Perfectly Aligned Stepper -->
+<div class="mb-16 max-w-3xl mx-auto">
+<div class="relative">
+<div class="absolute top-[18px] left-10 right-10 h-0.5 bg-gold/20">
+    <div class="h-full bg-gold" style="width: 100%;"></div>
+</div>
+<div class="relative z-10 flex justify-between">
+<!-- Step 1 -->
+<a href="student-info.html" class="flex flex-col items-center gap-3 w-20 group">
+<div class="w-9 h-9 rounded-full bg-gold text-white flex items-center justify-center font-bold text-sm shadow-md transition-all group-hover:scale-105">1</div>
+<span class="text-[11px] md:text-label-md font-body-md text-on-surface-variant text-center whitespace-nowrap">Student Info</span>
+</a>
+<!-- Step 2 -->
+<a href="parent-info.html" class="flex flex-col items-center gap-3 w-20 group">
+<div class="w-9 h-9 rounded-full bg-gold text-white flex items-center justify-center font-bold text-sm shadow-md transition-all group-hover:scale-105">2</div>
+<span class="text-[11px] md:text-label-md font-body-md text-on-surface-variant text-center whitespace-nowrap">Parent Info</span>
+</a>
+<!-- Step 3 -->
+<a href="course-selection.html" class="flex flex-col items-center gap-3 w-20 group">
+<div class="w-9 h-9 rounded-full bg-gold text-white flex items-center justify-center font-bold text-sm shadow-md transition-all group-hover:scale-105">3</div>
+<span class="text-[11px] md:text-label-md font-body-md text-on-surface-variant text-center whitespace-nowrap">Programs</span>
+</a>
+<!-- Step 4 -->
+<a href="payment.html" class="flex flex-col items-center gap-3 w-20 group">
+<div class="w-9 h-9 rounded-full bg-gold text-white flex items-center justify-center font-bold text-sm shadow-md transition-all group-hover:scale-105">4</div>
+<span class="text-[11px] md:text-label-md font-body-md text-on-surface-variant text-center whitespace-nowrap">Payment</span>
+</a>
+<!-- Step 5 -->
+<a href="review-submit.html" class="flex flex-col items-center gap-3 w-20 group">
+<div class="w-9 h-9 rounded-full bg-gold text-white flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(212,175,55,0.6)] ring-4 ring-gold/20 transition-all group-hover:scale-105">5</div>
+<span class="text-[11px] md:text-label-md font-bold font-body-md text-primary text-center whitespace-nowrap">Review</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Responsive Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left Column: Details Summary -->
+<div class="lg:col-span-7 space-y-6">
+<section class="glass-card rounded-xl p-6 md:p-8 soft-glow-primary transition-all hover:shadow-md">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="child_care">child_care</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">Student Details</h2>
+</div>
+<button class="flex items-center gap-1 text-primary font-label-lg hover:underline transition-all group">
+<span class="material-symbols-outlined text-sm group-hover:scale-110 transition-transform" data-icon="edit">edit</span> Edit
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
+<div>
+<p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Full Name</p>
+<p class="font-body-lg text-on-surface font-semibold">Arjun Christopher Sharma</p>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Date of Birth</p>
+<p class="font-body-lg text-on-surface">August 14, 2017 (Age 7)</p>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Gender</p>
+<p class="font-body-lg text-on-surface">Male</p>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Previous School</p>
+<p class="font-body-lg text-on-surface">Willow Creek Montessori</p>
+</div>
+</div>
+</section>
+<section class="glass-card rounded-xl p-6 md:p-8 soft-glow-primary transition-all hover:shadow-md">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="family_restroom">family_restroom</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">Parent Details</h2>
+</div>
+<button class="flex items-center gap-1 text-primary font-label-lg hover:underline transition-all group">
+<span class="material-symbols-outlined text-sm group-hover:scale-110 transition-transform" data-icon="edit">edit</span> Edit
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
+<div>
+<p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Primary Guardian</p>
+<p class="font-body-lg text-on-surface font-semibold">Dr. Elena Rodriguez-Sharma</p>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Email Address</p>
+<p class="font-body-lg text-on-surface">elena.sharma@research-med.org</p>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Phone Number</p>
+<p class="font-body-lg text-on-surface">+1 (555) 012-9844</p>
+</div>
+<div>
+<p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Relationship</p>
+<p class="font-body-lg text-on-surface">Mother</p>
+</div>
+</div>
+</section>
+<section class="glass-card rounded-xl p-6 md:p-8 soft-glow-primary transition-all hover:shadow-md">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="school">school</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-bold">Course Selection</h2>
+</div>
+<button class="flex items-center gap-1 text-primary font-label-lg hover:underline transition-all group">
+<span class="material-symbols-outlined text-sm group-hover:scale-110 transition-transform" data-icon="edit">edit</span> Edit
+</button>
+</div>
+<div class="space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center gap-4 p-5 bg-primary/5 rounded-xl border border-primary/10">
+<div class="bg-primary/10 p-3 rounded-full flex items-center justify-center w-12 h-12 shrink-0">
+<span class="material-symbols-outlined text-primary" data-icon="psychology">psychology</span>
+</div>
+<div>
+<p class="font-headline-md text-headline-md text-on-surface leading-tight font-bold">Advanced Emotional IQ Pathway</p>
+<p class="text-body-md text-on-surface-variant">Grade 2 Academic Stream • Full-Time Enrollment</p>
+</div>
+</div>
+<div class="p-5 border border-outline-variant/40 rounded-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="location_on">location_on</span>
+<div>
+<p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Campus Selection</p>
+<p class="font-body-lg text-on-surface font-semibold">North Palo Alto Discovery Hub</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Payment Sticky Summary -->
+<aside class="lg:col-span-5 lg:sticky lg:top-28">
+<div class="glass-card rounded-2xl p-6 md:p-8 soft-glow-secondary relative overflow-hidden border-2 border-primary/5">
+<div class="absolute -top-12 -right-12 p-8 opacity-[0.03]">
+<span class="material-symbols-outlined text-[200px] text-primary" data-icon="receipt_long">receipt_long</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-8 font-bold">Registration Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between items-center text-body-md text-on-surface-variant">
+<span>Registration Fee (One-time)</span>
+<span class="font-semibold text-on-surface">$250.00</span>
+</div>
+<div class="flex justify-between items-center text-body-md text-on-surface-variant">
+<span>Tuition Deposit</span>
+<span class="font-semibold text-on-surface">$1,200.00</span>
+</div>
+<div class="flex justify-between items-center text-body-md text-on-surface-variant">
+<span>Materials &amp; Resource Kit</span>
+<span class="font-semibold text-on-surface">$450.00</span>
+</div>
+<div class="pt-6 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">Total Due Now</span>
+<span class="font-headline-md text-display-lg text-primary font-bold">$1,900.00</span>
+</div>
+</div>
+<div class="p-5 bg-tertiary-container/20 rounded-xl mb-8 border border-tertiary-container/40">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary" data-icon="credit_score">credit_score</span>
+<p class="text-label-lg text-on-surface font-bold">Payment Method</p>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<p class="text-body-md text-on-surface">Visa ending in •••• 4492</p>
+<p class="text-label-md text-on-surface-variant">Exp: 09/27</p>
+</div>
+<button class="text-primary text-label-md font-semibold hover:underline">Change</button>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+    <a href="payment.html" class="flex items-center gap-2 text-primary font-label-lg hover:opacity-70 transition-opacity">
+        <span class="material-symbols-outlined">arrow_back</span>
+        Back to Payment
+    </a>
+    <button class="w-full sm:w-auto px-10 bg-primary text-on-primary py-5 rounded-full font-label-lg text-lg shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+        Confirm Registration <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+    </button>
+</div>
+<p class="text-center text-[12px] text-on-surface-variant px-4 leading-relaxed">
+By clicking confirm, you agree to the Awaken IQ <a class="text-primary underline font-semibold" href="#">Terms of Enrollment</a> and Privacy Policy.
+</p>
+</div>
+</div>
+<div class="mt-8 p-6 rounded-2xl border border-dashed border-outline-variant/60 text-center bg-surface-container-lowest/50">
+<p class="text-label-md text-on-surface-variant mb-4">Questions about your enrollment?</p>
+<button class="flex items-center gap-2 mx-auto text-primary font-bold hover:gap-4 transition-all group">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+Chat with an Admissions Advisor
+<span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</aside>
+</div>
+</main>
+<footer class="bg-on-secondary-fixed text-secondary-fixed rounded-t-[40px] mt-section-gap">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 px-margin-mobile md:px-margin-desktop py-20 max-w-container-max mx-auto">
+<div class="space-y-6 lg:col-span-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-container-lowest text-3xl" data-icon="spa">spa</span>
+<span class="font-headline-md text-headline-md text-surface-container-lowest font-bold">Awaken IQ</span>
+</div>
+<p class="text-body-md text-secondary-fixed-dim/80">
+Empowering the next generation with emotional intelligence and academic excellence through personalized learning journeys.
+</p>
+</div>
+<div class="space-y-4">
+<h4 class="text-surface-bright font-bold font-label-lg">Quick Links</h4>
+<ul class="space-y-3 text-secondary-fixed-dim/80 text-body-md">
+<li><a class="hover:text-surface-bright transition-colors" href="#">Curriculum Overview</a></li>
+<li><a class="hover:text-surface-bright transition-colors" href="#">Admission Process</a></li>
+<li><a class="hover:text-surface-bright transition-colors" href="#">Campus Locations</a></li>
+<li><a class="hover:text-surface-bright transition-colors" href="#">FAQ</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="text-surface-bright font-bold font-label-lg">Support</h4>
+<ul class="space-y-3 text-secondary-fixed-dim/80 text-body-md">
+<li><a class="hover:text-surface-bright transition-colors" href="#">Parent Portal</a></li>
+<li><a class="hover:text-surface-bright transition-colors" href="#">Contact Support</a></li>
+<li><a class="hover:text-surface-bright transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-surface-bright transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div class="space-y-6">
+<h4 class="text-surface-bright font-bold font-label-lg">Stay Inspired</h4>
+<p class="text-label-md text-secondary-fixed-dim/80">Join our newsletter for educational insights.</p>
+<div class="flex gap-2">
+<input class="bg-on-secondary-fixed-variant border-none rounded-full px-5 py-3 text-surface-bright w-full focus:ring-2 focus:ring-primary placeholder:text-surface-bright/40 text-sm" placeholder="Email address" type="email"/>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-full font-bold hover:opacity-90 transition-all shrink-0">Join</button>
+</div>
+<div class="pt-6 border-t border-secondary-fixed-dim/10">
+<p class="text-label-md text-secondary-fixed-dim/60">© 2024 Awaken IQ Education. All rights reserved.</p>
+</div>
+</div>
+</div>
+</footer>
+<script>
+    // Confirm Button Interaction
+    const confirmBtn = document.querySelector('button[class*="bg-primary"]');
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', () => {
+            const originalContent = confirmBtn.innerHTML;
+            confirmBtn.disabled = true;
+            confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin" data-icon="progress_activity">progress_activity</span> Processing...';
+            
+            setTimeout(() => {
+                confirmBtn.innerHTML = '<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span> Registration Complete!';
+                confirmBtn.classList.replace('bg-primary', 'bg-gold');
+                confirmBtn.classList.add('scale-105');
+                setTimeout(() => {
+                    alert('Registration Complete! Welcome to Awaken IQ.');
+                    window.location.href = "index.html";
+                }, 1000);
+            }, 2000);
+        });
+    }
+
+    // Scroll Header Effect
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (window.scrollY > 20) {
+            header.classList.add('shadow-md', 'py-2');
+            header.classList.remove('py-4');
+        } else {
+            header.classList.remove('shadow-md', 'py-2');
+            header.classList.add('py-4');
+        }
+    });
+</script>
+</body></html>
