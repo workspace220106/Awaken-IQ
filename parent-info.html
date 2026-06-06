@@ -215,6 +215,16 @@
 <label class="font-label-lg text-on-surface" for="email">Email Address</label>
 <input class="w-full bg-surface-container-low border border-outline-variant focus:border-tertiary focus:ring-1 focus:ring-tertiary rounded-xl px-4 py-3 font-body-md transition-all outline-none" id="email" name="email" placeholder="parent@example.com" required="" type="email">
 </div>
+<!-- Password -->
+<div class="flex flex-col gap-2">
+<label class="font-label-lg text-on-surface" for="password">Create Password</label>
+<input class="w-full bg-surface-container-low border border-outline-variant focus:border-tertiary focus:ring-1 focus:ring-tertiary rounded-xl px-4 py-3 font-body-md transition-all outline-none" id="password" name="password" placeholder="••••••••" required="" type="password" minlength="6">
+</div>
+<!-- Confirm Password -->
+<div class="flex flex-col gap-2">
+<label class="font-label-lg text-on-surface" for="confirm_password">Confirm Password</label>
+<input class="w-full bg-surface-container-low border border-outline-variant focus:border-tertiary focus:ring-1 focus:ring-tertiary rounded-xl px-4 py-3 font-body-md transition-all outline-none" id="confirm_password" name="confirm_password" placeholder="••••••••" required="" type="password" minlength="6">
+</div>
 </div>
 </div>
 <div>
@@ -245,12 +255,16 @@
 <!-- Form Actions -->
 <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-surface-container-highest gap-6">
 <a href="student-info.html" class="flex items-center gap-2 text-tertiary font-label-lg hover:opacity-70 transition-opacity">
-<span class="material-symbols-outlined">arrow_back</span>
-                            Back to Student Details
-                        </a>
+    <svg class="w-4 h-4 inline-block shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
+    </svg>
+    Back to Student Details
+</a>
 <button class="w-full md:w-auto bg-tertiary text-on-tertiary px-12 py-4 rounded-full font-label-lg soft-glow-primary hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3" type="submit">
-                            Save and Continue
-                            <span class="material-symbols-outlined">arrow_forward</span>
+    Save and Continue
+    <svg class="w-4 h-4 inline-block shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
+    </svg>
 </button>
 </div>
 </form>
@@ -303,17 +317,58 @@
         });
       });
 
-      // Simple form submission feedback
+      // Pre-populate if data exists in sessionStorage
+      window.addEventListener('DOMContentLoaded', () => {
+        const saved = sessionStorage.getItem('parentInfo');
+        if (saved) {
+          const info = JSON.parse(saved);
+          document.getElementById('parent_name').value = info.parent_name || '';
+          document.getElementById('relationship').value = info.relationship || '';
+          document.getElementById('mobile').value = info.mobile || '';
+          document.getElementById('alt_mobile').value = info.alt_mobile || '';
+          document.getElementById('email').value = info.email || '';
+          document.getElementById('address').value = info.address || '';
+          document.getElementById('city').value = info.city || '';
+          document.getElementById('state').value = info.state || '';
+          document.getElementById('pincode').value = info.pincode || '';
+          document.getElementById('password').value = info.password || '';
+          document.getElementById('confirm_password').value = info.password || '';
+        }
+      });
+
+      // Form submission feedback and saving
       document.querySelector('form').addEventListener('submit', (e) => {
         e.preventDefault();
+        
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+        
+        if (password !== confirmPassword) {
+          alert('Passwords do not match.');
+          return;
+        }
+
         const btn = e.target.querySelector('button[type="submit"]');
-        const originalText = btn.innerHTML;
         btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Processing...';
         btn.disabled = true;
+
+        const parentInfo = {
+          parent_name: document.getElementById('parent_name').value,
+          relationship: document.getElementById('relationship').value,
+          mobile: document.getElementById('mobile').value,
+          alt_mobile: document.getElementById('alt_mobile').value,
+          email: document.getElementById('email').value,
+          address: document.getElementById('address').value,
+          city: document.getElementById('city').value,
+          state: document.getElementById('state').value,
+          pincode: document.getElementById('pincode').value,
+          password: password // Save password for submission
+        };
+        sessionStorage.setItem('parentInfo', JSON.stringify(parentInfo));
         
         setTimeout(() => {
           window.location.href = "course-selection.html";
-        }, 1500);
+        }, 1000);
       });
     </script>
 

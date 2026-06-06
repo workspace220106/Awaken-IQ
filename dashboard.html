@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Student Portal Dashboard - Awaken IQ</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Caudex:wght@400;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1E4D3B",
+                        "secondary": "#386754",
+                        "brand-gold": "#D4AF37",
+                        "background": "#f7f9fb",
+                        "on-surface": "#191c1e",
+                        "on-surface-variant": "#414944",
+                        "surface-container-low": "#f2f4f6",
+                        "surface-container-lowest": "#ffffff"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #93c4ad 0%, #ffffff 50%, #a7d2be 100%) !important;
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(30, 77, 59, 0.08);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+    <!-- Top Nav -->
+    <header class="fixed top-0 w-full z-50 bg-white/20 backdrop-blur-md border-b border-white/20 shadow-sm">
+        <nav class="flex justify-between items-center px-4 md:px-8 py-4 max-w-7xl mx-auto">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary text-3xl" data-icon="spa">spa</span>
+                <span class="font-bold text-2xl text-primary tracking-tight" style="font-family: 'Caudex', serif;">Awaken IQ</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <span id="header-user-email" class="text-sm text-on-surface-variant hidden md:inline-block"></span>
+                <button id="logout-btn" class="bg-primary text-white px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 active:scale-95 transition-all shadow-md flex items-center gap-2">
+                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"></path>
+                    </svg> Logout
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow pt-28 pb-16 px-4 md:px-8 max-w-7xl mx-auto w-full">
+        <!-- Welcome banner -->
+        <div class="glass-card rounded-[24px] p-8 md:p-12 mb-8 relative overflow-hidden">
+            <div class="relative z-10 space-y-2">
+                <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase">Student Portal</span>
+                <h1 class="text-3xl md:text-4xl font-bold text-primary" style="font-family: 'Caudex', serif;">Welcome to Your Dashboard, <span id="display-parent-name">-</span></h1>
+                <p class="text-on-surface-variant max-w-xl">Track your child's learning progress, enrolled programs, schedules, and active credentials from this single portal.</p>
+            </div>
+            <!-- Decorative circle -->
+            <div class="absolute -right-16 -top-16 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <!-- Left Side: Registration Details -->
+            <div class="lg:col-span-8 space-y-8">
+                <!-- Child Profile -->
+                <div class="glass-card rounded-[24px] p-6 md:p-8">
+                    <h2 class="text-xl font-bold text-primary mb-6 flex items-center gap-2" style="font-family: 'Caudex', serif;">
+                        <span class="material-symbols-outlined text-primary">child_care</span> Student Profile
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-xs text-on-surface-variant uppercase tracking-wider">Student Full Name</p>
+                            <p id="student-name" class="font-semibold text-lg text-on-surface">-</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-on-surface-variant uppercase tracking-wider">Age & Grade</p>
+                            <p id="student-age-grade" class="font-semibold text-lg text-on-surface">-</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-on-surface-variant uppercase tracking-wider">Gender</p>
+                            <p id="student-gender" class="text-on-surface">-</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-on-surface-variant uppercase tracking-wider">Current School Name</p>
+                            <p id="student-school" class="text-on-surface">-</p>
+                        </div>
+                        <div class="md:col-span-2 pt-2 border-t border-gray-100">
+                            <p class="text-xs text-on-surface-variant uppercase tracking-wider">Special Needs Support</p>
+                            <p id="student-needs" class="text-on-surface font-medium">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guardian details -->
+                <div class="glass-card rounded-[24px] p-6 md:p-8">
+                    <h2 class="text-xl font-bold text-primary mb-6 flex items-center gap-2" style="font-family: 'Caudex', serif;">
+                        <span class="material-symbols-outlined text-primary">family_restroom</span> Guardian & Residential Information
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-xs text-on-surface-variant uppercase tracking-wider">Primary Guardian</p>
+                            <p id="parent-name" class="font-semibold text-on-surface">-</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-on-surface-variant uppercase tracking-wider">Relationship to Student</p>
+                            <p id="parent-relation" class="text-on-surface capitalize">-</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-on-surface-variant uppercase tracking-wider">Mobile Number</p>
+                            <p id="parent-mobile" class="text-on-surface">-</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-on-surface-variant uppercase tracking-wider">Email Address</p>
+                            <p id="parent-email" class="text-on-surface font-semibold">-</p>
+                        </div>
+                        <div class="md:col-span-2 pt-2 border-t border-gray-100">
+                            <p class="text-xs text-on-surface-variant uppercase tracking-wider">Residential Address</p>
+                            <p id="parent-address" class="text-on-surface">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Program Status & Billing -->
+            <div class="lg:col-span-4 space-y-8">
+                <!-- Enrolled Course Status -->
+                <div class="glass-card rounded-[24px] p-6 md:p-8 border-l-4 border-brand-gold">
+                    <h2 class="text-xl font-bold text-primary mb-4" style="font-family: 'Caudex', serif;">Program Status</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <span class="bg-brand-gold/15 text-brand-gold px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase">Enrolled</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-on-surface-variant uppercase tracking-wider">Active Program</p>
+                            <p id="enrolled-program" class="font-bold text-lg text-primary">-</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-on-surface-variant uppercase tracking-wider">Duration</p>
+                            <p id="program-duration" class="text-on-surface">-</p>
+                        </div>
+                        <div class="pt-2">
+                            <a href="attendance.html" class="flex items-center justify-center gap-2 w-full bg-primary/10 text-primary py-3 rounded-full font-bold hover:bg-primary/20 transition-all text-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                View Session Attendance
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Billing status -->
+                <div class="glass-card rounded-[24px] p-6 md:p-8">
+                    <h2 class="text-xl font-bold text-primary mb-4" style="font-family: 'Caudex', serif;">Payment & Billing</h2>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span class="text-sm text-on-surface-variant">Payment Status</span>
+                            <span id="billing-status" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">Paid</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span class="text-sm text-on-surface-variant">Method</span>
+                            <span id="billing-method" class="text-sm text-on-surface font-semibold">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session Attendance Card -->
+                <div class="glass-card rounded-[24px] p-6 md:p-8">
+                    <h2 class="text-xl font-bold text-primary mb-4 flex items-center gap-2" style="font-family: 'Caudex', serif;">
+                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Session Attendance
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span class="text-sm text-on-surface-variant">Latest Status</span>
+                            <span id="attendance-status" class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">Not Recorded</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span class="text-sm text-on-surface-variant">Attendance Rate</span>
+                            <span id="attendance-rate" class="text-sm text-on-surface font-semibold">-</span>
+                        </div>
+                        <div class="pt-2">
+                            <a href="attendance.html" class="flex items-center justify-center gap-2 w-full bg-primary/10 text-primary py-3 rounded-full font-bold hover:bg-primary/20 transition-all text-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                                Open Attendance Tracker
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-auto py-6 border-t border-gray-200/50 text-center text-xs text-on-surface-variant/70">
+        © 2026 Awaken IQ Education. All rights reserved.
+    </footer>
+
+    <script>
+        // Check session and load user data on DOM load
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/api/session');
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Session expired');
+                }
+
+                const user = result.user;
+                
+                // Populate Dashboard details
+                document.getElementById('header-user-email').textContent = user.parentEmail;
+                document.getElementById('display-parent-name').textContent = user.parentName;
+                
+                // Student Profile
+                document.getElementById('student-name').textContent = user.studentName || 'Not Provided';
+                document.getElementById('student-age-grade').textContent = `Age: ${user.studentAge || 'N/A'}, Grade: ${user.studentGrade || 'N/A'}`;
+                document.getElementById('student-gender').textContent = user.studentGender || 'Not Provided';
+                document.getElementById('student-school').textContent = user.studentSchool || 'Not Provided';
+                document.getElementById('student-needs').textContent = user.studentSpecialNeeds 
+                    ? `Yes - ${user.studentSpecialDetails}` 
+                    : 'No Special Needs Support Required';
+
+                // Guardian Info
+                document.getElementById('parent-name').textContent = user.parentName || 'Not Provided';
+                document.getElementById('parent-relation').textContent = user.parentRelationship || 'Not Provided';
+                document.getElementById('parent-mobile').textContent = user.parentMobile || 'Not Provided';
+                document.getElementById('parent-email').textContent = user.parentEmail || 'Not Provided';
+                document.getElementById('parent-address').textContent = `${user.parentAddress || ''}, ${user.parentCity || ''}, ${user.parentState || ''} - ${user.parentPincode || ''}`;
+
+                // Program
+                document.getElementById('enrolled-program').textContent = user.enrolledProgram || 'No Active Program';
+                document.getElementById('program-duration').textContent = user.duration || 'N/A';
+
+                // Billing
+                document.getElementById('billing-status').textContent = user.paymentStatus || 'Pending';
+                document.getElementById('billing-method').textContent = user.paymentMethod || 'Credit/Debit';
+
+                // Fetch attendance history for the active student
+                try {
+                    const attResponse = await fetch('/api/attendance');
+                    const attResult = await attResponse.json();
+                    
+                    if (attResponse.ok && attResult.attendance && attResult.attendance.length > 0) {
+                        const studentName = user.studentName;
+                        let presentCount = 0;
+                        let totalSessions = 0;
+                        let latestStatus = 'Not Recorded';
+                        
+                        // Sort by date/savedAt descending to get latest
+                        const sortedSessions = attResult.attendance.sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
+                        
+                        sortedSessions.forEach((session, index) => {
+                            const record = session.records.find(r => r.name.toLowerCase() === studentName.toLowerCase() || r.studentId === user.id);
+                            if (record) {
+                                totalSessions++;
+                                if (record.present) {
+                                    presentCount++;
+                                    if (index === 0) latestStatus = 'Present';
+                                } else {
+                                    if (index === 0) latestStatus = 'Absent';
+                                }
+                            }
+                        });
+                        
+                        if (totalSessions > 0) {
+                            const rate = Math.round((presentCount / totalSessions) * 100);
+                            document.getElementById('attendance-rate').textContent = `${rate}% (${presentCount}/${totalSessions})`;
+                            
+                            const statusEl = document.getElementById('attendance-status');
+                            statusEl.textContent = latestStatus;
+                            if (latestStatus === 'Present') {
+                                statusEl.className = "bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold";
+                            } else if (latestStatus === 'Absent') {
+                                statusEl.className = "bg-rose-100 text-rose-800 px-3 py-1 rounded-full text-xs font-semibold";
+                            }
+                        } else {
+                            // Default mock fallback if student is new
+                            document.getElementById('attendance-rate').textContent = "100% (Default)";
+                            document.getElementById('attendance-status').textContent = "Present";
+                            document.getElementById('attendance-status').className = "bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold";
+                        }
+                    } else {
+                        document.getElementById('attendance-rate').textContent = "N/A";
+                        document.getElementById('attendance-status').textContent = "No Records";
+                    }
+                } catch (err) {
+                    console.error("Error fetching attendance history:", err);
+                }
+
+            } catch (error) {
+                alert('Authentication Error: ' + error.message + '. Please login.');
+                window.location.href = "login.html";
+            }
+        });
+
+        // Logout action
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            try {
+                await fetch('/api/logout', { method: 'POST' });
+                window.location.href = "login.html";
+            } catch (error) {
+                alert('Logout failed');
+            }
+        });
+    </script>
+</body>
+</html>

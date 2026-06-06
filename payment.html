@@ -283,18 +283,22 @@
 <div class="pt-1 flex-shrink-0">
 <input class="w-5 h-5 rounded border-outline text-primary focus:ring-primary cursor-pointer" id="terms" type="checkbox"/>
 </div>
-<label class="font-body-md text-on-surface-variant leading-relaxed text-sm" for="terms">
-                            I agree to the <a class="text-primary font-bold hover:underline" href="#">Terms of Service</a> and <a class="text-primary font-bold hover:underline" href="#">Refund Policy</a>. I understand that this registration fee is non-refundable upon commencement of the orientation module.
-                        </label>
+<div class="font-body-md text-on-surface-variant leading-relaxed text-sm select-none">
+    I agree to the <a class="text-primary font-bold hover:underline cursor-pointer" id="terms-link">Terms & Conditions</a> and <a class="text-primary font-bold hover:underline cursor-pointer" id="refund-link">Refund Policy</a>.
+</div>
 </div>
 <div class="flex flex-col md:flex-row items-center justify-between gap-6">
     <a href="course-selection.html" class="flex items-center gap-2 text-primary font-label-lg hover:opacity-70 transition-opacity">
-        <span class="material-symbols-outlined">arrow_back</span>
+        <svg class="w-4 h-4 inline-block shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
+        </svg>
         Back to Programs
     </a>
     <button id="payBtn" class="w-full md:w-auto px-12 bg-primary text-on-primary font-headline-md py-4 rounded-full shadow-xl hover:translate-y-[-2px] hover:shadow-2xl active:scale-95 transition-all flex items-center justify-center gap-3 text-lg md:text-headline-md">
         Proceed to Payment
-        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+        <svg class="w-4 h-4 inline-block shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
+        </svg>
     </button>
 </div>
 <!-- SSL Badge -->
@@ -358,6 +362,31 @@
 </aside>
 </div>
 </main>
+
+    <!-- Terms and Conditions Modal HTML -->
+    <div id="terms-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-card rounded-[24px] max-w-2xl w-full mx-4 p-8 relative shadow-2xl border border-white/20">
+            <!-- Close Button -->
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors">
+                <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <!-- Modal Title -->
+            <h3 class="text-2xl font-bold text-primary mb-6" style="font-family: 'Caudex', serif;" id="modal-title">-</h3>
+            <!-- Modal Content -->
+            <div class="space-y-4 text-on-surface-variant overflow-y-auto max-h-[50vh] pr-2 text-sm leading-relaxed" id="modal-content">
+                <!-- Content gets injected dynamically -->
+            </div>
+            <!-- Modal Footer -->
+            <div class="mt-8 text-right">
+                <button id="close-modal-footer-btn" class="bg-primary text-white px-6 py-2.5 rounded-full font-semibold hover:opacity-90 active:scale-95 transition-all shadow-md">
+                    I Understand
+                </button>
+            </div>
+        </div>
+    </div>
+
 <!-- Footer -->
 <footer class="w-full rounded-t-3xl bg-[#0a2118] text-[#bbeed5] px-4 md:px-margin-desktop py-12 md:py-section-gap max-w-container-max mx-auto font-body-md">
 <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-gutter">
@@ -391,8 +420,7 @@
 <p class="font-label-md text-[#9fd1b9]/60 font-medium text-xs">© 2024 Awaken IQ. All rights reserved.</p>
 </div>
 </div>
-</footer>
-<script>
+</footer>    <script>
         function selectPayment(element) {
             // Remove active class from all
             document.querySelectorAll('.payment-card').forEach(card => {
@@ -423,15 +451,103 @@
                 }
                 const originalContent = payBtn.innerHTML;
                 payBtn.disabled = true;
-                payBtn.innerHTML = '<span class="material-symbols-outlined animate-spin" data-icon="progress_activity">progress_activity</span> Processing Payment...';
+                payBtn.innerHTML = '<svg class="animate-spin h-5 w-5 text-current inline-block mr-2" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processing Payment...';
                 
+                // Get selected payment method
+                const activePaymentCard = document.querySelector('.payment-card.active-payment');
+                const method = activePaymentCard ? activePaymentCard.querySelector('p').textContent.trim() : 'Credit/Debit Card';
+
+                const paymentInfo = {
+                    status: 'Paid',
+                    method: method,
+                    timestamp: new Date().toISOString()
+                };
+                sessionStorage.setItem('paymentInfo', JSON.stringify(paymentInfo));
+
                 setTimeout(() => {
-                    payBtn.innerHTML = '<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span> Payment Successful!';
+                    payBtn.innerHTML = '<svg class="w-4 h-4 inline-block mr-2 text-white shrink-0" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Payment Successful!';
                     payBtn.classList.replace('bg-primary', 'bg-brand-gold');
                     alert('Payment Successful! Proceeding to Final Review...');
                     window.location.href = "review-submit.html";
                 }, 2000);
             });
         }
+
+        // Terms & Conditions Modal controller
+        const modal = document.getElementById('terms-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+        const closeModalBtns = [
+            document.getElementById('close-modal-btn'),
+            document.getElementById('close-modal-footer-btn')
+        ];
+
+        const termsText = `
+            <div class="space-y-4">
+                <div class="border-b pb-2">
+                    <h4 class="font-bold text-primary text-base">1. Fees & Satisfaction Guarantee</h4>
+                    <p class="mt-1">We guarantee 100% satisfaction with a full return within 6 months of the workshop. However, the child and parent must continue with instructions consistently to qualify.</p>
+                </div>
+                <div class="border-b pb-2">
+                    <h4 class="font-bold text-primary text-base">2. Batch Change Requests</h4>
+                    <p class="mt-1">You can always request to move to a different batch if needed, subject to availability.</p>
+                </div>
+                <div class="border-b pb-2">
+                    <h4 class="font-bold text-primary text-base">3. Service Duration</h4>
+                    <p class="mt-1">For children, our services continue until they reach the age of 16. For adults, our services are for lifetime.</p>
+                </div>
+                <div class="border-b pb-2">
+                    <h4 class="font-bold text-primary text-base">4. Batch Repetition</h4>
+                    <p class="mt-1">You can repeat a batch for free if it's necessary and if there is space available. However, you must book your spot in advance. Preference will be given to nearby students to the center. Students not practicing at home will not be considered for repeat batches.</p>
+                </div>
+                <div class="pb-2">
+                    <h4 class="font-bold text-primary text-base">5. No-Show Policy</h4>
+                    <p class="mt-1">If you book a seat for a repeat batch and don't attend without informing us in advance, you will not be allowed to repeat any future batches.</p>
+                </div>
+            </div>
+        `;
+
+        const refundText = `
+            <div class="space-y-4">
+                <h4 class="font-bold text-primary text-base">Refund Policy</h4>
+                <p>We guarantee 100% satisfaction with a full refund within 6 months of starting the workshop. To qualify for this guarantee, parents and students must demonstrate consistent attendance and completion of assigned home practice modules.</p>
+                <p>Please note that administrative fees or resource kit materials already delivered may be deducted from the final refund amount.</p>
+            </div>
+        `;
+
+        function openModal(title, content) {
+            modalTitle.textContent = title;
+            modalContent.innerHTML = content;
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        document.getElementById('terms-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal('Terms & Conditions', termsText);
+        });
+
+        document.getElementById('refund-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal('Refund Policy', refundText);
+        });
+
+        closeModalBtns.forEach(btn => {
+            if (btn) btn.addEventListener('click', closeModal);
+        });
+
+        // Close on clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
     </script>
 </body></html>

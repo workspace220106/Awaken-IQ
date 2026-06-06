@@ -188,19 +188,19 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
 <div>
 <p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Full Name</p>
-<p class="font-body-lg text-on-surface font-semibold">Arjun Christopher Sharma</p>
+<p id="review-student-name" class="font-body-lg text-on-surface font-semibold">-</p>
 </div>
 <div>
-<p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Date of Birth</p>
-<p class="font-body-lg text-on-surface">August 14, 2017 (Age 7)</p>
+<p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Age / Grade</p>
+<p id="review-student-age-grade" class="font-body-lg text-on-surface">-</p>
 </div>
 <div>
 <p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Gender</p>
-<p class="font-body-lg text-on-surface">Male</p>
+<p id="review-student-gender" class="font-body-lg text-on-surface">-</p>
 </div>
 <div>
-<p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Previous School</p>
-<p class="font-body-lg text-on-surface">Willow Creek Montessori</p>
+<p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">School</p>
+<p id="review-student-school" class="font-body-lg text-on-surface">-</p>
 </div>
 </div>
 </section>
@@ -217,19 +217,19 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
 <div>
 <p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Primary Guardian</p>
-<p class="font-body-lg text-on-surface font-semibold">Dr. Elena Rodriguez-Sharma</p>
+<p id="review-parent-name" class="font-body-lg text-on-surface font-semibold">-</p>
 </div>
 <div>
 <p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Email Address</p>
-<p class="font-body-lg text-on-surface">elena.sharma@research-med.org</p>
+<p id="review-parent-email" class="font-body-lg text-on-surface">-</p>
 </div>
 <div>
 <p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Phone Number</p>
-<p class="font-body-lg text-on-surface">+1 (555) 012-9844</p>
+<p id="review-parent-phone" class="font-body-lg text-on-surface">-</p>
 </div>
 <div>
 <p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Relationship</p>
-<p class="font-body-lg text-on-surface">Mother</p>
+<p id="review-parent-relationship" class="font-body-lg text-on-surface">-</p>
 </div>
 </div>
 </section>
@@ -249,15 +249,8 @@
 <span class="material-symbols-outlined text-primary" data-icon="psychology">psychology</span>
 </div>
 <div>
-<p class="font-headline-md text-headline-md text-on-surface leading-tight font-bold">Advanced Emotional IQ Pathway</p>
-<p class="text-body-md text-on-surface-variant">Grade 2 Academic Stream • Full-Time Enrollment</p>
-</div>
-</div>
-<div class="p-5 border border-outline-variant/40 rounded-xl flex items-center gap-3">
-<span class="material-symbols-outlined text-primary" data-icon="location_on">location_on</span>
-<div>
-<p class="text-label-md text-on-surface-variant uppercase tracking-wider mb-1">Campus Selection</p>
-<p class="font-body-lg text-on-surface font-semibold">North Palo Alto Discovery Hub</p>
+<p id="review-course-title" class="font-headline-md text-headline-md text-on-surface leading-tight font-bold">-</p>
+<p id="review-course-details" class="text-body-md text-on-surface-variant">-</p>
 </div>
 </div>
 </div>
@@ -285,7 +278,7 @@
 </div>
 <div class="pt-6 border-t border-outline-variant/30 flex justify-between items-center">
 <span class="font-headline-md text-headline-md text-on-surface font-bold">Total Due Now</span>
-<span class="font-headline-md text-display-lg text-primary font-bold">$1,900.00</span>
+<span id="review-total-due" class="font-headline-md text-display-lg text-primary font-bold">-</span>
 </div>
 </div>
 <div class="p-5 bg-tertiary-container/20 rounded-xl mb-8 border border-tertiary-container/40">
@@ -295,8 +288,8 @@
 </div>
 <div class="flex justify-between items-center">
 <div>
-<p class="text-body-md text-on-surface">Visa ending in •••• 4492</p>
-<p class="text-label-md text-on-surface-variant">Exp: 09/27</p>
+<p id="review-payment-method" class="text-body-md text-on-surface">-</p>
+<p class="text-label-md text-on-surface-variant">Status: Paid</p>
 </div>
 <button class="text-primary text-label-md font-semibold hover:underline">Change</button>
 </div>
@@ -304,15 +297,20 @@
 <div class="space-y-4">
 <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
     <a href="payment.html" class="flex items-center gap-2 text-primary font-label-lg hover:opacity-70 transition-opacity">
-        <span class="material-symbols-outlined">arrow_back</span>
+        <svg class="w-4 h-4 inline-block shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
+        </svg>
         Back to Payment
     </a>
     <button class="w-full sm:w-auto px-10 bg-primary text-on-primary py-5 rounded-full font-label-lg text-lg shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
-        Confirm Registration <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+        Confirm Registration
+        <svg class="w-4 h-4 inline-block ml-2 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
+        </svg>
     </button>
 </div>
 <p class="text-center text-[12px] text-on-surface-variant px-4 leading-relaxed">
-By clicking confirm, you agree to the Awaken IQ <a class="text-primary underline font-semibold" href="#">Terms of Enrollment</a> and Privacy Policy.
+By clicking confirm, you agree to the Awaken IQ <a class="text-primary underline font-semibold cursor-pointer" id="terms-link">Terms of Enrollment</a> and <a class="text-primary underline font-semibold cursor-pointer" id="privacy-link">Privacy Policy</a>.
 </p>
 </div>
 </div>
@@ -327,6 +325,30 @@ Chat with an Admissions Advisor
 </aside>
 </div>
 </main>
+
+    <!-- Terms and Conditions Modal HTML -->
+    <div id="terms-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-card rounded-[24px] max-w-2xl w-full mx-4 p-8 relative shadow-2xl border border-white/20">
+            <!-- Close Button -->
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors">
+                <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <!-- Modal Title -->
+            <h3 class="text-2xl font-bold text-primary mb-6" style="font-family: 'Caudex', serif;" id="modal-title">-</h3>
+            <!-- Modal Content -->
+            <div class="space-y-4 text-on-surface-variant overflow-y-auto max-h-[50vh] pr-2 text-sm leading-relaxed" id="modal-content">
+                <!-- Content gets injected dynamically -->
+            </div>
+            <!-- Modal Footer -->
+            <div class="mt-8 text-right">
+                <button id="close-modal-footer-btn" class="bg-primary text-white px-6 py-2.5 rounded-full font-semibold hover:opacity-90 active:scale-95 transition-all shadow-md">
+                    I Understand
+                </button>
+            </div>
+        </div>
+    </div>
 <footer class="bg-on-secondary-fixed text-secondary-fixed rounded-t-[40px] mt-section-gap">
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 px-margin-mobile md:px-margin-desktop py-20 max-w-container-max mx-auto">
 <div class="space-y-6 lg:col-span-1">
@@ -370,23 +392,93 @@ Empowering the next generation with emotional intelligence and academic excellen
 </div>
 </footer>
 <script>
-    // Confirm Button Interaction
+    // Load and display details from sessionStorage
+    let studentInfo = {};
+    let parentInfo = {};
+    let courseInfo = {};
+    let paymentInfo = {};
+
+    window.addEventListener('DOMContentLoaded', () => {
+        studentInfo = JSON.parse(sessionStorage.getItem('studentInfo') || '{}');
+        parentInfo = JSON.parse(sessionStorage.getItem('parentInfo') || '{}');
+        courseInfo = JSON.parse(sessionStorage.getItem('courseInfo') || '{}');
+        paymentInfo = JSON.parse(sessionStorage.getItem('paymentInfo') || '{}');
+
+        // Verify registration wizard completion
+        if (!studentInfo.fullName || !parentInfo.email || !courseInfo.program) {
+            alert('Your registration details are incomplete. Please complete all registration steps.');
+            window.location.href = 'student-info.html';
+            return;
+        }
+
+        // Student Info
+        document.getElementById('review-student-name').textContent = studentInfo.fullName || '-';
+        document.getElementById('review-student-age-grade').textContent = `Age ${studentInfo.age || '-'}, Grade: ${studentInfo.grade || '-'}`;
+        document.getElementById('review-student-gender').textContent = studentInfo.gender || '-';
+        document.getElementById('review-student-school').textContent = studentInfo.schoolName || '-';
+
+        // Parent Info
+        document.getElementById('review-parent-name').textContent = parentInfo.parent_name || '-';
+        document.getElementById('review-parent-email').textContent = parentInfo.email || '-';
+        document.getElementById('review-parent-phone').textContent = parentInfo.mobile || '-';
+        document.getElementById('review-parent-relationship').textContent = parentInfo.relationship || '-';
+
+        // Course Info
+        document.getElementById('review-course-title').textContent = courseInfo.program || '-';
+        document.getElementById('review-course-details').textContent = `${courseInfo.duration || '-'} • Classroom Training`;
+
+        // Payment Info
+        document.getElementById('review-total-due').textContent = courseInfo.price || '$1,299.00';
+        document.getElementById('review-payment-method').textContent = `${paymentInfo.method || 'Credit/Debit Card'} (Success)`;
+    });
+
+    // Confirm Button Interaction and Registration Submit
     const confirmBtn = document.querySelector('button[class*="bg-primary"]');
     if (confirmBtn) {
-        confirmBtn.addEventListener('click', () => {
-            const originalContent = confirmBtn.innerHTML;
+        confirmBtn.addEventListener('click', async () => {
             confirmBtn.disabled = true;
-            confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin" data-icon="progress_activity">progress_activity</span> Processing...';
+            confirmBtn.innerHTML = '<svg class="animate-spin h-5 w-5 text-current inline-block mr-2" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processing...';
             
-            setTimeout(() => {
-                confirmBtn.innerHTML = '<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span> Registration Complete!';
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        studentInfo,
+                        parentInfo,
+                        courseInfo,
+                        paymentInfo,
+                        password: parentInfo.password
+                    })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Registration failed');
+                }
+
+                confirmBtn.innerHTML = '<svg class="w-5 h-5 inline-block mr-2 text-white shrink-0" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Registration Complete!';
                 confirmBtn.classList.replace('bg-primary', 'bg-gold');
                 confirmBtn.classList.add('scale-105');
+                
                 setTimeout(() => {
-                    alert('Registration Complete! Welcome to Awaken IQ.');
-                    window.location.href = "index.html";
+                    alert('Registration Complete! Redirecting to student portal dashboard...');
+                    // Clear registration session
+                    sessionStorage.removeItem('studentInfo');
+                    sessionStorage.removeItem('parentInfo');
+                    sessionStorage.removeItem('courseInfo');
+                    sessionStorage.removeItem('paymentInfo');
+                    window.location.href = "dashboard.html";
                 }, 1000);
-            }, 2000);
+
+            } catch (error) {
+                alert('Registration Error: ' + error.message);
+                confirmBtn.disabled = false;
+                confirmBtn.innerHTML = 'Confirm Registration <svg class="w-4 h-4 inline-block ml-2 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path></svg>';
+            }
         });
     }
 
@@ -400,6 +492,83 @@ Empowering the next generation with emotional intelligence and academic excellen
             header.classList.remove('shadow-md', 'py-2');
             header.classList.add('py-4');
         }
+    });
+
+    // Terms & Conditions Modal controller
+    const modal = document.getElementById('terms-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modal-content');
+    const closeModalBtns = [
+        document.getElementById('close-modal-btn'),
+        document.getElementById('close-modal-footer-btn')
+    ];
+
+    const termsText = `
+        <div class="space-y-4">
+            <div class="border-b pb-2">
+                <h4 class="font-bold text-primary text-base">1. Fees & Satisfaction Guarantee</h4>
+                <p class="mt-1">We guarantee 100% satisfaction with a full return within 6 months of the workshop. However, the child and parent must continue with instructions consistently to qualify.</p>
+            </div>
+            <div class="border-b pb-2">
+                <h4 class="font-bold text-primary text-base">2. Batch Change Requests</h4>
+                <p class="mt-1">You can always request to move to a different batch if needed, subject to availability.</p>
+            </div>
+            <div class="border-b pb-2">
+                <h4 class="font-bold text-primary text-base">3. Service Duration</h4>
+                <p class="mt-1">For children, our services continue until they reach the age of 16. For adults, our services are for lifetime.</p>
+            </div>
+            <div class="border-b pb-2">
+                <h4 class="font-bold text-primary text-base">4. Batch Repetition</h4>
+                <p class="mt-1">You can repeat a batch for free if it's necessary and if there is space available. However, you must book your spot in advance. Preference will be given to nearby students to the center. Students not practicing at home will not be considered for repeat batches.</p>
+            </div>
+            <div class="pb-2">
+                <h4 class="font-bold text-primary text-base">5. No-Show Policy</h4>
+                <p class="mt-1">If you book a seat for a repeat batch and don't attend without informing us in advance, you will not be allowed to repeat any future batches.</p>
+            </div>
+        </div>
+    `;
+
+    const privacyText = `
+        <div class="space-y-4">
+            <h4 class="font-bold text-primary text-base">Privacy Policy</h4>
+            <p>We respect your privacy and protect your personal data. The information collected during registration (student name, parent contact details, and payment details) is stored securely and processed in accordance with privacy regulations.</p>
+            <p>We do not share your personal information with third parties except as required to provide our educational services, process payments, or as required by law.</p>
+        </div>
+    `;
+
+    function openModal(title, content) {
+        modalTitle.textContent = title;
+        modalContent.innerHTML = content;
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modal.classList.remove('opacity-0');
+        }, 10);
+    }
+
+    function closeModal() {
+        modal.classList.add('opacity-0');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300);
+    }
+
+    document.getElementById('terms-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal('Terms & Conditions', termsText);
+    });
+
+    document.getElementById('privacy-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal('Privacy Policy', privacyText);
+    });
+
+    closeModalBtns.forEach(btn => {
+        if (btn) btn.addEventListener('click', closeModal);
+    });
+
+    // Close on clicking outside
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
     });
 </script>
 </body></html>

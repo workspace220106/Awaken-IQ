@@ -205,8 +205,7 @@
                     <div class="space-y-2">
                         <label class="block font-label-lg text-label-lg text-on-surface-variant" for="email">Email Address</label>
                         <div class="relative">
-                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="mail">mail</span>
-                            <input class="w-full pl-12 pr-4 py-3 rounded-[12px] border-outline-variant bg-white/50 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface" id="email" placeholder="alex@example.com" type="email">
+                            <input class="w-full px-4 py-3 rounded-[12px] border-outline-variant bg-white/50 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface" id="email" placeholder="alex@example.com" type="email">
                         </div>
                     </div>
                     <!-- Password Field -->
@@ -216,11 +215,7 @@
                             <a class="text-primary font-label-md text-label-md hover:underline font-bold" href="#">Forgot Password?</a>
                         </div>
                         <div class="relative">
-                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="lock">lock</span>
-                            <input class="w-full pl-12 pr-12 py-3 rounded-[12px] border-outline-variant bg-white/50 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface" id="password" placeholder="••••••••" type="password">
-                            <button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary" type="button">
-                                <span class="material-symbols-outlined" data-icon="visibility">visibility</span>
-                            </button>
+                            <input class="w-full px-4 py-3 rounded-[12px] border-outline-variant bg-white/50 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-on-surface" id="password" placeholder="••••••••" type="password">
                         </div>
                     </div>
                     <!-- Remember Me -->
@@ -232,15 +227,6 @@
                     <div class="pt-4 space-y-4">
                         <button class="w-full bg-primary text-on-primary py-4 rounded-full font-headline-md text-headline-md soft-glow-primary active:scale-95 transition-all shadow-lg" type="submit">
                             Login
-                        </button>
-                        <div class="relative flex items-center py-2">
-                            <div class="flex-grow border-t border-outline-variant/30"></div>
-                            <span class="flex-shrink mx-4 text-outline font-label-md text-label-md uppercase tracking-widest">Or</span>
-                            <div class="flex-grow border-t border-outline-variant/30"></div>
-                        </div>
-                        <button class="w-full flex items-center justify-center gap-3 bg-white/60 border border-outline-variant/50 py-3 rounded-full font-label-lg text-label-lg text-on-surface hover:bg-white/80 active:scale-95 transition-all" type="button">
-                            <img alt="Google Logo" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLUWWc0hCqZsaPtoXMgurAyB7ZNcn9gT0bgjTiRECKRKzf3geDdxYenqy_ASKeRZW3o_NST1SNRGEgoDz6haHlYH0BdbRczznXYwsuK851WEBSOGJ11kPBepG5gIO6r1pfI53yHEKtbYoV_X06R91frhG_tQJHSJ-RIawpogOHCnMSODOuTrm2pGaSvCl5L0up7yAtMlTLvo9WnOhXMjCA2op7tZi4tTjrvOcNW3ux-MPWL8BohxfJGH5w4biCyXMlYzAEyHJWrBfk">
-                            Sign in with Google
                         </button>
                     </div>
                 </form>
@@ -318,18 +304,43 @@
             });
         }
 
-        // Form submission redirect
+        // Form submission redirect and authentication
         const form = document.querySelector('form');
         if (form) {
-            form.addEventListener('submit', (e) => {
+            form.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const btn = form.querySelector('button[type="submit"]');
                 const originalText = btn.innerHTML;
-                btn.innerHTML = '<span class="material-symbols-outlined animate-spin" data-icon="progress_activity">progress_activity</span> Logging in...';
+                btn.innerHTML = '<svg class="animate-spin h-5 w-5 text-current inline-block mr-2" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Logging in...';
                 btn.disabled = true;
-                setTimeout(() => {
-                    window.location.href = "student-info.html";
-                }, 1000);
+
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                try {
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(result.error || 'Login failed');
+                    }
+
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 800);
+
+                } catch (error) {
+                    alert('Login Error: ' + error.message);
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }
             });
         }
 
