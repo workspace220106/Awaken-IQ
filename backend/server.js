@@ -6,7 +6,7 @@ const cors = require('cors');
 
 const app = express();
 const PORT = 8000;
-const DB_FILE = path.join(__dirname, 'database.json');
+const DB_FILE = path.join(__dirname, '../database/database.json');
 
 // Middleware
 app.use(cors());
@@ -192,7 +192,7 @@ app.get('/api/attendance', (req, res) => {
 });
 
 // Serve static website files
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 app.listen(PORT, () => {
     console.log(`Awaken IQ Server running on http://localhost:${PORT}`);
