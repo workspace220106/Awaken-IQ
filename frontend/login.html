@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Student Portal - Awaken IQ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Caudex:wght@400;700&family=Literata:wght@400;700&family=Raleway:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Raleway:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
@@ -78,13 +78,13 @@
                         "section-gap": "120px"
                     },
                     "fontFamily": {
-                        "headline-lg": ["Literata", "serif"],
+                        "headline-lg": ["Caudex", "serif"],
                         "label-lg": ["Raleway", "sans-serif"],
-                        "headline-md": ["Literata", "serif"],
+                        "headline-md": ["Caudex", "serif"],
                         "label-md": ["Raleway", "sans-serif"],
                         "body-lg": ["Raleway", "sans-serif"],
-                        "display-lg-mobile": ["Literata", "serif"],
-                        "display-lg": ["Literata", "serif"],
+                        "display-lg-mobile": ["Caudex", "serif"],
+                        "display-lg": ["Caudex", "serif"],
                         "body-md": ["Raleway", "sans-serif"]
                     },
                     "fontSize": {
@@ -160,29 +160,31 @@
             -webkit-text-stroke: 1px #1E4D3B;
             text-fill-color: transparent;
         }
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
         body {
-            background: linear-gradient(135deg, #93c4ad 0%, #ffffff 50%, #a7d2be 100%) !important;
+            background: linear-gradient(to bottom, #ffffff 0%, #ffffff 15%, #e2f3ec 50%, #9ec9b5 100%) !important;
+            background-attachment: fixed !important;
         }
     </style>
 </head>
 <body class="bg-surface font-body-md text-on-background selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col relative ">
     <!-- Decorative Background Elements -->
-    <div class="ornament ornament-1"></div>
-    <div class="ornament ornament-2"></div>
+    <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="ornament ornament-1"></div>
+        <div class="ornament ornament-2"></div>
+    </div>
     <div class="absolute inset-0 noise-bg pointer-events-none"></div>
 
-    <!-- Top Navigation Bar -->
-    <header class="fixed top-0 w-full z-50 bg-white/20 backdrop-blur-md border-b border-white/20">
-        <nav class="flex justify-between items-center px-4 md:px-8 py-4 max-w-container-max mx-auto">
+    <header class="absolute top-0 w-full z-50 bg-transparent">
+        <nav class="flex justify-between items-center px-4 md:px-8 py-2 max-w-container-max mx-auto">
             <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-primary text-2xl" data-icon="spa">spa</span>
-                <span class="font-headline-lg text-headline-lg text-primary tracking-tight">Awaken IQ</span>
+                <img src="assets/logo.png" alt="Awaken IQ Logo" class="h-[90px] w-auto shrink-0 ml-[3px]">
             </div>
-            <div class="hidden md:flex items-center gap-8">
-                <a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 font-label-lg text-label-lg" href="course-selection.html">Curriculum</a>
-                <a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 font-label-lg text-label-lg" href="index.html">About Us</a>
-                <a href="student-info.html" class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-lg text-label-lg hover:opacity-90 active:scale-95 transition-all shadow-md">Join Now</a>
-            </div>
+
+            <a href="student-info.html" class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-lg text-label-lg hover:bg-primary/95 hover:shadow-lg active:scale-95 transition-all">Join Now</a>
         </nav>
     </header>
 
@@ -241,53 +243,110 @@
         </div>
     </main>
 
+    <!-- Account Type Selection Modal -->
+    <div id="account-type-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-card rounded-[24px] max-w-md w-full mx-4 p-8 relative shadow-2xl border border-white/20">
+            <!-- Close Button -->
+            <button id="close-type-modal-btn" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            
+            <!-- Selection State -->
+            <div id="selection-state" class="space-y-6">
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold text-primary" style="font-family: 'Caudex', serif;">Create Account</h3>
+                    <p class="text-sm text-on-surface-variant mt-2">Select your role to proceed with registration.</p>
+                </div>
+                <div class="grid grid-cols-1 gap-4">
+                    <button id="select-student-btn" class="flex items-center gap-4 p-4 rounded-2xl border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all text-left group">
+                        <div class="p-3 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479L12 21l-6.825-4a12.083 12.083 0 01.665-6.479L12 14z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-on-surface">Student / Parent</h4>
+                            <p class="text-xs text-on-surface-variant">Enroll a new student or access family portal</p>
+                        </div>
+                    </button>
+                    <button id="select-management-btn" class="flex items-center gap-4 p-4 rounded-2xl border border-outline-variant hover:border-primary hover:bg-primary/5 transition-all text-left group">
+                        <div class="p-3 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-on-surface">Management / Staff</h4>
+                            <p class="text-xs text-on-surface-variant">Access company dashboard & attendance log</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Management Auth State -->
+            <div id="mgt-auth-state" class="space-y-6 hidden">
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold text-primary" style="font-family: 'Caudex', serif;">Management Verification</h3>
+                    <p class="text-sm text-on-surface-variant mt-2">Enter your company credentials to access management tools.</p>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-1" for="mgt-userid">User ID</label>
+                        <input class="w-full px-4 py-2.5 rounded-xl border border-outline-variant bg-white/50 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm" id="mgt-userid" placeholder="Enter User ID" type="text">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider mb-1" for="mgt-password">Password</label>
+                        <input class="w-full px-4 py-2.5 rounded-xl border border-outline-variant bg-white/50 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm" id="mgt-password" placeholder="••••••••" type="password">
+                    </div>
+                    <div id="mgt-error" class="text-xs font-semibold text-rose-600 hidden">Invalid User ID or Password.</div>
+                    <div class="flex gap-3 pt-2">
+                        <button id="mgt-back-btn" class="flex-1 px-6 py-2.5 rounded-full border border-primary text-primary font-semibold text-sm hover:bg-primary/5 active:scale-95 transition-all">Back</button>
+                        <button id="mgt-verify-btn" class="flex-1 px-6 py-2.5 rounded-full bg-primary text-white font-semibold text-sm hover:opacity-90 active:scale-95 transition-all shadow-md">Verify & Access</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
-    <footer class="bg-primary text-on-primary w-full rounded-t-xl mt-auto relative ">
-        <div class="relative px-4 md:px-8 py-12 md:py-16 max-w-container-max mx-auto">
-            <div class="grid gap-6 md:grid-cols-3">
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3 mb-4">
-                        <span class="material-symbols-outlined text-on-primary/80 text-2xl" data-icon="spa">spa</span>
-                        <div class="space-y-0">
-                            <h3 class="headline-md text-headline-md text-on-primary">Awaken IQ</h3>
-                            <p class="text-sm text-on-primary/80">Nurturing the next generation of genius</p>
-                        </div>
-                    </div>
-                    <p class="text-sm text-on-primary/70">
-                        Empowering children through advanced cognitive training, emotional intelligence development, and holistic educational approaches that nurture both mind and spirit.
-                    </p>
-                </div>
-                <div class="space-y-4">
-                    <h3 class="label-lg text-on-primary/80 mb-2">Explore</h3>
-                    <nav class="space-y-2">
-                        <a href="#" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">Programs</a>
-                        <a href="#" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">About Us</a>
-                        <a href="#" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">Curriculum</a>
-                        <a href="#" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">Contact</a>
-                        <a href="#" class="text-on-primary/60 hover:text-on-primary/90 transition-colors duration-200">Blog</a>
-                    </nav>
-                </div>
-                <div class="space-y-4">
-                    <h3 class="label-lg text-on-primary/80 mb-2">Connect</h3>
-                    <div class="space-y-3">
-                        <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-on-primary/60" data-icon="call">call</span>
-                            <span class="text-sm text-on-primary/60">(555) 123-4567</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-on-primary/60" data-icon="mail">mail</span>
-                            <span class="text-sm text-on-primary/60">info@awakeniq.com</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-on-primary/60" data-icon="public">public</span>
-                            <span class="text-sm text-on-primary/60">Follow us on social media</span>
-                        </div>
-                    </div>
-                </div>
+    <div class="w-full overflow-hidden leading-none bg-transparent -mb-[1px] relative z-10 mt-auto">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-[60px]">
+            <path d="M0,0 C150,90 350,120 600,120 C850,120 1050,90 1200,0 L1200,120 L0,120 Z" fill="#1E4D3B"></path>
+        </svg>
+    </div>
+    <footer class="bg-[#1E4D3B] text-white py-12 w-full relative z-10 font-body-md">
+        <div class="max-w-container-max mx-auto px-4 flex flex-col items-center text-center space-y-6">
+            <!-- Logo -->
+            <img src="assets/logo.png" alt="Awaken IQ Logo" class="h-[65px] w-auto shrink-0 brightness-0 invert opacity-90">
+            
+            <!-- Links -->
+            <div class="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm font-medium tracking-wide">
+                <a href="index.html" class="hover:text-[#D4AF37] transition-colors">About Us</a>
+                <a href="course-selection.html" class="hover:text-[#D4AF37] transition-colors">Blog</a>
+                <a href="student-info.html" class="hover:text-[#D4AF37] transition-colors">Contact Us</a>
+                <a href="course-selection.html" class="hover:text-[#D4AF37] transition-colors">Service</a>
             </div>
-            <div class="border-t border-on-primary/20 mt-10 pt-8 text-center text-xs text-on-primary/60">
-                © 2024 Awaken IQ. All rights reserved. | Privacy Policy | Terms of Service
+            
+            <!-- Social Icons -->
+            <div class="flex items-center gap-6 text-[#D4AF37] text-lg">
+                <a href="#" class="hover:opacity-80 transition-opacity">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/></svg>
+                </a>
+                <a href="#" class="hover:opacity-80 transition-opacity">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051C.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                </a>
+                <a href="#" class="hover:opacity-80 transition-opacity">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.163a3.003 3.003 0 00-2.11-2.108C19.518 3.5 12 3.5 12 3.5s-7.517 0-9.388.555a3.002 3.002 0 00-2.11 2.108C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 002.11 2.108C4.483 20.5 12 20.5 12 20.5s7.518 0 9.388-.555a3.003 3.003 0 002.11-2.108C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </a>
             </div>
+            
+            <!-- Copyright -->
+            <p class="text-xs text-white/50 pt-4 border-t border-white/10 w-full max-w-md">
+                &copy;2025 Awaken IQ. All Right Reserved | Powered by MBG Card Pvt. Ltd.
+            </p>
         </div>
     </footer>
 
@@ -375,6 +434,75 @@
 
                 float();
             });
+        });
+
+        // Account Selection Modal Logic
+        const typeModal = document.getElementById('account-type-modal');
+        const selectionState = document.getElementById('selection-state');
+        const mgtAuthState = document.getElementById('mgt-auth-state');
+        const closeTypeModalBtn = document.getElementById('close-type-modal-btn');
+        const selectStudentBtn = document.getElementById('select-student-btn');
+        const selectManagementBtn = document.getElementById('select-management-btn');
+        const mgtBackBtn = document.getElementById('mgt-back-btn');
+        const mgtVerifyBtn = document.getElementById('mgt-verify-btn');
+        const mgtUseridInput = document.getElementById('mgt-userid');
+        const mgtPasswordInput = document.getElementById('mgt-password');
+        const mgtError = document.getElementById('mgt-error');
+
+        function openTypeModal() {
+            selectionState.classList.remove('hidden');
+            mgtAuthState.classList.add('hidden');
+            mgtError.classList.add('hidden');
+            mgtUseridInput.value = '';
+            mgtPasswordInput.value = '';
+            typeModal.classList.remove('hidden');
+            setTimeout(() => typeModal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeTypeModal() {
+            typeModal.classList.add('opacity-0');
+            setTimeout(() => typeModal.classList.add('hidden'), 300);
+        }
+
+        // Attach listeners to all Join / Create Account buttons
+        document.querySelectorAll('a[href="student-info.html"]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openTypeModal();
+            });
+        });
+
+        closeTypeModalBtn.addEventListener('click', closeTypeModal);
+        typeModal.addEventListener('click', (e) => {
+            if (e.target === typeModal) closeTypeModal();
+        });
+
+        selectStudentBtn.addEventListener('click', () => {
+            window.location.href = "student-info.html";
+        });
+
+        selectManagementBtn.addEventListener('click', () => {
+            selectionState.classList.add('hidden');
+            mgtAuthState.classList.remove('hidden');
+        });
+
+        mgtBackBtn.addEventListener('click', () => {
+            mgtAuthState.classList.add('hidden');
+            selectionState.classList.remove('hidden');
+        });
+
+        mgtVerifyBtn.addEventListener('click', () => {
+            const userId = mgtUseridInput.value;
+            const password = mgtPasswordInput.value;
+            
+            if (userId === "12345" && password === "67890") {
+                mgtError.classList.add('hidden');
+                closeTypeModal();
+                // Redirect to management dashboard
+                window.location.href = "management-dashboard.html";
+            } else {
+                mgtError.classList.remove('hidden');
+            }
         });
     </script>
 </body>
