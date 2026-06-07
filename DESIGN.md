@@ -50,24 +50,24 @@ colors:
   surface-variant: '#e0e3e5'
 typography:
   display-lg:
-    fontFamily: literata
+    fontFamily: caudex
     fontSize: 56px
     fontWeight: '700'
     lineHeight: 64px
     letterSpacing: -0.02em
   display-lg-mobile:
-    fontFamily: literata
+    fontFamily: caudex
     fontSize: 40px
     fontWeight: '700'
     lineHeight: 48px
     letterSpacing: -0.01em
   headline-lg:
-    fontFamily: literata
+    fontFamily: caudex
     fontSize: 32px
     fontWeight: '700'
     lineHeight: 40px
   headline-md:
-    fontFamily: literata
+    fontFamily: caudex
     fontSize: 24px
     fontWeight: '600'
     lineHeight: 32px
@@ -125,7 +125,7 @@ The palette is anchored by a soft, professional **Mint Teal** primary color, cho
 
 ## Typography
 
-The typographic hierarchy uses a "Modern Academic" pairing. **Literata** (Headline) provides an authoritative, literary feel that resonates with educational excellence and storytelling. Its thick strokes and warm serifs ensure the brand feels premium rather than sterile.
+The typographic hierarchy uses a "Modern Academic" pairing. **Caudex** (Headline) provides an authoritative, literary feel that resonates with educational excellence and storytelling. Its thick strokes and warm serifs ensure the brand feels premium rather than sterile.
 
 **Raleway** (Body) offers a clean, geometric contrast. It is highly legible for instructional content while its unique character (especially the 'w') maintains a friendly, contemporary vibe suitable for child-development contexts. 
 

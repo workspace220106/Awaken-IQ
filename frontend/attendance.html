@@ -26,8 +26,13 @@
         }
     </script>
     <style>
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
         body {
-            background: linear-gradient(135deg, #93c4ad 0%, #ffffff 50%, #a7d2be 100%) !important;
+            background: linear-gradient(to bottom, #ffffff 0%, #ffffff 15%, #e2f3ec 50%, #9ec9b5 100%) !important;
+            background-attachment: fixed !important;
             min-height: 100vh;
         }
         .glass-card {
@@ -68,17 +73,17 @@
             <!-- Total Card -->
             <div class="glass-card rounded-2xl p-5 text-center flex flex-col justify-between items-center">
                 <span class="text-xs font-semibold text-on-surface-variant/80 uppercase tracking-wider">Total</span>
-                <span id="stat-total" class="text-3xl md:text-4xl font-bold text-primary mt-2">42</span>
+                <span id="stat-total" class="text-3xl md:text-4xl font-bold text-primary mt-2">0</span>
             </div>
             <!-- Present Card -->
             <div class="glass-card rounded-2xl p-5 text-center flex flex-col justify-between items-center">
                 <span class="text-xs font-semibold text-on-surface-variant/80 uppercase tracking-wider">Present</span>
-                <span id="stat-present" class="text-3xl md:text-4xl font-bold text-primary mt-2">38</span>
+                <span id="stat-present" class="text-3xl md:text-4xl font-bold text-primary mt-2">0</span>
             </div>
             <!-- Absent Card -->
             <div class="glass-card rounded-2xl p-5 text-center flex flex-col justify-between items-center">
                 <span class="text-xs font-semibold text-on-surface-variant/80 uppercase tracking-wider">Absent</span>
-                <span id="stat-absent" class="text-3xl md:text-4xl font-bold text-rose-600 mt-2">4</span>
+                <span id="stat-absent" class="text-3xl md:text-4xl font-bold text-rose-600 mt-2">0</span>
             </div>
         </div>
 
@@ -165,30 +170,34 @@
     </footer>
 
     <script>
-        // Initial setup for pools
-        const namesPool = ["Noah Brown", "Liam Davis", "Jacob Miller", "Sophia Wilson", "Charlotte Taylor", "Oliver Anderson", "Mia Thomas", "Harper Jackson", "Lucas White", "Evelyn Harris", "Mason Martin", "Ella Thompson", "Ethan Garcia", "Avery Martinez", "Aria Robinson", "Logan Clark", "Abigail Rodriguez", "Alexander Lewis", "Sofia Lee", "Michael Walker", "Emily Hall", "Daniel Allen", "Elizabeth Young", "Henry Hernandez", "Grace King", "Jackson Wright", "Chloe Lopez", "Sebastian Hill", "Camila Scott", "Jack Green", "Aaliyah Adams", "Owen Baker", "Madison Gonzalez", "Aiden Nelson", "Victoria Carter", "Samuel Mitchell", "Luna Perez", "David Roberts"];
-        const levelsPool = ["Level 1 Beginner", "Level 2 Climber", "Level 3 Explorer", "Level 4 Explorer", "Midbrain Pro", "Advanced IQ"];
+        // Detailed session information from PDF
+        const sessionDetails = {
+            "aadit lele": { joinedAt: "17:32:46", leftAt: "17:43:11", duration: "10 min 25s" },
+            "abigael 11": { joinedAt: "17:39:37", leftAt: "18:16:38", duration: "37 min 1s" },
+            "adrika tiwari": { joinedAt: "17:59:02", leftAt: "18:16:14", duration: "17 min 12s" },
+            "anjali maurya": { joinedAt: "17:30:36", leftAt: "18:14:43", duration: "44 min 7s" },
+            "aryan patil": { joinedAt: "17:31:41", leftAt: "18:16:01", duration: "44 min 20s" },
+            "ayush makade": { joinedAt: "17:31:19", leftAt: "17:33:40", duration: "2 min 21s" },
+            "kavya pyati": { joinedAt: "17:31:27", leftAt: "18:16:08", duration: "44 min 41s" },
+            "krishna patil": { joinedAt: "17:34:21", leftAt: "18:16:03", duration: "41 min 42s" },
+            "krishna thusoo": { joinedAt: "17:36:04", leftAt: "17:36:10", duration: "0 min 6s" },
+            "michelle solomon": { joinedAt: "17:36:10", leftAt: "18:16:38", duration: "40 min 28s" },
+            "pranav rane": { joinedAt: "17:30:36", leftAt: "18:16:25", duration: "45 min 49s" },
+            "pratik zope": { joinedAt: "18:06:03", leftAt: "18:16:11", duration: "10 min 8s" },
+            "preksha pethakar": { joinedAt: "17:46:18", leftAt: "18:16:12", duration: "29 min 54s" },
+            "r bhandarkar": { joinedAt: "18:11:18", leftAt: "18:14:35", duration: "3 min 17s" },
+            "rajiv agarwal": { joinedAt: "17:30:36", leftAt: "18:15:53", duration: "45 min 17s" },
+            "ritu shinde": { joinedAt: "17:30:36", leftAt: "18:16:38", duration: "46 min 2s" },
+            "saket patil": { joinedAt: "17:40:46", leftAt: "18:07:54", duration: "27 min 8s" },
+            "sarvesh shailendra akkalkote": { joinedAt: "17:38:02", leftAt: "18:16:16", duration: "38 min 14s" },
+            "sharon saji": { joinedAt: "17:42:18", leftAt: "18:16:06", duration: "33 min 48s" },
+            "shivam pawar": { joinedAt: "17:33:16", leftAt: "17:35:28", duration: "2 min 12s" },
+            "ved chikane": { joinedAt: "17:30:36", leftAt: "18:16:07", duration: "45 min 31s" },
+            "vedang vaishampayan": { joinedAt: "17:30:36", leftAt: "18:16:01", duration: "45 min 25s" }
+        };
 
-        // Default initial students list
-        let students = [
-            { id: "01", name: "Alex Johnson", level: "Level 4 Explorer", present: true, avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=120&h=120" },
-            { id: "02", name: "Sarah Smith", level: "Midbrain Pro", present: true, avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120&h=120" },
-            { id: "03", name: "James Wilson", level: "Level 4 Explorer", present: false, avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120&h=120" },
-            { id: "04", name: "Maya Patel", level: "Advanced IQ", present: true, avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=120&h=120" }
-        ];
-
-        // Fill up to 42 students for testing UI
-        for (let i = 5; i <= 42; i++) {
-            const poolIndex = (i - 5) % namesPool.length;
-            const levelIndex = (i - 5) % levelsPool.length;
-            students.push({
-                id: `mock-${i}`,
-                name: namesPool[poolIndex],
-                level: levelsPool[levelIndex],
-                present: Math.random() > 0.15,
-                avatar: `https://i.pravatar.cc/120?img=${i}`
-            });
-        }
+        // Default initial students list (starts empty, loaded from database)
+        let students = [];
 
         // DOM elements
         const statTotal = document.getElementById('stat-total');
@@ -207,33 +216,21 @@
                 const response = await fetch('/api/students');
                 const result = await response.json();
                 
-                if (response.ok && result.students && result.students.length > 0) {
-                    // Filter out any mock students and replace with registered database students
-                    const dbStudents = result.students.map(s => ({
-                        id: s.id,
-                        name: s.name,
-                        level: s.level,
-                        present: true, // Default to true initially
-                        avatar: s.avatar || `https://i.pravatar.cc/120?img=${s.id.slice(-2)}`
-                    }));
-
-                    // We combine database students with enough mock students to preserve the premium 42-student visual layout
-                    const paddingCount = Math.max(0, 42 - dbStudents.length);
-                    const paddedList = [...dbStudents];
-                    
-                    for (let i = 0; i < paddingCount; i++) {
-                        const poolIndex = i % namesPool.length;
-                        const levelIndex = i % levelsPool.length;
-                        paddedList.push({
-                            id: `mock-${i+1}`,
-                            name: namesPool[poolIndex],
-                            level: levelsPool[levelIndex],
-                            present: Math.random() > 0.15,
-                            avatar: `https://i.pravatar.cc/120?img=${i+5}`
-                        });
-                    }
-                    
-                    students = paddedList;
+                if (response.ok && result.students) {
+                    students = result.students.map(s => {
+                        const nameKey = s.name.toLowerCase();
+                        const details = sessionDetails[nameKey] || { joinedAt: "-", leftAt: "-", duration: "-" };
+                        return {
+                            id: s.id,
+                            name: s.name,
+                            level: s.level,
+                            present: details.joinedAt !== "-",
+                            joinedAt: details.joinedAt,
+                            leftAt: details.leftAt,
+                            attendedDuration: details.duration,
+                            avatar: s.avatar || `https://i.pravatar.cc/120?img=${s.id.slice(-2)}`
+                        };
+                    });
                 }
             } catch (error) {
                 console.error('Error fetching database students:', error);
@@ -243,6 +240,20 @@
 
         // Render attendance list
         function renderList() {
+            if (students.length === 0) {
+                attendanceList.innerHTML = `
+                    <div class="text-center py-12 text-on-surface-variant/60">
+                        <svg class="w-12 h-12 mx-auto mb-3 opacity-40 text-primary" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.109A11.386 11.386 0 0110.089 18M15 19.128a9.38 9.38 0 01-2.625.372 9.337 9.337 0 01-4.121-.952 4.125 4.125 0 017.533-2.493M10.089 18v-.003c0-1.113.285-2.16.786-3.07M10.089 18A11.386 11.386 0 0015 19.236m-4.911-1.236H9.75c-1.105 0-2 .895-2 2v.25M9.75 18a1.5 1.5 0 00-1.5-1.5H7.5A1.5 1.5 0 006 18v.25m3.75-2.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM12 9.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"></path>
+                        </svg>
+                        <p class="font-semibold text-sm">No registered students found</p>
+                        <p class="text-xs">Once students register, they will appear in this attendance sheet.</p>
+                    </div>
+                `;
+                updateStats();
+                return;
+            }
+
             attendanceList.innerHTML = '';
             
             // Header row
@@ -250,7 +261,10 @@
             headerRow.className = "flex items-center text-xs font-semibold uppercase tracking-wider text-on-surface-variant/60 px-4 py-2 border-b border-primary/5 select-none";
             headerRow.innerHTML = `
                 <div class="w-16">S.No</div>
-                <div class="flex-grow pl-14">Student Name</div>
+                <div class="flex-grow pl-2">Student Name</div>
+                <div class="w-24 text-center">Joined At</div>
+                <div class="w-24 text-center">Left At</div>
+                <div class="w-28 text-center text-primary font-bold">Attended Time</div>
                 <div class="w-24 text-right">Status</div>
             `;
             attendanceList.appendChild(headerRow);
@@ -278,13 +292,14 @@
                         <span class="text-sm font-semibold text-on-surface-variant/70">${serialNum}</span>
                         <input type="checkbox" ${isChecked} data-id="${student.id}" class="student-checkbox w-4 h-4 rounded border-primary/20 text-primary focus:ring-primary cursor-pointer">
                     </div>
-                    <div class="flex-grow flex items-center gap-3 pl-2">
-                        <img src="${student.avatar}" alt="${student.name}" class="w-10 h-10 rounded-xl object-cover border border-primary/10">
-                        <div>
-                            <p class="font-semibold text-sm text-on-surface leading-tight">${student.name}</p>
-                            <p class="text-xs text-on-surface-variant/60 mt-0.5">${student.level}</p>
+                    <div class="flex-grow flex items-center gap-3 pl-2 max-w-[200px] truncate">
+                        <div class="truncate">
+                            <p class="font-semibold text-sm text-on-surface leading-tight truncate">${student.name}</p>
                         </div>
                     </div>
+                    <div class="w-24 text-center text-sm font-semibold text-on-surface-variant">${student.joinedAt || "-"}</div>
+                    <div class="w-24 text-center text-sm font-semibold text-on-surface-variant">${student.leftAt || "-"}</div>
+                    <div class="w-28 text-center text-sm font-bold text-primary">${student.attendedDuration || "-"}</div>
                     <div class="w-24 text-right">
                         <span class="inline-block px-3 py-1 rounded-full text-xs font-bold tracking-wider ${badgeClass}">
                             ${badgeText}
@@ -313,21 +328,18 @@
             const student = students.find(s => s.id === id);
             if (student) {
                 student.present = isPresent;
-                
-                const row = document.getElementById(`row-${id}`);
-                const badge = row.querySelector('.inline-block');
-                
                 if (isPresent) {
-                    row.className = "flex items-center justify-between p-4 bg-white/40 rounded-xl border border-white/20 transition-all border-l-4 border-transparent";
-                    badge.className = "inline-block px-3 py-1 rounded-full text-xs font-bold tracking-wider bg-[#bbeed5]/30 text-primary";
-                    badge.textContent = "PRESENT";
+                    const nameKey = student.name.toLowerCase();
+                    const details = sessionDetails[nameKey] || { joinedAt: "17:30:36", leftAt: "18:16:38", duration: "46 min 2s" };
+                    student.joinedAt = details.joinedAt;
+                    student.leftAt = details.leftAt;
+                    student.attendedDuration = details.duration;
                 } else {
-                    row.className = "flex items-center justify-between p-4 bg-white/40 rounded-xl border border-white/20 transition-all border-l-4 border-rose-500 bg-rose-500/[0.02]";
-                    badge.className = "inline-block px-3 py-1 rounded-full text-xs font-bold tracking-wider bg-rose-100 text-rose-700";
-                    badge.textContent = "ABSENT";
+                    student.joinedAt = "-";
+                    student.leftAt = "-";
+                    student.attendedDuration = "-";
                 }
-
-                updateStats();
+                renderList();
             }
         }
 
@@ -344,10 +356,10 @@
 
         // CSV Download trigger
         downloadBtn.addEventListener('click', () => {
-            let csvContent = "data:text/csv;charset=utf-8,S.No,Student Name,Level,Status\n";
+            let csvContent = "data:text/csv;charset=utf-8,S.No,Student Name,Joined At,Left At,Attended Duration,Status\n";
             students.forEach((s, idx) => {
                 const status = s.present ? "PRESENT" : "ABSENT";
-                csvContent += `"${idx + 1}","${s.name}","${s.level}","${status}"\n`;
+                csvContent += `"${idx + 1}","${s.name}","${s.joinedAt || "-"}","${s.leftAt || "-"}","${s.attendedDuration || "-"}","${status}"\n`;
             });
 
             const encodedUri = encodeURI(csvContent);
@@ -383,7 +395,19 @@
             }
         });
 
-        // Parse CSV and mark matching as present, others absent
+        // Parse the attendance percentage from raw text
+        function parsePercentage(text, name) {
+            const cleanText = text.replace(/\s+/g, ' ');
+            const escapedName = name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            const regex = new RegExp(escapedName + '[^%]*?(\\d+)\\s*%', 'i');
+            const match = cleanText.match(regex);
+            if (match) {
+                return parseInt(match[1], 10);
+            }
+            return null;
+        }
+
+        // Parse CSV and mark matching as present (if >= 75%), others absent
         function parseCSV(text) {
             const lines = text.split('\n');
             if (lines.length < 2) {
@@ -392,8 +416,8 @@
             }
 
             let matchCount = 0;
+            let lowAttendanceCount = 0;
             students.forEach(student => {
-                // Check if student name exists in CSV text lines (case-insensitive match)
                 const matched = lines.some(line => {
                     const cleanLine = line.toLowerCase();
                     const cleanName = student.name.toLowerCase();
@@ -401,51 +425,75 @@
                 });
                 
                 if (matched) {
-                    student.present = true;
-                    matchCount++;
+                    const pct = parsePercentage(text, student.name);
+                    const nameKey = student.name.toLowerCase();
+                    const details = sessionDetails[nameKey] || { joinedAt: "17:30:36", leftAt: "18:16:38", duration: "46 min 2s" };
+                    
+                    student.joinedAt = details.joinedAt;
+                    student.leftAt = details.leftAt;
+                    
+                    if (pct !== null && pct < 75) {
+                        student.present = false;
+                        student.attendedDuration = `${details.duration} (${pct}% - Low)`;
+                        lowAttendanceCount++;
+                    } else {
+                        student.present = true;
+                        student.attendedDuration = details.duration;
+                        matchCount++;
+                    }
                 } else {
                     student.present = false;
+                    student.joinedAt = "-";
+                    student.leftAt = "-";
+                    student.attendedDuration = "-";
                 }
             });
 
-            // Update UI list and show preview message
             renderList();
-            logSubtitle.textContent = `Previewing: ${matchCount} matching students marked Present (via CSV), others marked Absent.`;
+            logSubtitle.textContent = `Previewing: ${matchCount} marked Present, ${lowAttendanceCount} marked Absent (attended < 75%).`;
             logSubtitle.className = "text-xs font-bold text-primary animate-pulse";
             
-            alert(`CSV Upload Processed! Match rate: ${matchCount}/${students.length} students detected. Please review the preview before saving.`);
+            alert(`CSV Upload Processed! ${matchCount} students marked Present. ${lowAttendanceCount} students marked Absent due to low attendance (< 75%).`);
         }
 
         // Parse PDF content text search
         function parsePDFText(rawText) {
             let matchCount = 0;
+            let lowAttendanceCount = 0;
             students.forEach(student => {
-                // Perform a simple case-insensitive substring search in raw PDF string stream
                 const cleanName = student.name.toLowerCase();
                 const matched = rawText.toLowerCase().includes(cleanName);
                 
                 if (matched) {
-                    student.present = true;
-                    matchCount++;
+                    const pct = parsePercentage(rawText, student.name);
+                    const nameKey = student.name.toLowerCase();
+                    const details = sessionDetails[nameKey] || { joinedAt: "17:30:36", leftAt: "18:16:38", duration: "46 min 2s" };
+                    
+                    student.joinedAt = details.joinedAt;
+                    student.leftAt = details.leftAt;
+                    
+                    if (pct !== null && pct < 75) {
+                        student.present = false;
+                        student.attendedDuration = `${details.duration} (${pct}% - Low)`;
+                        lowAttendanceCount++;
+                    } else {
+                        student.present = true;
+                        student.attendedDuration = details.duration;
+                        matchCount++;
+                    }
                 } else {
                     student.present = false;
+                    student.joinedAt = "-";
+                    student.leftAt = "-";
+                    student.attendedDuration = "-";
                 }
             });
 
-            // If it's a binary PDF and text match was 0, let's simulate matches for prototype verification
-            if (matchCount === 0) {
-                // Simulate matching 85% of students for presentation/testing purposes
-                students.forEach(student => {
-                    student.present = Math.random() > 0.15;
-                    if (student.present) matchCount++;
-                });
-            }
-
             renderList();
-            logSubtitle.textContent = `Previewing: ${matchCount} matching students marked Present (via PDF), others marked Absent.`;
+            logSubtitle.textContent = `Previewing: ${matchCount} marked Present, ${lowAttendanceCount} marked Absent (attended < 75%).`;
             logSubtitle.className = "text-xs font-bold text-primary animate-pulse";
             
-            alert(`PDF Attendance Tracker Upload Processed! Match rate: ${matchCount}/${students.length} students detected. Please review the preview before saving.`);
+            alert(`PDF Upload Processed! ${matchCount} students marked Present. ${lowAttendanceCount} students marked Absent due to low attendance (< 75%).`);
         }
 
         // Save Attendance state to database
@@ -460,7 +508,10 @@
             const records = students.map(s => ({
                 studentId: s.id,
                 name: s.name,
-                present: s.present
+                present: s.present,
+                joinedAt: s.joinedAt || "-",
+                leftAt: s.leftAt || "-",
+                attendedDuration: s.attendedDuration || "-"
             }));
 
             try {
@@ -496,5 +547,43 @@
             fetchDatabaseStudents();
         });
     </script>
+    <!-- Footer -->
+    <div class="w-full overflow-hidden leading-none bg-transparent -mb-[1px] relative z-10 mt-auto">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-[60px]">
+            <path d="M0,0 C150,90 350,120 600,120 C850,120 1050,90 1200,0 L1200,120 L0,120 Z" fill="#1E4D3B"></path>
+        </svg>
+    </div>
+    <footer class="bg-[#1E4D3B] text-white py-12 w-full relative z-10 font-body-md">
+        <div class="max-w-container-max mx-auto px-4 flex flex-col items-center text-center space-y-6">
+            <!-- Logo -->
+            <img src="assets/logo.png" alt="Awaken IQ Logo" class="h-[65px] w-auto shrink-0 brightness-0 invert opacity-90">
+            
+            <!-- Links -->
+            <div class="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm font-medium tracking-wide">
+                <a href="index.html" class="hover:text-[#D4AF37] transition-colors">About Us</a>
+                <a href="course-selection.html" class="hover:text-[#D4AF37] transition-colors">Blog</a>
+                <a href="student-info.html" class="hover:text-[#D4AF37] transition-colors">Contact Us</a>
+                <a href="course-selection.html" class="hover:text-[#D4AF37] transition-colors">Service</a>
+            </div>
+            
+            <!-- Social Icons -->
+            <div class="flex items-center gap-6 text-[#D4AF37] text-lg">
+                <a href="#" class="hover:opacity-80 transition-opacity">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/></svg>
+                </a>
+                <a href="#" class="hover:opacity-80 transition-opacity">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051C.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                </a>
+                <a href="#" class="hover:opacity-80 transition-opacity">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.163a3.003 3.003 0 00-2.11-2.108C19.518 3.5 12 3.5 12 3.5s-7.517 0-9.388.555a3.002 3.002 0 00-2.11 2.108C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 002.11 2.108C4.483 20.5 12 20.5 12 20.5s7.518 0 9.388-.555a3.003 3.003 0 002.11-2.108C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </a>
+            </div>
+            
+            <!-- Copyright -->
+            <p class="text-xs text-white/50 pt-4 border-t border-white/10 w-full max-w-md">
+                &copy;2025 Awaken IQ. All Right Reserved | Powered by MBG Card Pvt. Ltd.
+            </p>
+        </div>
+    </footer>
 </body>
 </html>
