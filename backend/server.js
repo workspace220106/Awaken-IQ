@@ -40,13 +40,17 @@ app.use(express.urlencoded({ extended: true }));
 function readMgtDatabase() {
     try {
         if (!fs.existsSync(MGT_DB_FILE)) {
-            fs.writeFileSync(MGT_DB_FILE, JSON.stringify({ users: [], attendance: [] }, null, 2));
+            fs.writeFileSync(MGT_DB_FILE, JSON.stringify({ users: [], attendance: [], feedbacks: [] }, null, 2));
         }
         const data = fs.readFileSync(MGT_DB_FILE, 'utf8');
-        return JSON.parse(data);
+        const parsed = JSON.parse(data);
+        if (!parsed.feedbacks) {
+            parsed.feedbacks = [];
+        }
+        return parsed;
     } catch (err) {
         console.error('Error reading management database:', err);
-        return { users: [], attendance: [] };
+        return { users: [], attendance: [], feedbacks: [] };
     }
 }
 
@@ -329,6 +333,78 @@ app.post('/api/attendance', (req, res) => {
 app.get('/api/attendance', (req, res) => {
     const db = readMgtDatabase();
     res.json({ attendance: db.attendance || [] });
+});
+
+// Add feedback from parent/student
+app.post('/api/feedback', (req, res) => {
+    const userEmail = req.signedCookies.userEmail;
+    if (!userEmail) {
+        return res.status(401).json({ error: 'Not authenticated' });
+    }
+    
+    const {
+        academicPerformanceRating,
+        comments,
+        focus_concentration,
+        creativity_imagination,
+        intuition,
+        immunity_health,
+        social_confidence
+    } = req.body;
+    const rating = parseInt(academicPerformanceRating, 10);
+    
+    if (isNaN(rating) || rating < 1 || rating > 5) {
+        return res.status(400).json({ error: 'Valid academic performance rating (1-5) is required.' });
+    }
+    
+    const stdDb = readStdDatabase();
+    const user = stdDb.users.find(u => u.parentEmail === userEmail);
+    if (!user) {
+        return res.status(404).json({ error: 'User not found.' });
+    }
+    
+    const db = readMgtDatabase();
+    if (!db.feedbacks) {
+        db.feedbacks = [];
+    }
+    
+    const feedbackEntry = {
+        id: Date.now().toString(),
+        studentId: user.id,
+        studentName: user.studentName || 'Unknown Student',
+        parentEmail: user.parentEmail,
+        parentName: user.parentName || 'Unknown Parent',
+        enrolledProgram: user.enrolledProgram || 'None Selected',
+        academicPerformanceRating: rating,
+        comments: comments || '',
+        focus_concentration: focus_concentration || '',
+        creativity_imagination: creativity_imagination || '',
+        intuition: intuition || '',
+        immunity_health: immunity_health || '',
+        social_confidence: social_confidence || '',
+        submittedAt: new Date().toISOString()
+    };
+    
+    db.feedbacks.push(feedbackEntry);
+    writeMgtDatabase(db);
+    
+    // Also save under the student's record in student database if useful
+    if (!user.feedbacks) {
+        user.feedbacks = [];
+    }
+    user.feedbacks.push(feedbackEntry);
+    writeStdDatabase(stdDb);
+    
+    res.status(201).json({ message: 'Feedback submitted successfully', feedback: feedbackEntry });
+});
+
+// Get all feedback for management console
+app.get('/api/admin/feedbacks', (req, res) => {
+    const db = readMgtDatabase();
+    const feedbacks = db.feedbacks || [];
+    // Sort by submission date descending
+    feedbacks.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+    res.json({ feedbacks });
 });
 
 // Serve static website files

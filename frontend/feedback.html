@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Submit Feedback - Awaken IQ</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Caudex:wght@400;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1E4D3B",
+                        "secondary": "#386754",
+                        "brand-gold": "#D4AF37",
+                        "background": "#f7f9fb",
+                        "on-surface": "#191c1e",
+                        "on-surface-variant": "#414944",
+                        "surface-container-low": "#f2f4f6",
+                        "surface-container-lowest": "#ffffff"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            font-family: 'Raleway', sans-serif;
+        }
+        body {
+            background: linear-gradient(to bottom, #ffffff 0%, #ffffff 15%, #e2f3ec 50%, #9ec9b5 100%) !important;
+            background-attachment: fixed !important;
+            min-height: 100vh;
+            color: #191c1e;
+        }
+        h1, h2, h3, h4, h5, h6, .font-headline, .title-font {
+            font-family: 'Caudex', serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(30, 77, 59, 0.08);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .star-rating span {
+            cursor: pointer;
+            transition: transform 0.2s, color 0.2s;
+        }
+        .star-rating span:hover {
+            transform: scale(1.2);
+        }
+        #feedback-form label,
+        #feedback-form p,
+        #feedback-form textarea,
+        #feedback-form button,
+        #feedback-form input {
+            font-family: 'Raleway', sans-serif;
+        }
+        #feedback-form label {
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        #feedback-form p,
+        #feedback-form textarea,
+        #feedback-form input[type="radio"] + * {
+            font-size: 0.92rem;
+            line-height: 1.45;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+    <!-- Top Nav -->
+    <header class="absolute top-0 w-full z-50 bg-transparent">
+        <nav class="flex justify-between items-center px-4 md:px-8 py-2 max-w-7xl mx-auto">
+            <div class="flex items-center gap-3">
+                <img src="assets/logo.png" alt="Awaken IQ Logo" class="h-[90px] w-auto shrink-0 ml-[3px]">
+            </div>
+
+            <div class="flex items-center gap-6 md:gap-8">
+                <div class="hidden lg:flex items-center gap-6 text-sm font-semibold text-primary" style="font-family: 'Caudex', serif;">
+                    <a href="dashboard.html" class="hover:text-brand-gold transition-colors">Dashboard</a>
+                    <a href="courses.html" class="hover:text-brand-gold transition-colors">Courses</a>
+                    <a href="my-courses.html" class="hover:text-brand-gold transition-colors">My Courses</a>
+                </div>
+                <button id="logout-btn" class="bg-primary text-white px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 active:scale-95 transition-all shadow-md flex items-center gap-2">
+                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"></path>
+                    </svg> Logout
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow pt-28 pb-16 px-4 md:px-8 max-w-2xl mx-auto w-full flex flex-col justify-center">
+        <!-- Feedback Form Card -->
+        <div class="glass-card rounded-[24px] p-8 md:p-10 relative overflow-hidden">
+            <div class="relative z-10 space-y-6">
+                <!-- Header -->
+                <div class="text-center space-y-2">
+                    <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase" style="font-family: 'Raleway', sans-serif;">Feedback</span>
+                    <h1 class="text-3xl font-bold text-primary" style="font-family: 'Caudex', serif;">Share Your Experience</h1>
+                    <p class="text-on-surface-variant text-sm max-w-md mx-auto" style="font-family: 'Raleway', sans-serif;">Your feedback helps us track, improve, and deliver academic excellence for <span id="student-name-placeholder" class="font-bold text-primary">-</span>.</p>
+                </div>
+
+                <div class="border-t border-primary/10 pt-6">
+                    <form id="feedback-form" class="space-y-6">
+                        <!-- Rating Section -->
+                        <div class="space-y-3">
+                            <label class="block text-sm font-bold text-primary uppercase tracking-wider" style="font-family: 'Raleway', sans-serif;">Rate Academic Performance</label>
+                            <p class="text-xs text-on-surface-variant" style="font-family: 'Raleway', sans-serif;">How would you rate the student's progress and academic gains in this program?</p>
+                            
+                            <div class="star-rating flex items-center gap-2 mt-2" id="star-rating-container">
+                                <span class="rating-star text-4xl text-gray-300 transition-all" data-value="1">☆</span>
+                                <span class="rating-star text-4xl text-gray-300 transition-all" data-value="2">☆</span>
+                                <span class="rating-star text-4xl text-gray-300 transition-all" data-value="3">☆</span>
+                                <span class="rating-star text-4xl text-gray-300 transition-all" data-value="4">☆</span>
+                                <span class="rating-star text-4xl text-gray-300 transition-all" data-value="5">☆</span>
+                            </div>
+                            <input type="hidden" name="rating" id="rating-value" value="0">
+                            <p id="rating-validation-msg" class="text-xs text-rose-600 hidden font-semibold">Please select a rating from 1 to 5 stars.</p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="space-y-4 p-0">
+                                <div class="space-y-2">
+                                    <label class="text-sm font-semibold text-primary">Focus and Concentration Improvement</label>
+                                    <div class="flex flex-wrap gap-3 text-xs">
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="focus_concentration" value="Good Improvement"> Good Improvement</label>
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="focus_concentration" value="Improved"> Improved</label>
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="focus_concentration" value="Needs Improvement"> Needs Improvement</label>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="text-sm font-semibold text-primary">Creativity and Imagination</label>
+                                    <div class="flex flex-wrap gap-3 text-xs">
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="creativity_imagination" value="Good Improvement"> Good Improvement</label>
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="creativity_imagination" value="Improved"> Improved</label>
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="creativity_imagination" value="Needs Improvement"> Needs Improvement</label>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="text-sm font-semibold text-primary">Intuition</label>
+                                    <div class="flex flex-wrap gap-3 text-xs">
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="intuition" value="Good Improvement"> Good Improvement</label>
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="intuition" value="Improved"> Improved</label>
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="intuition" value="Needs Improvement"> Needs Improvement</label>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="text-sm font-semibold text-primary">Immunity and Overall Health</label>
+                                    <div class="flex flex-wrap gap-3 text-xs">
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="immunity_health" value="Good Improvement"> Good Improvement</label>
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="immunity_health" value="Improved"> Improved</label>
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="immunity_health" value="Needs Improvement"> Needs Improvement</label>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="text-sm font-semibold text-primary">Social Confidence</label>
+                                    <div class="flex flex-wrap gap-3 text-xs">
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="social_confidence" value="Good Improvement"> Good Improvement</label>
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="social_confidence" value="Improved"> Improved</label>
+                                        <label class="flex items-center gap-2 rounded-full bg-white px-3 py-2 border border-primary/10"><input type="radio" name="social_confidence" value="Needs Improvement"> Needs Improvement</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comments Section -->
+                        <div class="space-y-2">
+                            <label for="comments" class="block text-sm font-bold text-primary uppercase tracking-wider" style="font-family: 'Raleway', sans-serif;">Additional Feedback / Comments</label>
+                            <textarea id="comments" name="comments" rows="4" class="w-full bg-white/50 border border-primary/20 rounded-2xl p-4 text-sm focus:ring-primary focus:border-primary placeholder:text-on-surface-variant/40" placeholder="Please share details about changes in speed reading capability, focus, or general performance..."></textarea>
+                        </div>
+
+                        <!-- Error Message Container -->
+                        <div id="error-message" class="hidden bg-rose-50 border border-rose-200 text-rose-800 p-4 rounded-xl text-xs font-semibold"></div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" id="submit-btn" class="w-full bg-primary text-white py-4 rounded-full font-bold hover:opacity-90 active:scale-95 transition-all text-sm shadow-lg flex items-center justify-center gap-2">
+                            <span>Submit Feedback</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <!-- Decorative circle -->
+            <div class="absolute -right-16 -top-16 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
+        </div>
+    </main>
+
+    <footer class="mt-auto py-6 border-t border-gray-200/50 text-center text-xs text-on-surface-variant/70">
+        © 2026 Awaken IQ Education. All rights reserved.
+    </footer>
+
+    <!-- Success Modal Overlay -->
+    <div id="success-modal" class="fixed inset-0 z-[100] hidden bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-[24px] p-8 max-w-sm w-full text-center space-y-4 shadow-2xl border border-primary/10">
+            <div class="mx-auto mb-2"></div>
+            <h3 class="text-2xl font-bold text-primary" style="font-family: 'Caudex', serif;">Thank You!</h3>
+            <p class="text-xs text-on-surface-variant leading-relaxed">Your feedback has been successfully submitted and saved. We appreciate your valuable insights!</p>
+            <button onclick="window.location.href='dashboard.html'" class="w-full bg-primary text-white py-3 rounded-full font-bold text-sm hover:opacity-90 active:scale-95 transition-all shadow-md">
+                Return to Dashboard
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let selectedRating = 0;
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            // Check session and load user data on DOM load
+            try {
+                const response = await fetch('/api/session');
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Session expired');
+                }
+
+                const user = result.user;
+                document.getElementById('student-name-placeholder').textContent = user.studentName || 'Your Child';
+            } catch (error) {
+                alert('Authentication Error: Please login to submit feedback.');
+                window.location.href = "login.html";
+            }
+
+            // Star Rating Interactions
+            const stars = document.querySelectorAll('#star-rating-container span');
+            const ratingInput = document.getElementById('rating-value');
+            const validationMsg = document.getElementById('rating-validation-msg');
+
+            stars.forEach((star, index) => {
+                // Highlight stars on hover
+                star.addEventListener('mouseover', () => {
+                    highlightStars(index + 1);
+                });
+
+                // Reset stars on mouseout
+                star.addEventListener('mouseout', () => {
+                    highlightStars(selectedRating);
+                });
+
+                // Set rating on click
+                star.addEventListener('click', () => {
+                    selectedRating = index + 1;
+                    ratingInput.value = selectedRating;
+                    highlightStars(selectedRating);
+                    validationMsg.classList.add('hidden');
+                });
+            });
+
+            function highlightStars(count) {
+                stars.forEach((star, idx) => {
+                    const isFilled = idx < count;
+                    star.textContent = isFilled ? '★' : '☆';
+                    star.className = `rating-star text-4xl transition-all ${isFilled ? 'text-brand-gold' : 'text-gray-300'}`;
+                });
+            }
+
+            // Form Submit handler
+            const form = document.getElementById('feedback-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const errorMsg = document.getElementById('error-message');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorMsg.classList.add('hidden');
+
+                if (selectedRating === 0) {
+                    validationMsg.classList.remove('hidden');
+                    return;
+                }
+
+                // Show spinner
+                submitBtn.disabled = true;
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = `
+                    <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Submitting...</span>
+                `;
+
+                try {
+                    const focusConcentration = document.querySelector('input[name="focus_concentration"]:checked')?.value || '';
+                    const creativityImagination = document.querySelector('input[name="creativity_imagination"]:checked')?.value || '';
+                    const intuition = document.querySelector('input[name="intuition"]:checked')?.value || '';
+                    const immunityHealth = document.querySelector('input[name="immunity_health"]:checked')?.value || '';
+                    const socialConfidence = document.querySelector('input[name="social_confidence"]:checked')?.value || '';
+
+                    const response = await fetch('/api/feedback', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            academicPerformanceRating: selectedRating,
+                            comments: document.getElementById('comments').value,
+                            focus_concentration: focusConcentration,
+                            creativity_imagination: creativityImagination,
+                            intuition,
+                            immunity_health: immunityHealth,
+                            social_confidence: socialConfidence
+                        })
+                    });
+
+                    const result = await response.json();
+                    if (!response.ok) {
+                        throw new Error(result.error || 'Failed to submit feedback');
+                    }
+
+                    // Show success modal
+                    document.getElementById('success-modal').classList.remove('hidden');
+
+                } catch (err) {
+                    errorMsg.textContent = err.message;
+                    errorMsg.classList.remove('hidden');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                }
+            });
+        });
+
+        // Logout action
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            try {
+                await fetch('/api/logout', { method: 'POST' });
+                window.location.href = "login.html";
+            } catch (error) {
+                alert('Logout failed');
+            }
+        });
+    </script>
+</body>
+</html>

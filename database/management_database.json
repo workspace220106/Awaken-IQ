@@ -418,7 +418,89 @@
           "addedAt": "2026-06-07T14:04:53.081Z"
         }
       ]
+    },
+    {
+      "id": "1780985401608",
+      "studentName": "Ritu Shinde",
+      "studentAge": "10",
+      "studentGender": "female",
+      "studentGrade": "1",
+      "studentSchool": "abcd",
+      "studentSpecialNeeds": false,
+      "studentSpecialDetails": "",
+      "parentName": "Anita Shinde",
+      "parentRelationship": "mother",
+      "parentMobile": "9594913080",
+      "parentAltMobile": "86689912276",
+      "parentEmail": "ritufcrit@gmail.com",
+      "parentAddress": "xyz",
+      "parentCity": "mumbai",
+      "parentState": "maharashtra",
+      "parentPincode": "421605",
+      "enrolledProgram": "Midbrain Development",
+      "duration": "12 Weeks",
+      "paymentStatus": "Paid",
+      "paymentMethod": "UPI Transfer",
+      "password": "ritushinde",
+      "registrationDate": "2026-06-09T06:10:01.608Z"
     }
   ],
-  "attendance": []
+  "attendance": [],
+  "feedbacks": [
+    {
+      "id": "1780991250401",
+      "studentId": "1780985401608",
+      "studentName": "Ritu Shinde",
+      "parentEmail": "ritufcrit@gmail.com",
+      "parentName": "Anita Shinde",
+      "enrolledProgram": "Midbrain Development",
+      "academicPerformanceRating": 3,
+      "comments": "awerew",
+      "submittedAt": "2026-06-09T07:47:30.401Z"
+    },
+    {
+      "id": "1780993959530",
+      "studentId": "1780985401608",
+      "studentName": "Ritu Shinde",
+      "parentEmail": "ritufcrit@gmail.com",
+      "parentName": "Anita Shinde",
+      "enrolledProgram": "Midbrain Development",
+      "academicPerformanceRating": 5,
+      "comments": "good",
+      "submittedAt": "2026-06-09T08:32:39.530Z"
+    },
+    {
+      "id": "1780994038336",
+      "studentId": "1780985401608",
+      "studentName": "Ritu Shinde",
+      "parentEmail": "ritufcrit@gmail.com",
+      "parentName": "Anita Shinde",
+      "enrolledProgram": "Midbrain Development",
+      "academicPerformanceRating": 5,
+      "comments": "good",
+      "submittedAt": "2026-06-09T08:33:58.336Z"
+    },
+    {
+      "id": "1780994098983",
+      "studentId": "1780985401608",
+      "studentName": "Ritu Shinde",
+      "parentEmail": "ritufcrit@gmail.com",
+      "parentName": "Anita Shinde",
+      "enrolledProgram": "Midbrain Development",
+      "academicPerformanceRating": 5,
+      "comments": "good\n",
+      "submittedAt": "2026-06-09T08:34:58.983Z"
+    },
+    {
+      "id": "1780994593769",
+      "studentId": "1780755901146",
+      "studentName": "Rajiv Agarwal",
+      "parentEmail": "arajiv221@gmail.com",
+      "parentName": "Rajiv Agarwal",
+      "enrolledProgram": "Quantum Speed Reading",
+      "academicPerformanceRating": 5,
+      "comments": "ndfkjhdkvmnxjkcvn",
+      "submittedAt": "2026-06-09T08:43:13.769Z"
+    }
+  ]
 }

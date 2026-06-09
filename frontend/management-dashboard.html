@@ -137,6 +137,16 @@
                 <p class="text-sm text-on-surface-variant text-center py-8">Loading submitted videos...</p>
             </div>
         </div>
+
+        <!-- Student & Parent Feedbacks Feed -->
+        <div class="glass-card rounded-[24px] p-8 mt-12 text-left space-y-6">
+            <h2 class="text-2xl font-bold text-primary font-serif" style="font-family: 'Caudex', serif;">Student & Parent Feedbacks</h2>
+            <p class="text-on-surface-variant text-sm">Review academic performance ratings and qualitative insights submitted by parents.</p>
+            
+            <div id="admin-feedbacks-list" class="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+                <p class="text-sm text-on-surface-variant text-center py-8">Loading feedbacks...</p>
+            </div>
+        </div>
     </main>
 
     <!-- Footer -->
@@ -184,6 +194,7 @@
         });
 
         window.addEventListener('DOMContentLoaded', async () => {
+            // Load Videos
             try {
                 const response = await fetch('/api/admin/improvements');
                 const result = await response.json();
@@ -191,35 +202,98 @@
                 const listEl = document.getElementById('admin-videos-list');
                 if (!response.ok || !result.videos || result.videos.length === 0) {
                     listEl.innerHTML = '<p class="text-sm text-on-surface-variant text-center py-8">No progress videos submitted by parents yet.</p>';
-                    return;
-                }
-                
-                listEl.innerHTML = result.videos.map(vid => `
-                    <div onclick="openFullscreenVideo('${vid.videoUrl}')" class="flex items-center justify-between p-4 rounded-xl bg-white border border-primary/5 hover:border-primary/20 hover:bg-primary/5 cursor-pointer transition-all shadow-sm group">
-                        <div class="flex items-start gap-3 min-w-0">
-                            <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all">
-                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
+                } else {
+                    listEl.innerHTML = result.videos.map(vid => `
+                        <div onclick="openFullscreenVideo('${vid.videoUrl}')" class="flex items-center justify-between p-4 rounded-xl bg-white border border-primary/5 hover:border-primary/20 hover:bg-primary/5 cursor-pointer transition-all shadow-sm group">
+                            <div class="flex items-start gap-3 min-w-0">
+                                <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all">
+                                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </div>
+                                <div class="min-w-0 text-left">
+                                    <h4 class="font-bold text-sm text-primary truncate group-hover:text-brand-gold transition-colors">${vid.videoTitle}</h4>
+                                    <p class="text-xs text-on-surface-variant">
+                                        Student: <span class="font-semibold text-primary">${vid.studentName}</span> | Program: <span class="font-semibold text-primary">${vid.programName}</span>
+                                    </p>
+                                    <p class="text-[10px] text-on-surface-variant/80 mt-0.5">${new Date(vid.addedAt).toLocaleString()}</p>
+                                </div>
                             </div>
-                            <div class="min-w-0 text-left">
-                                <h4 class="font-bold text-sm text-primary truncate group-hover:text-brand-gold transition-colors">${vid.videoTitle}</h4>
-                                <p class="text-xs text-on-surface-variant">
-                                    Student: <span class="font-semibold text-primary">${vid.studentName}</span> | Program: <span class="font-semibold text-primary">${vid.programName}</span>
-                                </p>
-                                <p class="text-[10px] text-on-surface-variant/80 mt-0.5">${new Date(vid.addedAt).toLocaleString()}</p>
-                            </div>
+                            <span class="text-xs font-bold text-brand-gold group-hover:underline transition-colors shrink-0 flex items-center gap-1">
+                                Play Fullscreen
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"></path></svg>
+                            </span>
                         </div>
-                        <span class="text-xs font-bold text-brand-gold group-hover:underline transition-colors shrink-0 flex items-center gap-1">
-                            Play Fullscreen
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"></path></svg>
-                        </span>
-                    </div>
-                `).join('');
-                
+                    `).join('');
+                }
             } catch (err) {
                 console.error("Error loading improvements videos:", err);
                 document.getElementById('admin-videos-list').innerHTML = '<p class="text-sm text-red-600 text-center py-8">Failed to load progress videos feed.</p>';
+            }
+
+            // Load Feedbacks
+            try {
+                const fbResponse = await fetch('/api/admin/feedbacks');
+                const fbResult = await fbResponse.json();
+                
+                const fbListEl = document.getElementById('admin-feedbacks-list');
+                if (!fbResponse.ok || !fbResult.feedbacks || fbResult.feedbacks.length === 0) {
+                    fbListEl.innerHTML = '<p class="text-sm text-on-surface-variant text-center py-8">No student feedbacks submitted yet.</p>';
+                } else {
+                    fbListEl.innerHTML = fbResult.feedbacks.map(fb => {
+                        const ratingVal = fb.academicPerformanceRating || 0;
+                        let starsHtml = '';
+                        for (let i = 1; i <= 5; i++) {
+                            const isFilled = i <= ratingVal;
+                            const colorClass = isFilled ? 'text-brand-gold' : 'text-gray-300';
+                            const starChar = isFilled ? '★' : '☆';
+                            starsHtml += `<span class="text-lg ${colorClass}">${starChar}</span>`;
+                        }
+
+                        const extraFeedback = [
+                            ['Focus and Concentration Improvement', fb.focus_concentration || 'Not selected'],
+                            ['Creativity and Imagination', fb.creativity_imagination || 'Not selected'],
+                            ['Intuition', fb.intuition || 'Not selected'],
+                            ['Immunity and Overall Health', fb.immunity_health || 'Not selected'],
+                            ['Social Confidence', fb.social_confidence || 'Not selected']
+                        ].map(([label, value]) => `<li><span class="font-semibold text-primary">${label}:</span> ${value}</li>`)
+                          .join('');
+
+                        return `
+                            <div class="p-6 rounded-xl bg-white border border-primary/5 hover:border-primary/20 transition-all shadow-sm space-y-3">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                    <div>
+                                        <h4 class="font-bold text-sm text-primary">${fb.studentName}</h4>
+                                        <p class="text-xs text-on-surface-variant">
+                                            Parent: <span class="font-semibold text-primary">${fb.parentName} (${fb.parentEmail})</span> | Program: <span class="font-semibold text-primary">${fb.enrolledProgram}</span>
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center gap-0.5 bg-primary/5 px-2 py-1 rounded-lg">
+                                        ${starsHtml}
+                                    </div>
+                                </div>
+                                ${extraFeedback ? `
+                                    <div class="bg-background/50 border border-primary/10 rounded-xl p-3 text-xs text-on-surface-variant">
+                                        <p class="font-semibold text-primary uppercase tracking-wider mb-2">Feedback Summary</p>
+                                        <ul class="space-y-1 list-disc pl-4">${extraFeedback}</ul>
+                                    </div>
+                                ` : ''}
+                                ${fb.comments ? `
+                                    <div class="bg-background/50 border border-primary/10 rounded-xl p-3 text-xs text-on-surface-variant">
+                                        <p class="font-semibold text-primary uppercase tracking-wider mb-1">Additional Feedback</p>
+                                        <p>"${fb.comments}"</p>
+                                    </div>
+                                ` : ''}
+                                <div class="text-[10px] text-on-surface-variant/60 text-right">
+                                    Submitted: ${new Date(fb.submittedAt).toLocaleString()}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (fbErr) {
+                console.error("Error loading feedbacks:", fbErr);
+                document.getElementById('admin-feedbacks-list').innerHTML = '<p class="text-sm text-red-600 text-center py-8">Failed to load student feedbacks.</p>';
             }
         });
 
