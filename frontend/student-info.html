@@ -201,10 +201,14 @@
 <label class="block font-label-lg text-label-lg text-on-surface-variant" for="fullName">Full Name</label>
 <input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-outline-variant font-body-md" id="fullName" name="fullName" placeholder="Enter student's full name" type="text" required>
 </div>
-<!-- Age -->
+<!-- Birth Date -->
 <div class="space-y-2">
-<label class="block font-label-lg text-label-lg text-on-surface-variant" for="age">Age</label>
-<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-outline-variant font-body-md" id="age" max="18" min="3" name="age" placeholder="Years" type="number" required>
+<label class="block font-label-lg text-label-lg text-on-surface-variant" for="birthDate">Birth Date (dd/mm/yyyy)</label>
+<div class="flex flex-col sm:flex-row gap-3">
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-outline-variant font-body-md" id="birthDate" name="birthDate" placeholder="dd/mm/yyyy" type="text" inputmode="numeric" autocomplete="bday" required>
+<div id="ageBadge" class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3 text-sm font-semibold text-primary flex items-center min-h-[48px]">Age: --</div>
+</div>
+<input id="age" name="age" type="hidden" value="">
 </div>
 <!-- Gender -->
 <div class="space-y-2">
@@ -283,7 +287,48 @@
 </main>
 
 <script>
-        // Toggle conditional field
+        function calculateAgeFromBirthDate(value) {
+            if (!value) return null;
+
+            const parts = value.trim().split('/');
+            if (parts.length !== 3) return null;
+
+            const [day, month, year] = parts.map(part => Number(part));
+            if (!Number.isInteger(day) || !Number.isInteger(month) || !Number.isInteger(year)) return null;
+
+            const birth = new Date(year, month - 1, day);
+            if (birth.getFullYear() !== year || birth.getMonth() !== month - 1 || birth.getDate() !== day) return null;
+
+            const today = new Date();
+            let age = today.getFullYear() - birth.getFullYear();
+            const monthDiff = today.getMonth() - birth.getMonth();
+            const dayDiff = today.getDate() - birth.getDate();
+
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age -= 1;
+            }
+
+            return age >= 0 ? age : null;
+        }
+
+        function updateAgeDisplay() {
+            const birthDateInput = document.getElementById('birthDate');
+            const ageBadge = document.getElementById('ageBadge');
+            const ageInput = document.getElementById('age');
+            const age = calculateAgeFromBirthDate(birthDateInput.value);
+
+            if (age === null) {
+                ageBadge.textContent = 'Age: --';
+                ageBadge.className = 'w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3 text-sm font-semibold text-amber-700 flex items-center min-h-[48px]';
+                ageInput.value = '';
+                return;
+            }
+
+            ageBadge.textContent = `Age: ${age} years`;
+            ageBadge.className = 'w-full bg-surface-container-lowest border border-outline-variant rounded-xl px-4 py-3 text-sm font-semibold text-primary flex items-center min-h-[48px]';
+            ageInput.value = String(age);
+        }
+
         const toggle = document.getElementById('needsToggle');
         const container = document.getElementById('detailsContainer');
 
@@ -303,13 +348,17 @@
             }
         });
 
+        document.getElementById('birthDate').addEventListener('input', updateAgeDisplay);
+
         // Pre-populate if data exists in sessionStorage
         window.addEventListener('DOMContentLoaded', () => {
             const saved = sessionStorage.getItem('studentInfo');
             if (saved) {
                 const info = JSON.parse(saved);
                 document.getElementById('fullName').value = info.fullName || '';
+                document.getElementById('birthDate').value = info.birthDate || '';
                 document.getElementById('age').value = info.age || '';
+                updateAgeDisplay();
                 if (info.gender) {
                     const genderRadio = document.querySelector(`input[name="gender"][value="${info.gender}"]`);
                     if (genderRadio) genderRadio.checked = true;
@@ -333,11 +382,21 @@
             const btn = e.target.querySelector('button[type="submit"]');
             btn.innerHTML = '<svg class="animate-spin h-5 w-5 text-current inline-block" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
             
+            const birthDateValue = document.getElementById('birthDate').value.trim();
+            const computedAge = calculateAgeFromBirthDate(birthDateValue);
+
+            if (computedAge === null) {
+                alert('Please enter a valid birth date in dd/mm/yyyy format.');
+                btn.innerHTML = 'Next Step';
+                return;
+            }
+
             // Save to sessionStorage
             const genderInput = document.querySelector('input[name="gender"]:checked');
             const studentInfo = {
                 fullName: document.getElementById('fullName').value,
-                age: document.getElementById('age').value,
+                birthDate: birthDateValue,
+                age: String(computedAge),
                 gender: genderInput ? genderInput.value : '',
                 grade: document.getElementById('grade').value,
                 schoolName: document.getElementById('schoolName').value,

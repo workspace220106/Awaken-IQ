@@ -181,7 +181,7 @@
                         <!-- Comments Section -->
                         <div class="space-y-2">
                             <label for="comments" class="block text-sm font-bold text-primary uppercase tracking-wider" style="font-family: 'Raleway', sans-serif;">Additional Feedback / Comments</label>
-                            <textarea id="comments" name="comments" rows="4" class="w-full bg-white/50 border border-primary/20 rounded-2xl p-4 text-sm focus:ring-primary focus:border-primary placeholder:text-on-surface-variant/40" placeholder="Please share details about changes in speed reading capability, focus, or general performance..."></textarea>
+                            <textarea id="comments" name="comments" rows="4" required class="w-full bg-white/50 border border-primary/20 rounded-2xl p-4 text-sm focus:ring-primary focus:border-primary placeholder:text-on-surface-variant/40" placeholder="Please share details about changes in speed reading capability, focus, or general performance..."></textarea>
                         </div>
 
                         <!-- Error Message Container -->
@@ -199,8 +199,7 @@
         </div>
     </main>
 
-    <footer class="mt-auto py-6 border-t border-gray-200/50 text-center text-xs text-on-surface-variant/70">
-        © 2026 Awaken IQ Education. All rights reserved.
+    <footer class="mt-auto py-6 text-center text-xs text-on-surface-variant/70">
     </footer>
 
     <!-- Success Modal Overlay -->
@@ -276,9 +275,38 @@
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 errorMsg.classList.add('hidden');
+                validationMsg.classList.add('hidden');
+
+                const requiredGroups = [
+                    'focus_concentration',
+                    'creativity_imagination',
+                    'intuition',
+                    'immunity_health',
+                    'social_confidence'
+                ];
+
+                const missingFields = [];
 
                 if (selectedRating === 0) {
+                    missingFields.push('Rate Academic Performance');
                     validationMsg.classList.remove('hidden');
+                }
+
+                requiredGroups.forEach((name) => {
+                    const isChecked = document.querySelector(`input[name="${name}"]:checked`);
+                    if (!isChecked) {
+                        missingFields.push(name.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()));
+                    }
+                });
+
+                const comments = document.getElementById('comments').value.trim();
+                if (!comments) {
+                    missingFields.push('Additional Feedback / Comments');
+                }
+
+                if (missingFields.length > 0) {
+                    errorMsg.textContent = 'Please complete all required fields before submitting: ' + missingFields.join(', ');
+                    errorMsg.classList.remove('hidden');
                     return;
                 }
 
