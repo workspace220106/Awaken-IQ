@@ -250,34 +250,44 @@
                             starsHtml += `<span class="text-lg ${colorClass}">${starChar}</span>`;
                         }
 
-                        const extraFeedback = [
-                            ['Focus and Concentration Improvement', fb.focus_concentration || 'Not selected'],
-                            ['Creativity and Imagination', fb.creativity_imagination || 'Not selected'],
-                            ['Intuition', fb.intuition || 'Not selected'],
-                            ['Immunity and Overall Health', fb.immunity_health || 'Not selected'],
-                            ['Social Confidence', fb.social_confidence || 'Not selected']
-                        ].map(([label, value]) => `<li><span class="font-semibold text-primary">${label}:</span> ${value}</li>`)
-                          .join('');
+                        const hasDetailedMetrics = fb.focus_concentration || fb.creativity_imagination || fb.intuition || fb.immunity_health || fb.social_confidence;
+                        let extraFeedbackHtml = '';
+                        if (hasDetailedMetrics) {
+                            const extraFeedbackItems = [
+                                ['Focus and Concentration Improvement', fb.focus_concentration],
+                                ['Creativity and Imagination', fb.creativity_imagination],
+                                ['Intuition', fb.intuition],
+                                ['Immunity and Overall Health', fb.immunity_health],
+                                ['Social Confidence', fb.social_confidence]
+                            ].filter(([_, val]) => val)
+                             .map(([label, value]) => `<li><span class="font-semibold text-primary">${label}:</span> ${value}</li>`)
+                             .join('');
+
+                            if (extraFeedbackItems) {
+                                extraFeedbackHtml = `
+                                    <div class="bg-background/50 border border-primary/10 rounded-xl p-3 text-xs text-on-surface-variant">
+                                        <p class="font-semibold text-primary uppercase tracking-wider mb-2">Feedback Summary</p>
+                                        <ul class="space-y-1 list-disc pl-4">${extraFeedbackItems}</ul>
+                                    </div>
+                                `;
+                            }
+                        }
 
                         return `
                             <div class="p-6 rounded-xl bg-white border border-primary/5 hover:border-primary/20 transition-all shadow-sm space-y-3">
                                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                                    <div>
+                                                                   <div>
                                         <h4 class="font-bold text-sm text-primary">${fb.studentName}</h4>
                                         <p class="text-xs text-on-surface-variant">
                                             Parent: <span class="font-semibold text-primary">${fb.parentName} (${fb.parentEmail})</span> | Program: <span class="font-semibold text-primary">${fb.enrolledProgram}</span>
+                                            ${fb.year && fb.term ? `| Period: <span class="font-semibold text-primary">${fb.year} (${fb.term})</span>` : ''}
                                         </p>
                                     </div>
                                     <div class="flex items-center gap-0.5 bg-primary/5 px-2 py-1 rounded-lg">
                                         ${starsHtml}
                                     </div>
                                 </div>
-                                ${extraFeedback ? `
-                                    <div class="bg-background/50 border border-primary/10 rounded-xl p-3 text-xs text-on-surface-variant">
-                                        <p class="font-semibold text-primary uppercase tracking-wider mb-2">Feedback Summary</p>
-                                        <ul class="space-y-1 list-disc pl-4">${extraFeedback}</ul>
-                                    </div>
-                                ` : ''}
+                                ${extraFeedbackHtml}
                                 ${fb.comments ? `
                                     <div class="bg-background/50 border border-primary/10 rounded-xl p-3 text-xs text-on-surface-variant">
                                         <p class="font-semibold text-primary uppercase tracking-wider mb-1">Additional Feedback</p>

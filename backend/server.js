@@ -349,7 +349,9 @@ app.post('/api/feedback', (req, res) => {
         creativity_imagination,
         intuition,
         immunity_health,
-        social_confidence
+        social_confidence,
+        year,
+        term
     } = req.body;
     const rating = parseInt(academicPerformanceRating, 10);
     
@@ -382,6 +384,8 @@ app.post('/api/feedback', (req, res) => {
         intuition: intuition || '',
         immunity_health: immunity_health || '',
         social_confidence: social_confidence || '',
+        year: year || '',
+        term: term || '',
         submittedAt: new Date().toISOString()
     };
     
