@@ -113,7 +113,26 @@
 
                 <div class="border-t border-primary/10 pt-6">
                     <form id="feedback-form" class="space-y-6">
-                        <!-- Rating Section -->
+                        <!-- Academic Year and Term Dropdowns -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label for="feedback-year" class="block text-sm font-bold text-primary uppercase tracking-wider">Academic Year</label>
+                                <select id="feedback-year" name="year" required class="w-full bg-white/50 border border-primary/20 rounded-2xl p-4 text-sm focus:ring-primary focus:border-primary outline-none transition-shadow cursor-pointer font-['Raleway']">
+                                    <!-- Dynamic Options Loaded Via JS -->
+                                </select>
+                            </div>
+                            <div class="space-y-2">
+                                <label for="feedback-term" class="block text-sm font-bold text-primary uppercase tracking-wider">Term</label>
+                                <select id="feedback-term" name="term" required class="w-full bg-white/50 border border-primary/20 rounded-2xl p-4 text-sm focus:ring-primary focus:border-primary outline-none transition-shadow cursor-pointer font-['Raleway']">
+                                    <option value="Term 1" selected>Term 1</option>
+                                    <option value="Term 2">Term 2</option>
+                                    <option value="Term 3">Term 3</option>
+                                    <option value="Term 4">Term 4</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Rating Section (Always Visible) -->
                         <div class="space-y-3">
                             <label class="block text-sm font-bold text-primary uppercase tracking-wider" style="font-family: 'Raleway', sans-serif;">Rate Academic Performance</label>
                             <p class="text-xs text-on-surface-variant" style="font-family: 'Raleway', sans-serif;">How would you rate the student's progress and academic gains in this program?</p>
@@ -129,7 +148,8 @@
                             <p id="rating-validation-msg" class="text-xs text-rose-600 hidden font-semibold">Please select a rating from 1 to 5 stars.</p>
                         </div>
 
-                        <div class="space-y-4">
+                        <!-- Category Metrics Section (Only shown for Term 1 or Term 4) -->
+                        <div id="category-metrics-section" class="space-y-4">
                             <div class="space-y-4 p-0">
                                 <div class="space-y-2">
                                     <label class="text-sm font-semibold text-primary">Focus and Concentration Improvement</label>
@@ -178,7 +198,7 @@
                             </div>
                         </div>
 
-                        <!-- Comments Section -->
+                        <!-- Comments Section (Always Visible) -->
                         <div class="space-y-2">
                             <label for="comments" class="block text-sm font-bold text-primary uppercase tracking-wider" style="font-family: 'Raleway', sans-serif;">Additional Feedback / Comments</label>
                             <textarea id="comments" name="comments" rows="4" required class="w-full bg-white/50 border border-primary/20 rounded-2xl p-4 text-sm focus:ring-primary focus:border-primary placeholder:text-on-surface-variant/40" placeholder="Please share details about changes in speed reading capability, focus, or general performance..."></textarea>
@@ -187,7 +207,7 @@
                         <!-- Error Message Container -->
                         <div id="error-message" class="hidden bg-rose-50 border border-rose-200 text-rose-800 p-4 rounded-xl text-xs font-semibold"></div>
 
-                        <!-- Submit Button -->
+                        <!-- Submit Button (Always Visible) -->
                         <button type="submit" id="submit-btn" class="w-full bg-primary text-white py-4 rounded-full font-bold hover:opacity-90 active:scale-95 transition-all text-sm shadow-lg flex items-center justify-center gap-2">
                             <span>Submit Feedback</span>
                         </button>
@@ -229,6 +249,52 @@
 
                 const user = result.user;
                 document.getElementById('student-name-placeholder').textContent = user.studentName || 'Your Child';
+
+                // Populate Academic Year dropdown dynamically based on student age (up to age 16)
+                const currentYear = new Date().getFullYear();
+                let studentAge = parseInt(user.studentAge, 10);
+                let targetYear = currentYear; // Default if missing or already >= 16
+
+                if (!isNaN(studentAge)) {
+                    if (studentAge < 16) {
+                        const yearsRemaining = 16 - studentAge;
+                        targetYear = currentYear + yearsRemaining;
+                    }
+                } else {
+                    targetYear = currentYear + 5; // Default fallback if age is missing or invalid
+                }
+
+                const yearSelect = document.getElementById('feedback-year');
+                if (yearSelect) {
+                    yearSelect.innerHTML = '';
+                    for (let yr = currentYear; yr <= targetYear; yr++) {
+                        const opt = document.createElement('option');
+                        opt.value = yr.toString();
+                        opt.textContent = yr.toString();
+                        if (yr === currentYear) {
+                            opt.selected = true;
+                        }
+                        yearSelect.appendChild(opt);
+                    }
+                }
+
+                // Toggle form visibility based on Term selection (Only show metrics checkboxes for Term 1 or Term 4)
+                const termSelect = document.getElementById('feedback-term');
+                const metricsSection = document.getElementById('category-metrics-section');
+
+                function updateFormVisibility() {
+                    const selectedTerm = termSelect.value;
+                    if (selectedTerm === 'Term 1' || selectedTerm === 'Term 4') {
+                        metricsSection.classList.remove('hidden');
+                    } else {
+                        metricsSection.classList.add('hidden');
+                    }
+                }
+
+                if (termSelect && metricsSection) {
+                    termSelect.addEventListener('change', updateFormVisibility);
+                    updateFormVisibility(); // Initial trigger on page load
+                }
             } catch (error) {
                 alert('Authentication Error: Please login to submit feedback.');
                 window.location.href = "login.html";
@@ -292,12 +358,17 @@
                     validationMsg.classList.remove('hidden');
                 }
 
-                requiredGroups.forEach((name) => {
-                    const isChecked = document.querySelector(`input[name="${name}"]:checked`);
-                    if (!isChecked) {
-                        missingFields.push(name.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()));
-                    }
-                });
+                const termSelect = document.getElementById('feedback-term');
+                const isDetailedTerm = (termSelect && (termSelect.value === 'Term 1' || termSelect.value === 'Term 4'));
+                
+                if (isDetailedTerm) {
+                    requiredGroups.forEach((name) => {
+                        const isChecked = document.querySelector(`input[name="${name}"]:checked`);
+                        if (!isChecked) {
+                            missingFields.push(name.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()));
+                        }
+                    });
+                }
 
                 const comments = document.getElementById('comments').value.trim();
                 if (!comments) {
@@ -327,6 +398,8 @@
                     const intuition = document.querySelector('input[name="intuition"]:checked')?.value || '';
                     const immunityHealth = document.querySelector('input[name="immunity_health"]:checked')?.value || '';
                     const socialConfidence = document.querySelector('input[name="social_confidence"]:checked')?.value || '';
+                    const year = document.getElementById('feedback-year').value;
+                    const term = document.getElementById('feedback-term').value;
 
                     const response = await fetch('/api/feedback', {
                         method: 'POST',
@@ -340,7 +413,9 @@
                             creativity_imagination: creativityImagination,
                             intuition,
                             immunity_health: immunityHealth,
-                            social_confidence: socialConfidence
+                            social_confidence: socialConfidence,
+                            year: year,
+                            term: term
                         })
                     });
 
