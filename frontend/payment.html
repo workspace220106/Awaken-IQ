@@ -213,22 +213,62 @@
     <div id="checkout-active-view" class="space-y-8">
         <div>
             <h2 class="font-headline-md text-xl md:text-headline-md text-on-surface mb-6 flex items-center gap-2">
-                <span class="material-symbols-outlined text-primary" data-icon="account_balance_wallet">payment</span>
-                Secure Checkout
+                <span class="material-symbols-outlined text-primary" data-icon="account_balance_wallet">account_balance_wallet</span>
+                Select Payment Method
             </h2>
             
-            <div class="flex flex-col items-center justify-center space-y-6 py-8">
-                <!-- Razorpay Card -->
-                <div class="bg-white p-8 rounded-2xl shadow-md border border-outline-variant/30 flex flex-col items-center max-w-sm text-center space-y-4">
-                    <span class="material-symbols-outlined text-[64px] text-primary" style="font-variation-settings: 'FILL' 0, 'wght' 200;">payments</span>
-                    <h3 class="font-headline-md text-lg text-primary">Razorpay Secure Payment</h3>
-                    <p class="text-xs text-on-surface-variant leading-relaxed">
-                        Complete your enrollment securely using UPI, Credit/Debit Cards, Net Banking, or Wallets via Razorpay Payment Gateway.
-                    </p>
-                    <div class="flex gap-2 items-center justify-center pt-2">
-                        <span class="bg-[#1E4D3B]/10 text-[#1E4D3B] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Secured by Razorpay</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <!-- UPI -->
+                <button class="payment-card flex items-center gap-4 p-4 rounded-2xl border-2 border-surface-container-highest bg-surface-container-lowest transition-all hover:border-primary/50" onclick="selectPayment(this, 'upi')">
+                    <div class="w-12 h-12 flex-shrink-0 rounded-xl bg-primary-container flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary" data-icon="qr_code_2">qr_code_2</span>
                     </div>
-                </div>
+                    <div class="text-left">
+                        <p class="font-label-lg text-on-surface font-bold text-sm md:text-base">UPI Transfer</p>
+                        <p class="text-[10px] text-on-surface-variant font-medium uppercase tracking-wider">GPay, PhonePe, Paytm</p>
+                    </div>
+                </button>
+                
+                <!-- Credit Card -->
+                <button class="payment-card flex items-center gap-4 p-4 rounded-2xl border-2 border-surface-container-highest bg-surface-container-lowest transition-all hover:border-primary/50 active-payment" onclick="selectPayment(this, 'card')">
+                    <div class="w-12 h-12 flex-shrink-0 rounded-xl bg-secondary-container flex items-center justify-center">
+                        <span class="material-symbols-outlined text-secondary" data-icon="credit_card">credit_card</span>
+                    </div>
+                    <div class="text-left">
+                        <p class="font-label-lg text-on-surface font-bold text-sm md:text-base">Credit/Debit Card</p>
+                        <p class="text-[10px] text-on-surface-variant font-medium uppercase tracking-wider">Visa, Mastercard, Amex</p>
+                    </div>
+                </button>
+                
+                <!-- Net Banking -->
+                <button class="payment-card flex items-center gap-4 p-4 rounded-2xl border-2 border-surface-container-highest bg-surface-container-lowest transition-all hover:border-primary/50" onclick="selectPayment(this, 'netbanking')">
+                    <div class="w-12 h-12 flex-shrink-0 rounded-xl bg-primary-container/40 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary" data-icon="account_balance">account_balance</span>
+                    </div>
+                    <div class="text-left">
+                        <p class="font-label-lg text-on-surface font-bold text-sm md:text-base">Net Banking</p>
+                        <p class="text-[10px] text-on-surface-variant font-medium uppercase tracking-wider">Major Indian Banks</p>
+                    </div>
+                </button>
+                
+                <!-- Wallets -->
+                <button class="payment-card flex items-center gap-4 p-4 rounded-2xl border-2 border-surface-container-highest bg-surface-container-lowest transition-all hover:border-primary/50" onclick="selectPayment(this, 'wallet')">
+                    <div class="w-12 h-12 flex-shrink-0 rounded-xl bg-outline-variant/30 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-on-surface-variant" data-icon="wallet">wallet</span>
+                    </div>
+                    <div class="text-left">
+                        <p class="font-label-lg text-on-surface font-bold text-sm md:text-base">Wallets</p>
+                        <p class="text-[10px] text-on-surface-variant font-medium uppercase tracking-wider">Paytm, PhonePe, AmazonPay</p>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Secured by Badge -->
+            <div class="flex items-center justify-center bg-surface-container-low p-4 rounded-2xl border border-outline-variant/20 gap-3">
+                <span class="material-symbols-outlined text-primary" data-icon="verified_user">verified_user</span>
+                <p class="text-xs text-on-surface-variant font-medium">
+                    All payment selections are processed securely via the integrated Razorpay Gateway.
+                </p>
             </div>
         </div>
 
@@ -389,6 +429,17 @@
     <script>
         let courseInfo = {};
         let finalTotal = "$1,652.00";
+        let selectedMethod = 'card'; // Default selected method matching the HTML active-payment class
+
+        function selectPayment(element, method) {
+            // Remove active class from all
+            document.querySelectorAll('.payment-card').forEach(card => {
+                card.classList.remove('active-payment');
+            });
+            // Add active style to selected card
+            element.classList.add('active-payment');
+            selectedMethod = method;
+        }
 
         // Simple animation for the progress bar on load & dynamic calculations
         window.addEventListener('DOMContentLoaded', () => {
@@ -502,10 +553,17 @@
                                 return verifyRes.json();
                             })
                             .then(verifyData => {
+                                const methodLabelMap = {
+                                    'upi': 'UPI Transfer (Razorpay)',
+                                    'card': 'Credit/Debit Card (Razorpay)',
+                                    'netbanking': 'Net Banking (Razorpay)',
+                                    'wallet': 'Wallet (Razorpay)'
+                                };
+                                
                                 // Save payment info to sessionStorage
                                 const paymentInfo = {
                                     status: 'Paid',
-                                    method: 'Razorpay Secure Checkout',
+                                    method: methodLabelMap[selectedMethod] || 'Razorpay Secure Checkout',
                                     txId: response.razorpay_payment_id,
                                     amount: finalTotal,
                                     orderId: response.razorpay_order_id,
@@ -521,6 +579,7 @@
                                 successView.classList.remove('hidden');
                                 
                                 // Fill success details
+                                document.getElementById('success-payment-method').textContent = methodLabelMap[selectedMethod] || 'Razorpay Secure Checkout';
                                 document.getElementById('success-tx-id').textContent = response.razorpay_payment_id;
                                 document.getElementById('success-amount').textContent = finalTotal;
                                 
@@ -546,7 +605,8 @@
                         "prefill": {
                             "name": parentInfo.parent_name || "",
                             "email": parentInfo.email || "",
-                            "contact": parentInfo.mobile || ""
+                            "contact": parentInfo.mobile || "",
+                            "method": selectedMethod
                         },
                         "theme": {
                             "color": "#386754"
