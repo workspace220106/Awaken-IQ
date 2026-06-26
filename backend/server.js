@@ -1,18 +1,12 @@
-require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 const multer = require('multer');
-const Razorpay = require('razorpay');
 
 const app = express();
-const PORT = 8000;
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_T5YV4AoQWgbbqc',
-    key_secret: process.env.RAZORPAY_KEY_SECRET || 'y8fwpUuPXTEZYBN1zyq3EgV2'
-});
+const PORT = process.env.PORT || 8080;
 const MGT_DB_FILE = path.join(__dirname, '../database/management_database.json');
 const STD_DB_FILE = path.join(__dirname, '../database/student_database.json');
 
@@ -355,9 +349,7 @@ app.post('/api/feedback', (req, res) => {
         creativity_imagination,
         intuition,
         immunity_health,
-        social_confidence,
-        year,
-        term
+        social_confidence
     } = req.body;
     const rating = parseInt(academicPerformanceRating, 10);
     
@@ -390,8 +382,6 @@ app.post('/api/feedback', (req, res) => {
         intuition: intuition || '',
         immunity_health: immunity_health || '',
         social_confidence: social_confidence || '',
-        year: year || '',
-        term: term || '',
         submittedAt: new Date().toISOString()
     };
     
@@ -415,67 +405,6 @@ app.get('/api/admin/feedbacks', (req, res) => {
     // Sort by submission date descending
     feedbacks.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
     res.json({ feedbacks });
-});
-
-// Create Razorpay Order
-app.post('/api/create-order', async (req, res) => {
-    try {
-        const { amount, currency, receipt } = req.body;
-        
-        // Validate amount is present and is at least 100 paise (1 INR / minimum transaction size)
-        if (!amount || typeof amount !== 'number' || amount < 100) {
-            return res.status(400).json({ error: 'Amount is required and must be at least 100 paise.' });
-        }
-
-        const options = {
-            amount: amount,
-            currency: currency || 'INR',
-            receipt: receipt || `receipt_${Date.now()}`
-        };
-
-        const order = await razorpay.orders.create(options);
-        
-        res.status(200).json({
-            order_id: order.id,
-            amount: order.amount,
-            currency: order.currency,
-            key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_T5YV4AoQWgbbqc'
-        });
-    } catch (error) {
-        console.error('Error creating Razorpay order:', error);
-        
-        if (error.statusCode === 401) {
-            return res.status(401).json({ error: 'Razorpay authentication failed. Check API keys.' });
-        }
-        
-        res.status(500).json({ error: error.message || 'Failed to create order' });
-    }
-});
-
-// Verify Razorpay Signature
-app.post('/api/verify-payment', (req, res) => {
-    try {
-        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
-        
-        if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-            return res.status(400).json({ error: 'Missing required signature verification fields.' });
-        }
-        
-        const crypto = require('crypto');
-        const hmac = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET || 'y8fwpUuPXTEZYBN1zyq3EgV2');
-        hmac.update(razorpay_order_id + "|" + razorpay_payment_id);
-        const generated_signature = hmac.digest('hex');
-        
-        if (generated_signature === razorpay_signature) {
-            res.status(200).json({ status: 'ok', message: 'Payment verified successfully.' });
-        } else {
-            console.error('Signature mismatch: Payment signature verification failed.');
-            res.status(400).json({ error: 'Signature verification failed. Potential tampering.' });
-        }
-    } catch (error) {
-        console.error('Error verifying Razorpay signature:', error);
-        res.status(500).json({ error: 'Failed to verify payment' });
-    }
 });
 
 // Serve static website files
