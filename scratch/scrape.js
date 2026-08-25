@@ -11,7 +11,6 @@ const pages = [
   { url: 'https://awakeniq.com/gallery/', filename: 'initial_gallery.html' },
   { url: 'https://awakeniq.com/testimonials/', filename: 'initial_testimonials.html' },
   { url: 'https://awakeniq.com/blog/', filename: 'initial_blog.html' },
-  { url: 'https://awakeniq.com/contact-us/', filename: 'initial_contact-us.html' },
   { url: 'https://awakeniq.com/', filename: 'initial_index.html' } // initial_index.html is last so it doesn't match and prefix-replace other URLs
 ];
 
@@ -83,10 +82,16 @@ function rewriteAssetsAndLinks(html) {
   // Handle home page root relative URLs specifically (href="/")
   html = html.replace(/href=["\']\/["\']/g, 'href="initial_index.html"');
 
-  // 4. Inject Portal Login link in the navigation menu
+  // 4. Replace Contact Us link with Portal Login link in the navigation menu
   html = html.replace(
-    /(<a[^>]*href="initial_contact-us\.html"[^>]*>Contact Us<\/a><\/li>)/g,
-    '$1<li class="menu-item nav-item elementskit-mobile-builder-content"><a href="login.html" class="ekit-menu-nav-link" style="color: #386754; font-weight: bold;">Portal Login</a></li>'
+    /<li[^>]*><a[^>]*href="[^"]*contact-us[^"]*"[^>]*>Contact Us<\/a><\/li>/g,
+    '<li class="menu-item nav-item elementskit-mobile-builder-content"><a href="login.html" class="ekit-menu-nav-link" style="color: #386754; font-weight: bold;">Portal Login</a></li>'
+  );
+
+  // 5. Remove the Contact Us button (WhatsApp link)
+  html = html.replace(
+    /<a class="elementor-button elementor-button-link elementor-size-sm" href="https:\/\/wa\.me\/919920040681">\s*<span class="elementor-button-content-wrapper">\s*<span class="elementor-button-text">Contact Us<\/span>\s*<\/span>\s*<\/a>/g,
+    ''
   );
 
   // Handle CSS backgrounds and fonts in stylesheets/styles
