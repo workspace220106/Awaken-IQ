@@ -60,6 +60,7 @@
                     <a href="dashboard.html" class="text-brand-gold font-bold transition-colors">Dashboard</a>
                     <a href="courses.html" class="hover:text-brand-gold transition-colors">Courses</a>
                     <a href="my-courses.html" class="hover:text-brand-gold transition-colors">My Courses</a>
+                    <a href="payment-assistance.html" class="hover:text-brand-gold transition-colors">Payment Help</a>
                 </div>
                 <span id="header-user-email" class="hidden"></span>
                 <button id="logout-btn" class="bg-primary text-white px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 active:scale-95 transition-all shadow-md flex items-center gap-2">
@@ -165,15 +166,21 @@
                             <p class="text-xs text-on-surface-variant uppercase tracking-wider">Duration</p>
                             <p id="program-duration" class="text-on-surface">-</p>
                         </div>
-                        <div class="pt-2 space-y-2">
+                        <div>
+                            <p class="text-xs text-on-surface-variant uppercase tracking-wider">Batch Group</p>
+                            <p id="student-group-name" class="font-bold text-primary">-</p>
+                        </div>
+                        <div id="zoom-class-container" class="pt-2 hidden">
+                            <button id="join-zoom-btn" class="flex items-center justify-center gap-2 w-full bg-brand-gold text-primary py-3 rounded-full font-bold hover:opacity-90 active:scale-95 transition-all text-sm shadow-md">
+                                Join Live Class
+                            </button>
+                        </div>
+                        <div class="pt-2 space-y-1">
                             <div class="flex justify-between items-center text-xs font-semibold text-on-surface-variant">
-                                <span>Course Watch Progress</span>
-                                <span id="course-progress-percent" class="font-bold text-primary">0%</span>
+                                <span>Live Classes Attended</span>
+                                <span id="course-progress-percent" class="font-bold text-primary">0</span>
                             </div>
-                            <div class="w-full bg-[#1E4D3B]/10 rounded-full h-3 overflow-hidden">
-                                <div id="course-progress-bar" class="h-full rounded-full bg-gradient-to-r from-[#386754] to-[#6b4ab2] transition-all duration-500" style="width: 0%;"></div>
-                            </div>
-                            <p id="course-progress-subtext" class="text-[10px] text-on-surface-variant/70 italic text-center">Start watching your course modules to track progress!</p>
+                            <p id="course-progress-subtext" class="text-xs text-on-surface-variant font-semibold text-center mt-1">0 live sessions attended</p>
                         </div>
                         <div class="pt-2">
                             <a href="feedback.html" class="flex items-center justify-center gap-2 w-full bg-primary text-white py-3 rounded-full font-bold hover:opacity-90 active:scale-95 transition-all text-sm shadow-md">
@@ -204,6 +211,7 @@
     <script>
         // Check session and load user data on DOM load
         window.addEventListener('DOMContentLoaded', async () => {
+            sessionStorage.setItem('portalSource', 'student');
             try {
                 const response = await fetch('/api/session');
                 const result = await response.json();
@@ -238,40 +246,59 @@
                 document.getElementById('enrolled-program').textContent = user.enrolledProgram || 'No Active Program';
                 document.getElementById('program-duration').textContent = user.duration || 'N/A';
 
-                // Calculate progress dynamically
-                let progressPercent = 0;
-                if (user.enrolledProgram && user.enrolledProgram !== 'No Active Program') {
-                    const regDate = user.registrationDate ? new Date(user.registrationDate) : new Date();
-                    const now = new Date();
-                    const diffTime = Math.abs(now - regDate);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    
-                    let totalDays = 56; // 8 weeks default
-                    if (user.duration && user.duration.toLowerCase().includes('week')) {
-                        const weeks = parseInt(user.duration) || 8;
-                        totalDays = weeks * 7;
-                    } else if (user.duration && user.duration.toLowerCase().includes('session')) {
-                        const sessions = parseInt(user.duration) || 2;
-                        totalDays = sessions * 7;
+                // Populate Group & Zoom Details
+                if (result.group) {
+                    document.getElementById('student-group-name').textContent = result.group.name;
+                    if (result.group.zoomLink) {
+                        const zoomContainer = document.getElementById('zoom-class-container');
+                        zoomContainer.classList.remove('hidden');
+                        document.getElementById('join-zoom-btn').onclick = () => {
+                            const rawText = result.group.zoomLink;
+                            let targetUrl = '';
+                            
+                            // 1. Look for standard URL: http(s)://...
+                            const stdMatch = rawText.match(/(https?:\/\/[^\s"'<>]+)/i);
+                            // 2. If it's a broken protocol (like https-xxxxx//meet.google.com/...)
+                            const brokenProtoMatch = rawText.match(/(?:https?-[a-z0-9]+|https?):\/\/([^\s"'<>]+)/i);
+                            // 3. Look for naked Google Meet / Zoom domains
+                            const nakedMatch = rawText.match(/((?:meet\.google\.com|zoom\.us|teams\.microsoft\.com)\/[^\s"'<>]+)/i);
+                            
+                            if (stdMatch) {
+                                targetUrl = stdMatch[0];
+                            } else if (brokenProtoMatch) {
+                                targetUrl = 'https://' + brokenProtoMatch[1];
+                            } else if (nakedMatch) {
+                                targetUrl = 'https://' + nakedMatch[1];
+                            } else {
+                                targetUrl = rawText.trim();
+                                if (targetUrl && !/^https?:\/\//i.test(targetUrl)) {
+                                    targetUrl = 'https://' + targetUrl;
+                                }
+                            }
+                            
+                            // Open link synchronously (prevents browser popup blocker)
+                            window.open(targetUrl, '_blank');
+                            
+                            // Record attendance in the background
+                            fetch('/api/attend-class', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ zoomLink: targetUrl })
+                            }).catch(e => console.error('Error logging class attendance:', e));
+                            
+                            // Reload session to update progress bar
+                            setTimeout(() => { window.location.reload(); }, 1200);
+                        };
                     }
-                    
-                    progressPercent = Math.min(Math.round((diffDays / totalDays) * 100), 90);
-                    if (progressPercent < 25) {
-                        progressPercent = 25; // Starter progress
-                    }
-                    if (diffDays >= totalDays) {
-                        progressPercent = 100;
-                    }
+                } else {
+                    document.getElementById('student-group-name').textContent = 'No Group Assigned';
                 }
+
+                // Calculate progress dynamically based on attended Zoom classes
+                const attendedCount = (user.attendedMeetings || []).length;
                 
-                const totalVideos = 12;
-                const watchedVideos = Math.max(1, Math.round((progressPercent / 100) * totalVideos));
-                
-                document.getElementById('course-progress-percent').textContent = `${progressPercent}%`;
-                document.getElementById('course-progress-bar').style.width = `${progressPercent}%`;
-                document.getElementById('course-progress-subtext').textContent = progressPercent === 100 
-                    ? `Course Completed! (${totalVideos}/${totalVideos} modules watched)` 
-                    : `In Progress (${watchedVideos}/${totalVideos} modules watched)`;
+                document.getElementById('course-progress-percent').textContent = attendedCount;
+                document.getElementById('course-progress-subtext').textContent = `${attendedCount} live session${attendedCount === 1 ? '' : 's'} attended`;
 
                 // Billing
                 document.getElementById('billing-status').textContent = user.paymentStatus || 'Pending';
@@ -347,6 +374,7 @@
         // Logout action
         document.getElementById('logout-btn').addEventListener('click', async () => {
             try {
+                sessionStorage.removeItem('portalSource');
                 await fetch('/api/logout', { method: 'POST' });
                 window.location.href = "login.html";
             } catch (error) {

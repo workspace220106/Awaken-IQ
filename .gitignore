@@ -4,3 +4,8 @@ dummy.mp4
 Attendance Report 2.pdf
 logo (1).png
 .env
+
+.vercel
+.env*
+backend/*.json
+scraped_site/

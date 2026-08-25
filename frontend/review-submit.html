@@ -145,30 +145,30 @@
     <div class="h-full bg-gold" style="width: 100%;"></div>
 </div>
 <!-- Step 1 -->
-<a href="student-info.html" class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
+<div class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
 <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gold text-white flex items-center justify-center font-bold text-sm md:text-lg shadow-md transition-all group-hover:scale-105"><span>1</span></div>
 <span class="text-[10px] md:text-label-lg font-bold text-on-surface-variant text-center font-['Raleway']">Student Info</span>
-</a>
+</div>
 <!-- Step 2 -->
-<a href="parent-info.html" class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
+<div class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
 <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gold text-white flex items-center justify-center font-bold text-sm md:text-lg shadow-md transition-all group-hover:scale-105"><span>2</span></div>
 <span class="text-[10px] md:text-label-lg font-bold text-on-surface-variant text-center font-['Raleway']">Parent Info</span>
-</a>
+</div>
 <!-- Step 3 -->
-<a href="course-selection.html" class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
+<div class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
 <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gold text-white flex items-center justify-center font-bold text-sm md:text-lg shadow-md transition-all group-hover:scale-105"><span>3</span></div>
 <span class="text-[10px] md:text-label-lg font-bold text-on-surface-variant text-center font-['Raleway']">Programs</span>
-</a>
+</div>
 <!-- Step 4 -->
-<a href="payment.html" class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
+<div class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
 <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gold text-white flex items-center justify-center font-bold text-sm md:text-lg shadow-md transition-all group-hover:scale-105"><span>4</span></div>
 <span class="text-[10px] md:text-label-lg font-bold text-on-surface-variant text-center font-['Raleway']">Payment</span>
-</a>
+</div>
 <!-- Step 5 -->
-<a href="review-submit.html" class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
+<div class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
 <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gold text-white flex items-center justify-center font-bold text-sm md:text-lg shadow-[0_0_15px_rgba(212,175,55,0.6)] ring-4 ring-gold/20 transition-all group-hover:scale-105"><span>5</span></div>
 <span class="text-[10px] md:text-label-lg font-bold text-primary text-center font-['Raleway']">Review</span>
-</a>
+</div>
 </div>
 </div>
 <!-- Responsive Content Grid -->
@@ -265,16 +265,12 @@
 <h2 class="font-headline-md text-headline-md text-on-surface mb-8 font-bold">Registration Summary</h2>
 <div class="space-y-4 mb-8">
 <div class="flex justify-between items-center text-body-md text-on-surface-variant">
-<span>Registration Fee (One-time)</span>
-<span class="font-semibold text-on-surface">$250.00</span>
+<span>Course Fee</span>
+<span class="font-semibold text-on-surface">₹1,000.00</span>
 </div>
 <div class="flex justify-between items-center text-body-md text-on-surface-variant">
-<span>Tuition Deposit</span>
-<span class="font-semibold text-on-surface">$1,200.00</span>
-</div>
-<div class="flex justify-between items-center text-body-md text-on-surface-variant">
-<span>Materials &amp; Resource Kit</span>
-<span class="font-semibold text-on-surface">$450.00</span>
+<span>GST (18%)</span>
+<span class="font-semibold text-on-surface">₹180.00</span>
 </div>
 <div class="pt-6 border-t border-outline-variant/30 flex justify-between items-center">
 <span class="font-headline-md text-headline-md text-on-surface font-bold">Total Due Now</span>
@@ -387,7 +383,7 @@ Chat with an Admissions Advisor
         document.getElementById('review-course-details').textContent = `${courseInfo.duration || '-'} • Classroom Training`;
 
         // Payment Info
-        document.getElementById('review-total-due').textContent = courseInfo.price || '$1,299.00';
+        document.getElementById('review-total-due').textContent = courseInfo.totalPayable || courseInfo.price || '₹1,180';
         document.getElementById('review-payment-method').textContent = `${paymentInfo.method || 'Credit/Debit Card'} (Success)`;
     });
 

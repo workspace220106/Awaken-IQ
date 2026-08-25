@@ -158,36 +158,36 @@
       </div>
 
       <!-- Step 1: Completed -->
-      <a href="student-info.html" class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
+      <div class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
         <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gold text-white flex items-center justify-center shadow-md font-bold text-sm md:text-lg transition-all group-hover:scale-105"><span>1</span></div>
         <span class="text-[10px] md:text-label-lg font-bold text-on-surface-variant text-center font-['Raleway']">Student Info</span>
-      </a>
+      </div>
 
       <!-- Step 2: Completed -->
-      <a href="parent-info.html" class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
+      <div class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
         <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gold text-white flex items-center justify-center shadow-md font-bold text-sm md:text-lg transition-all group-hover:scale-105"><span>2</span></div>
         <span class="text-[10px] md:text-label-lg font-bold text-on-surface-variant text-center font-['Raleway']">Parent Info</span>
-      </a>
+      </div>
 
       <!-- Step 3: Active -->
-      <a href="course-selection.html" class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
+      <div class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
         <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gold text-white flex items-center justify-center font-bold text-sm md:text-lg shadow-[0_0_15px_rgba(212,175,55,0.6)] ring-4 ring-gold/20 transition-all group-hover:scale-105">
           <span>3</span>
         </div>
         <span class="text-[10px] md:text-label-lg font-bold text-primary text-center font-['Raleway']">Programs</span>
-      </a>
+      </div>
 
       <!-- Step 4: Upcoming -->
-      <a href="payment.html" class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
+      <div class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
         <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#E0E3E5] text-on-surface-variant flex items-center justify-center font-bold text-sm md:text-lg transition-all group-hover:scale-105"><span>4</span></div>
         <span class="text-[10px] md:text-label-lg font-bold text-on-surface-variant/50 text-center font-['Raleway']">Payment</span>
-      </a>
+      </div>
 
       <!-- Step 5: Upcoming -->
-      <a href="review-submit.html" class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
+      <div class="relative z-10 flex flex-col items-center gap-2 md:gap-3 group">
         <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#E0E3E5] text-on-surface-variant flex items-center justify-center font-bold text-sm md:text-lg transition-all group-hover:scale-105"><span>5</span></div>
         <span class="text-[10px] md:text-label-lg font-bold text-on-surface-variant/50 text-center font-['Raleway']">Review</span>
-      </a>
+      </div>
     </div>
   </div>
 </div>
@@ -202,9 +202,9 @@
 <label class="block font-label-lg text-on-surface-variant mb-2" for="program-select">Select Program</label>
 <select class="w-full h-14 px-6 rounded-xl border-none ring-1 ring-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary transition-all font-body-lg text-on-surface outline-none cursor-pointer" id="program-select">
 <option disabled="" selected="" value="">Choose a development program...</option>
-<option value="midbrain">Midbrain Development</option>
-<option value="dmit">DMIT Assessment</option>
-<option value="qsr">Quantum Speed Reading (QSR)</option>
+<option value="midbrain">Midbrain Activation Workshop</option>
+<option value="dmit">DMIT Workshop</option>
+<option value="qsr">QSR Workshop</option>
 </select>
 </div>
 <!-- Course Summary Card Container -->
@@ -217,7 +217,7 @@
 <div class="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
 <div class="space-y-2">
 <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[12px] font-bold tracking-widest uppercase" id="course-category">Specialized Program</span>
-<h2 class="font-headline-lg text-headline-lg text-primary" id="course-name">Midbrain Development</h2>
+<h2 class="font-headline-lg text-headline-lg text-primary" id="course-name">Midbrain Activation Workshop</h2>
 <div class="flex items-center gap-4 text-on-surface-variant">
 <div class="flex items-center gap-1">
 <span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
@@ -231,7 +231,7 @@
 </div>
 <div class="text-right">
 <span class="block font-label-md text-on-surface-variant uppercase tracking-wider">Tuition Fee</span>
-<span class="text-[32px] font-bold text-primary" id="course-price">$1,299.00</span>
+<span class="text-[32px] font-bold text-primary" id="course-price">₹1,000</span>
 </div>
 </div>
 <div class="grid md:grid-cols-2 gap-8 mb-8">
@@ -248,19 +248,25 @@
 <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
 </svg>
-<span class="font-body-md text-on-surface-variant">Enhanced Intuition &amp; Sensory Perception</span>
+<span class="font-body-md text-on-surface-variant">Enhanced Memory: Recall information effortlessly.</span>
 </li>
 <li class="flex items-center gap-3">
 <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
 </svg>
-<span class="font-body-md text-on-surface-variant">Superior Concentration and Focus</span>
+<span class="font-body-md text-on-surface-variant">Improved Concentration: Focus on tasks without distractions.</span>
 </li>
 <li class="flex items-center gap-3">
 <svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
 </svg>
-<span class="font-body-md text-on-surface-variant">Boosted Confidence and Creativity</span>
+<span class="font-body-md text-on-surface-variant">Heightened Intuition: Make faster and more accurate decisions.</span>
+</li>
+<li class="flex items-center gap-3">
+<svg class="w-5 h-5 text-primary shrink-0" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+</svg>
+<span class="font-body-md text-on-surface-variant">Overall Cognitive Development: Sharpen mental abilities for learning.</span>
 </li>
 </ul>
 </div>
@@ -299,39 +305,115 @@
 <script>
     const programData = {
         midbrain: {
-            name: "Midbrain Development",
+            name: "Midbrain Activation Workshop",
             duration: "12 Weeks",
-            price: "$1,299.00",
+            price: "₹1,000",
             category: "Cognitive Enhancement",
-            description: "Activate the pineal gland to bridge the left and right brain hemispheres. This program enhances concentration, memory retention, and sensory perception through scientifically backed techniques.",
+            description: `<div class="space-y-4">
+    <p>The <strong>Midbrain Activation Workshop</strong> is designed to enhance focus, memory, creativity, confidence, and overall learning abilities through engaging activities and guided exercises.</p>
+    <div>
+        <h4 class="font-bold text-primary mb-1">Key Developments:</h4>
+        <ul class="list-disc pl-5 space-y-1">
+            <li>Better concentration and focus</li>
+            <li>Improved observation and learning skills</li>
+            <li>Enhanced problem-solving abilities</li>
+            <li>Greater confidence in academics and everyday life</li>
+        </ul>
+    </div>
+    <div>
+        <h4 class="font-bold text-primary mb-1">Why Midbrain Activation?</h4>
+        <p>Strong cognitive skills are essential for learning and personal growth. This program provides a structured learning experience that encourages balanced mental development through interactive activities. It supports:</p>
+        <ul class="list-disc pl-5 space-y-1 mt-1">
+            <li>Improved concentration and memory retention</li>
+            <li>Increased creativity and confidence</li>
+            <li>Stronger cognitive and learning skills</li>
+        </ul>
+    </div>
+    <div>
+        <h4 class="font-bold text-primary mb-1">Who Can Benefit?</h4>
+        <p>School children, students, college learners, and working professionals looking to maximize mental potential.</p>
+    </div>
+</div>`,
             benefits: [
-                "Enhanced Intuition & Sensory Perception",
-                "Superior Concentration and Focus",
-                "Boosted Confidence and Creativity"
+                "Enhanced Memory: Recall information effortlessly.",
+                "Improved Concentration: Focus on tasks without distractions.",
+                "Heightened Intuition: Make faster and more accurate decisions.",
+                "Overall Cognitive Development: Sharpen mental abilities for learning."
             ]
         },
         dmit: {
-            name: "DMIT Assessment",
+            name: "DMIT Workshop",
             duration: "2 Sessions",
-            price: "$450.00",
+            price: "₹1,000",
             category: "Genetics & Potential",
-            description: "Dermatoglyphics Multiple Intelligence Test (DMIT) reveals innate talent, personality traits, and preferred learning styles. A comprehensive scientific study of fingerprints to map the brain's potential.",
+            description: `<div class="space-y-4">
+    <p>The <strong>Dermatoglyphics Multiple Intelligence Test (DMIT)</strong> is a scientifically based assessment that analyzes fingerprint patterns to provide insights into an individual's natural strengths, learning style, personality traits, and potential.</p>
+    <div>
+        <h4 class="font-bold text-primary mb-1">Key Objectives:</h4>
+        <ul class="list-disc pl-5 space-y-1">
+            <li>Understand natural strengths and abilities</li>
+            <li>Discover learning style and personality traits</li>
+            <li>Make informed academic and career decisions</li>
+            <li>Support personal growth and self-development</li>
+        </ul>
+    </div>
+    <div>
+        <h4 class="font-bold text-primary mb-1">Why DMIT?</h4>
+        <p>Every individual has unique talents and ways of learning. DMIT helps identify these strengths, enabling better planning for education, career choices, and personal growth. It supports:</p>
+        <ul class="list-disc pl-5 space-y-1 mt-1">
+            <li>Better self-awareness and confidence</li>
+            <li>Smarter educational and career planning</li>
+            <li>Recognition of individual strengths</li>
+            <li>Continuous personal growth and development</li>
+        </ul>
+    </div>
+    <div>
+        <h4 class="font-bold text-primary mb-1">Who Can Benefit?</h4>
+        <p>Children & Students, Parents, Working Professionals, and Individuals seeking personal growth.</p>
+    </div>
+</div>`,
             benefits: [
-                "Detailed Brain Potential Report",
-                "Personalized Career Guidance",
-                "Identify Dominant Intelligences"
+                "Enhanced Memory: Recall information effortlessly.",
+                "Improved Concentration: Focus on tasks without distractions.",
+                "Heightened Intuition: Make faster and more accurate decisions.",
+                "Overall Cognitive Development: Sharpen mental abilities for learning."
             ]
         },
         qsr: {
-            name: "Quantum Speed Reading",
+            name: "QSR Workshop",
             duration: "8 Weeks",
-            price: "$899.00",
+            price: "₹1,000",
             category: "Visual Learning",
-            description: "A revolutionary technique that allows students to read and comprehend entire books in minutes. It transforms static text into dynamic visual information processed at high speeds.",
+            description: `<div class="space-y-4">
+    <p><strong>Quantum Speed Reading (QSR)</strong> helps improve reading speed, comprehension, focus, and memory through structured techniques and guided practice.</p>
+    <div>
+        <h4 class="font-bold text-primary mb-1">Key Objectives:</h4>
+        <ul class="list-disc pl-5 space-y-1">
+            <li>Increase reading speed</li>
+            <li>Improve focus and concentration</li>
+            <li>Strengthen memory retention</li>
+            <li>Process information more efficiently</li>
+        </ul>
+    </div>
+    <div>
+        <h4 class="font-bold text-primary mb-1">Why Quantum Speed Reading?</h4>
+        <p>QSR helps learners absorb information faster and more effectively, improving productivity, confidence, and learning efficiency. It supports:</p>
+        <ul class="list-disc pl-5 space-y-1 mt-1">
+            <li>Faster learning and better reading efficiency</li>
+            <li>Improved memory retention</li>
+            <li>Greater confidence with complex material</li>
+        </ul>
+    </div>
+    <div>
+        <h4 class="font-bold text-primary mb-1">Who Can Benefit?</h4>
+        <p>Students, professionals, researchers & academics, and lifelong learners.</p>
+    </div>
+</div>`,
             benefits: [
-                "Ultra-Fast Information Intake",
-                "Improved Visualization Skills",
-                "Develop Photographic Memory"
+                "Students – Improve study efficiency and exam preparation.",
+                "Professionals – Process large amounts of information quickly.",
+                "Researchers & Academics – Enhance comprehension for deeper insights.",
+                "Lifelong Learners – Learn new skills and absorb knowledge faster."
             ]
         }
     };
@@ -353,7 +435,7 @@
             cName.textContent = data.name;
             cDuration.textContent = data.duration;
             cPrice.textContent = data.price;
-            cDesc.textContent = data.description;
+            cDesc.innerHTML = data.description;
             cCat.textContent = data.category;
             
             cBenefits.innerHTML = data.benefits.map(benefit => `
