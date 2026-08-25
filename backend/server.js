@@ -16,7 +16,9 @@ const razorpay = new Razorpay({
 });
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
-const serviceAccount = require('./awakeniq-2d15a-firebase-adminsdk-fbsvc-7d8e904cd1.json');
+const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
+    ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+    : require('./awakeniq-2d15a-firebase-adminsdk-fbsvc-7d8e904cd1.json');
 
 initializeApp({
     credential: cert(serviceAccount)
@@ -27,10 +29,15 @@ const firestoreDb = getFirestore();
 const KEY_FILE_PATH = path.join(__dirname, 'awakeniq-ccf56bc780a0.json');
 const PARENT_FOLDER_ID = '1547TNnAafDreFOQgq-EuEQnFZtaTWRke';
 
-const auth = new google.auth.GoogleAuth({
-    keyFile: KEY_FILE_PATH,
-    scopes: ['https://www.googleapis.com/auth/drive']
-});
+const auth = process.env.GOOGLE_DRIVE_CREDENTIALS
+    ? new google.auth.GoogleAuth({
+        credentials: JSON.parse(process.env.GOOGLE_DRIVE_CREDENTIALS),
+        scopes: ['https://www.googleapis.com/auth/drive']
+      })
+    : new google.auth.GoogleAuth({
+        keyFile: KEY_FILE_PATH,
+        scopes: ['https://www.googleapis.com/auth/drive']
+      });
 const drive = google.drive({ version: 'v3', auth });
 
 // Helper to get or create client folder on Drive
