@@ -351,6 +351,18 @@
     </footer>
 
     <script>
+        // Auto-redirect if already logged in
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/api/session');
+                if (response.ok) {
+                    window.location.href = "dashboard.html";
+                }
+            } catch (err) {
+                // Ignore, means they are not logged in
+            }
+        });
+
         // Simple micro-interaction for password visibility toggle
         const toggleBtn = document.querySelector('button .material-symbols-outlined[data-icon="visibility"]');
         const passInput = document.getElementById('password');
