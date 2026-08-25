@@ -128,6 +128,85 @@
             </a>
         </div>
 
+        <!-- DMIT Reports Control Section -->
+        <div class="glass-card rounded-[24px] p-8 mt-12 text-left space-y-6">
+            <h2 class="text-2xl font-bold text-primary font-serif" style="font-family: 'Caudex', serif;">DMIT Reports Control</h2>
+            <p class="text-on-surface-variant text-sm">Upload a DMIT Report PDF, then select a student from the list to assign it to their profile.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Upload Panel -->
+                <div class="md:col-span-1 border border-dashed border-primary/25 rounded-2xl p-6 bg-primary/5 flex flex-col items-center justify-center text-center space-y-4">
+                    <svg class="w-12 h-12 text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"></path>
+                    </svg>
+                    <div class="w-full">
+                        <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1">Select Report PDF</label>
+                        <input type="file" id="report-file-input" accept=".pdf,application/pdf" class="hidden">
+                        <button onclick="document.getElementById('report-file-input').click()" class="w-full bg-primary/10 text-primary border border-primary/20 rounded-xl py-2 text-sm font-semibold hover:bg-primary/20 active:scale-95 transition-all">
+                            Choose File
+                        </button>
+                    </div>
+                    <p id="selected-file-name" class="text-xs text-on-surface-variant italic truncate max-w-full">No file chosen</p>
+                    <button id="upload-report-btn" class="w-full bg-primary text-white rounded-xl py-2.5 text-sm font-bold shadow-md hover:opacity-90 active:scale-95 transition-all disabled:opacity-50" disabled>
+                        Upload Report
+                    </button>
+                </div>
+
+                <!-- Scrollable Student List -->
+                <div class="md:col-span-2 border border-outline-variant/30 rounded-2xl p-6 bg-white flex flex-col space-y-4">
+                    <div class="flex justify-between items-center pb-2 border-b border-outline-variant/20">
+                        <h3 class="font-bold text-primary text-sm uppercase tracking-wider">DMIT Students</h3>
+                        <span id="uploaded-report-indicator" class="text-xs text-brand-gold font-bold hidden flex items-center gap-1">
+                            <span class="w-2 h-2 bg-brand-gold rounded-full animate-ping"></span>
+                            Report Ready for Assignment
+                        </span>
+                    </div>
+                    
+                    <div id="dmit-students-list" class="space-y-2 overflow-y-auto max-h-[220px] pr-1">
+                        <p class="text-xs text-on-surface-variant text-center py-8">Loading DMIT students...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Groups & Zoom Control Section -->
+        <div class="glass-card rounded-[24px] p-8 mt-12 text-left space-y-6">
+            <h2 class="text-2xl font-bold text-primary font-serif" style="font-family: 'Caudex', serif;">Student Groups & Zoom Class Manager</h2>
+            <p class="text-on-surface-variant text-sm">Create specific batches/groups of students, see who belongs to which group, and broadcast Zoom meeting URLs directly to their portals.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Create/Edit Group Panel -->
+                <div class="lg:col-span-1 border border-outline-variant/30 rounded-2xl p-6 bg-white flex flex-col space-y-4">
+                    <h3 class="font-bold text-primary text-sm uppercase tracking-wider">Create / Edit Group</h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1">Group Name</label>
+                        <input type="text" id="group-name-input" placeholder="e.g. Cognitive Elite A" class="w-full rounded-xl border-outline-variant focus:ring-primary focus:border-primary text-sm">
+                    </div>
+                    
+                    <div class="flex-grow">
+                        <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1">Select Students</label>
+                        <div id="group-students-select-list" class="space-y-2 overflow-y-auto max-h-[200px] border border-outline-variant/30 rounded-xl p-3 bg-background/50">
+                            <!-- Populated dynamically -->
+                            <p class="text-xs text-on-surface-variant italic text-center py-4">Loading students...</p>
+                        </div>
+                    </div>
+                    
+                    <button id="save-group-btn" class="w-full bg-primary text-white rounded-xl py-2.5 text-sm font-bold shadow-md hover:opacity-90 active:scale-95 transition-all">
+                        Save Group
+                    </button>
+                </div>
+
+                <!-- Existing Groups List & Zoom Broadcast -->
+                <div class="lg:col-span-2 border border-outline-variant/30 rounded-2xl p-6 bg-white flex flex-col space-y-4">
+                    <h3 class="font-bold text-primary text-sm uppercase tracking-wider">Active Groups</h3>
+                    <div id="groups-list" class="space-y-4 overflow-y-auto max-h-[360px] pr-1">
+                        <!-- Populated dynamically -->
+                        <p class="text-xs text-on-surface-variant italic text-center py-8">Loading groups...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Student Progress Videos Feed -->
         <div class="glass-card rounded-[24px] p-8 mt-12 text-left space-y-6">
             <h2 class="text-2xl font-bold text-primary font-serif" style="font-family: 'Caudex', serif;">Student Progress Videos</h2>
@@ -190,10 +269,12 @@
 
     <script>
         document.getElementById('logout-btn').addEventListener('click', () => {
+            sessionStorage.removeItem('portalSource');
             window.location.href = "login.html";
         });
 
         window.addEventListener('DOMContentLoaded', async () => {
+            sessionStorage.setItem('portalSource', 'management');
             // Load Videos
             try {
                 const response = await fetch('/api/admin/improvements');
@@ -305,6 +386,304 @@
                 console.error("Error loading feedbacks:", fbErr);
                 document.getElementById('admin-feedbacks-list').innerHTML = '<p class="text-sm text-red-600 text-center py-8">Failed to load student feedbacks.</p>';
             }
+
+            // DMIT Reports Control Script
+            let uploadedReportUrl = '';
+            let uploadedReportName = '';
+
+            const reportFileInput = document.getElementById('report-file-input');
+            const selectedFileName = document.getElementById('selected-file-name');
+            const uploadReportBtn = document.getElementById('upload-report-btn');
+            const uploadIndicator = document.getElementById('uploaded-report-indicator');
+
+            if (reportFileInput) {
+                reportFileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        selectedFileName.textContent = file.name;
+                        uploadReportBtn.disabled = false;
+                    } else {
+                        selectedFileName.textContent = 'No file chosen';
+                        uploadReportBtn.disabled = true;
+                    }
+                });
+            }
+
+            if (uploadReportBtn) {
+                uploadReportBtn.addEventListener('click', async () => {
+                    const file = reportFileInput.files[0];
+                    if (!file) return;
+
+                    const formData = new FormData();
+                    formData.append('reportFile', file);
+
+                    try {
+                        uploadReportBtn.disabled = true;
+                        uploadReportBtn.textContent = 'Uploading...';
+
+                        const res = await fetch('/api/admin/upload-dmit-report', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        const data = await res.json();
+                        if (!res.ok) throw new Error(data.error || 'Upload failed');
+
+                        uploadedReportUrl = data.fileUrl;
+                        uploadedReportName = data.originalName;
+
+                        uploadIndicator.classList.remove('hidden');
+                        uploadReportBtn.textContent = 'Uploaded!';
+                        alert('Report uploaded successfully. Now click on a student below to assign it.');
+                        
+                        // Highlight student list border to guide user
+                        document.getElementById('dmit-students-list').parentElement.classList.add('ring-2', 'ring-brand-gold');
+                    } catch (err) {
+                        alert('Error: ' + err.message);
+                        uploadReportBtn.disabled = false;
+                        uploadReportBtn.textContent = 'Upload Report';
+                    }
+                });
+            }
+
+            const loadDmitStudents = async () => {
+                try {
+                    const res = await fetch('/api/admin/dmit-students');
+                    const result = await res.json();
+                    const listEl = document.getElementById('dmit-students-list');
+
+                    if (!res.ok || !result.students || result.students.length === 0) {
+                        listEl.innerHTML = '<p class="text-xs text-on-surface-variant text-center py-8">No students enrolled in DMIT program.</p>';
+                        return;
+                    }
+
+                    listEl.innerHTML = result.students.map(student => {
+                        const hasReport = !!student.dmitReport;
+                        const reportStatus = hasReport 
+                            ? `<span class="bg-emerald-100 text-emerald-700 border border-emerald-200/50 text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Report Active</span>` 
+                            : `<span class="bg-rose-100 text-rose-700 border border-rose-200/50 text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">No Report</span>`;
+                        
+                        const actionText = hasReport 
+                            ? `<a href="${student.dmitReport.url}" target="_blank" onclick="event.stopPropagation()" class="text-primary hover:text-brand-gold font-bold flex items-center gap-1.5 transition-colors">
+                                 View
+                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"></path></svg>
+                               </a>`
+                            : `<span class="text-on-surface-variant/40 italic">Click to Assign</span>`;
+
+                        return `
+                            <div onclick="assignReportToStudent('${student.id}', '${student.studentName}')" class="flex items-center justify-between p-4 rounded-xl border border-primary/5 bg-background/30 hover:border-brand-gold/40 hover:bg-brand-gold/5 cursor-pointer transition-all shadow-sm group">
+                                <div class="text-left">
+                                    <h4 class="font-bold text-sm text-primary group-hover:text-brand-gold transition-colors">${student.studentName}</h4>
+                                    <p class="text-[10px] text-on-surface-variant/75 font-medium mt-0.5">${student.parentEmail}</p>
+                                </div>
+                                <div class="flex items-center gap-4 text-xs shrink-0">
+                                    ${reportStatus}
+                                    ${actionText}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } catch (err) {
+                    console.error("Error loading DMIT students:", err);
+                    document.getElementById('dmit-students-list').innerHTML = '<p class="text-xs text-red-600 text-center py-8">Failed to load DMIT students.</p>';
+                }
+            };
+
+            // Expose assignment function to window
+            window.assignReportToStudent = async (studentId, studentName) => {
+                if (!uploadedReportUrl) {
+                    alert('Please choose and upload a report first before selecting a student.');
+                    return;
+                }
+
+                if (!confirm(`Are you sure you want to assign the uploaded report "${uploadedReportName}" to ${studentName}?`)) {
+                    return;
+                }
+
+                try {
+                    const res = await fetch('/api/admin/assign-dmit-report', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            studentId,
+                            fileUrl: uploadedReportUrl,
+                            originalName: uploadedReportName
+                        })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Failed to assign report');
+
+                    alert(`Successfully assigned report to ${studentName}!`);
+                    
+                    // Reset UI
+                    uploadedReportUrl = '';
+                    uploadedReportName = '';
+                    reportFileInput.value = '';
+                    selectedFileName.textContent = 'No file chosen';
+                    uploadReportBtn.disabled = true;
+                    uploadReportBtn.textContent = 'Upload Report';
+                    uploadIndicator.classList.add('hidden');
+                    document.getElementById('dmit-students-list').parentElement.classList.remove('ring-2', 'ring-brand-gold');
+
+                    // Reload list
+                    await loadDmitStudents();
+                } catch (err) {
+                    alert('Assignment Error: ' + err.message);
+                }
+            };
+
+            // Load DMIT Students
+            await loadDmitStudents();
+
+            // --- Group Management Code ---
+            let allStudents = [];
+            let editingGroupId = null;
+
+            const loadGroupStudentsList = async () => {
+                try {
+                    const res = await fetch('/api/students');
+                    const data = await res.json();
+                    if (res.ok && data.students) {
+                        allStudents = data.students;
+                        const container = document.getElementById('group-students-select-list');
+                        if (allStudents.length === 0) {
+                            container.innerHTML = '<p class="text-xs text-on-surface-variant italic text-center py-4">No students found.</p>';
+                            return;
+                        }
+                        container.innerHTML = allStudents.map(student => `
+                            <label class="flex items-center gap-2 text-xs text-on-surface hover:bg-primary/5 p-1.5 rounded-lg cursor-pointer">
+                                <input type="checkbox" value="${student.id}" class="group-student-checkbox rounded border-primary/20 text-primary focus:ring-primary">
+                                <span class="font-medium">${student.name}</span>
+                            </label>
+                        `).join('');
+                    }
+                } catch (err) {
+                    console.error('Error fetching students for group management:', err);
+                }
+            };
+
+            const loadGroupsList = async () => {
+                try {
+                    const res = await fetch('/api/admin/groups');
+                    const data = await res.json();
+                    const listEl = document.getElementById('groups-list');
+                    if (!res.ok || !data.groups || data.groups.length === 0) {
+                        listEl.innerHTML = '<p class="text-xs text-on-surface-variant italic text-center py-8">No active groups created yet.</p>';
+                        return;
+                    }
+
+                    listEl.innerHTML = data.groups.map(group => {
+                        const studentNames = (group.studentIds || [])
+                            .map(id => {
+                                const found = allStudents.find(s => s.id === id);
+                                return found ? found.name : 'Unknown Student';
+                            })
+                            .join(', ');
+
+                        return `
+                            <div class="p-4 rounded-xl border border-primary/5 bg-background/30 space-y-4 text-left">
+                                <div class="flex justify-between items-start gap-4">
+                                    <div>
+                                        <h4 class="font-bold text-sm text-primary">${group.name}</h4>
+                                        <p class="text-xs text-on-surface-variant mt-1">
+                                            <span class="font-semibold text-primary">Students:</span> ${studentNames || 'No students assigned'}
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        <button onclick="editGroup('${group.id}', '${group.name}', [${(group.studentIds || []).map(id => `'${id}'`).join(',')}])" class="text-xs font-semibold text-primary hover:underline">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="pt-3 border-t border-outline-variant/20 flex flex-col sm:flex-row sm:items-center gap-3">
+                                    <div class="flex-grow">
+                                        <input type="text" id="zoom-input-${group.id}" placeholder="Paste Zoom Link" value="${group.zoomLink || ''}" class="w-full rounded-lg border-outline-variant focus:ring-primary focus:border-primary text-xs py-1.5 px-3">
+                                    </div>
+                                    <button onclick="broadcastZoomLink('${group.id}')" class="bg-primary text-[#bbeed5] px-4 py-1.5 rounded-lg text-xs font-bold shadow hover:opacity-90 active:scale-95 transition-all shrink-0 flex items-center gap-1">
+                                        Broadcast Zoom
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } catch (err) {
+                    console.error('Error fetching groups:', err);
+                    document.getElementById('groups-list').innerHTML = '<p class="text-xs text-red-600 text-center py-8">Failed to load groups.</p>';
+                }
+            };
+
+            // Save group
+            document.getElementById('save-group-btn').addEventListener('click', async () => {
+                const nameInput = document.getElementById('group-name-input');
+                const name = nameInput.value.trim();
+                if (!name) {
+                    alert('Please enter a group name');
+                    return;
+                }
+
+                const checkedCheckboxes = document.querySelectorAll('.group-student-checkbox:checked');
+                const studentIds = Array.from(checkedCheckboxes).map(cb => cb.value);
+
+                try {
+                    const saveBtn = document.getElementById('save-group-btn');
+                    saveBtn.disabled = true;
+                    const res = await fetch('/api/admin/groups', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            id: editingGroupId,
+                            name,
+                            studentIds
+                        })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Failed to save group');
+
+                    alert(editingGroupId ? 'Group updated successfully!' : 'Group created successfully!');
+                    
+                    // Reset
+                    editingGroupId = null;
+                    nameInput.value = '';
+                    document.querySelectorAll('.group-student-checkbox').forEach(cb => cb.checked = false);
+                    saveBtn.textContent = 'Save Group';
+                    
+                    await loadGroupsList();
+                } catch (err) {
+                    alert('Error: ' + err.message);
+                } finally {
+                    document.getElementById('save-group-btn').disabled = false;
+                }
+            });
+
+            window.editGroup = (id, name, studentIds) => {
+                editingGroupId = id;
+                document.getElementById('group-name-input').value = name;
+                document.getElementById('save-group-btn').textContent = 'Update Group';
+                
+                document.querySelectorAll('.group-student-checkbox').forEach(cb => {
+                    cb.checked = studentIds.includes(cb.value);
+                });
+            };
+
+            window.broadcastZoomLink = async (groupId) => {
+                const linkInput = document.getElementById(`zoom-input-${groupId}`);
+                const zoomLink = linkInput.value.trim();
+                
+                try {
+                    const res = await fetch(`/api/admin/groups/${groupId}/zoom`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ zoomLink })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Failed to broadcast Zoom link');
+                    
+                    alert('Zoom link successfully broadcasted to all students in this group!');
+                    await loadGroupsList();
+                } catch (err) {
+                    alert('Error: ' + err.message);
+                }
+            };
+
+            await loadGroupStudentsList();
+            await loadGroupsList();
         });
 
         // Fullscreen video functions
@@ -338,11 +717,14 @@
             }
         };
 
-        document.getElementById('video-modal').addEventListener('click', (e) => {
-            if (e.target.id === 'video-modal') {
-                closeFullscreenVideo();
-            }
-        });
+        const videoModalEl = document.getElementById('video-modal');
+        if (videoModalEl) {
+            videoModalEl.addEventListener('click', (e) => {
+                if (e.target.id === 'video-modal') {
+                    closeFullscreenVideo();
+                }
+            });
+        }
     </script>
 
     <!-- Video Modal Overlay -->

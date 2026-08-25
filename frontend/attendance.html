@@ -48,7 +48,7 @@
     <header class="fixed top-0 w-full z-50 bg-white/20 backdrop-blur-md border-b border-white/20 shadow-sm">
         <nav class="flex justify-between items-center px-4 md:px-8 py-4 max-w-7xl mx-auto w-full">
             <div class="flex items-center gap-3">
-                <a href="dashboard.html" class="p-2 hover:bg-black/5 rounded-full transition-colors flex items-center justify-center shrink-0" title="Back to Dashboard">
+                <a href="management-dashboard.html" class="p-2 hover:bg-black/5 rounded-full transition-colors flex items-center justify-center shrink-0" title="Back to Dashboard">
                     <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
                     </svg>
@@ -133,30 +133,7 @@
 
     <script>
         // Detailed session information from PDF
-        const sessionDetails = {
-            "aadit lele": { joinedAt: "17:32:46", leftAt: "17:43:11", duration: "10 min 25s" },
-            "abigael 11": { joinedAt: "17:39:37", leftAt: "18:16:38", duration: "37 min 1s" },
-            "adrika tiwari": { joinedAt: "17:59:02", leftAt: "18:16:14", duration: "17 min 12s" },
-            "anjali maurya": { joinedAt: "17:30:36", leftAt: "18:14:43", duration: "44 min 7s" },
-            "aryan patil": { joinedAt: "17:31:41", leftAt: "18:16:01", duration: "44 min 20s" },
-            "ayush makade": { joinedAt: "17:31:19", leftAt: "17:33:40", duration: "2 min 21s" },
-            "kavya pyati": { joinedAt: "17:31:27", leftAt: "18:16:08", duration: "44 min 41s" },
-            "krishna patil": { joinedAt: "17:34:21", leftAt: "18:16:03", duration: "41 min 42s" },
-            "krishna thusoo": { joinedAt: "17:36:04", leftAt: "17:36:10", duration: "0 min 6s" },
-            "michelle solomon": { joinedAt: "17:36:10", leftAt: "18:16:38", duration: "40 min 28s" },
-            "pranav rane": { joinedAt: "17:30:36", leftAt: "18:16:25", duration: "45 min 49s" },
-            "pratik zope": { joinedAt: "18:06:03", leftAt: "18:16:11", duration: "10 min 8s" },
-            "preksha pethakar": { joinedAt: "17:46:18", leftAt: "18:16:12", duration: "29 min 54s" },
-            "r bhandarkar": { joinedAt: "18:11:18", leftAt: "18:14:35", duration: "3 min 17s" },
-            "rajiv agarwal": { joinedAt: "17:30:36", leftAt: "18:15:53", duration: "45 min 17s" },
-            "ritu shinde": { joinedAt: "17:30:36", leftAt: "18:16:38", duration: "46 min 2s" },
-            "saket patil": { joinedAt: "17:40:46", leftAt: "18:07:54", duration: "27 min 8s" },
-            "sarvesh shailendra akkalkote": { joinedAt: "17:38:02", leftAt: "18:16:16", duration: "38 min 14s" },
-            "sharon saji": { joinedAt: "17:42:18", leftAt: "18:16:06", duration: "33 min 48s" },
-            "shivam pawar": { joinedAt: "17:33:16", leftAt: "17:35:28", duration: "2 min 12s" },
-            "ved chikane": { joinedAt: "17:30:36", leftAt: "18:16:07", duration: "45 min 31s" },
-            "vedang vaishampayan": { joinedAt: "17:30:36", leftAt: "18:16:01", duration: "45 min 25s" }
-        };
+        const sessionDetails = {};
 
         // Default initial students list (starts empty, loaded from database)
         let students = [];

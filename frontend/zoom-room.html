@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Live Class Session - Awaken IQ</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Caudex:wght@400;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- Zoom Web Meeting SDK CSS -->
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/2.18.0/css/bootstrap.css" />
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/2.18.0/css/react-select.css" />
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1E4D3B",
+                        "secondary": "#386754",
+                        "brand-gold": "#D4AF37",
+                        "background": "#0b100d",
+                        "on-surface": "#f1f3f1",
+                        "on-surface-variant": "#a1aaa3",
+                        "surface-card": "#121814"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b100d;
+            font-family: 'Raleway', sans-serif;
+        }
+        .glass-card {
+            background: rgba(18, 24, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        /* Custom styles for embedded Zoom container */
+        #zmmtg-root {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-color: #000;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="w-full z-50 bg-[#121814]/60 backdrop-blur-md border-b border-white/5 py-4 px-6 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <a href="dashboard.html" class="p-2 hover:bg-white/5 rounded-full transition-colors flex items-center justify-center text-brand-gold" title="Back to Dashboard">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
+                </svg>
+            </a>
+            <span class="font-bold text-xl text-brand-gold tracking-tight" style="font-family: 'Caudex', serif;">Live Interactive Class</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 bg-rose-600 rounded-full animate-ping"></span>
+            <span class="text-xs font-semibold text-rose-500 uppercase tracking-widest">Live Room</span>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-grow flex items-center justify-center p-6">
+        <div class="w-full max-w-4xl glass-card rounded-[28px] overflow-hidden flex flex-col justify-between items-center min-h-[500px] relative p-8">
+            
+            <!-- Fallback Info Panel -->
+            <div id="fallback-panel" class="w-full flex flex-col items-center justify-center text-center space-y-6 max-w-xl my-auto">
+                <div class="w-20 h-20 bg-brand-gold/10 rounded-full flex items-center justify-center text-brand-gold shadow-lg shadow-brand-gold/5">
+                    <span class="material-symbols-outlined text-[48px]">video_camera_front</span>
+                </div>
+                
+                <div>
+                    <h2 class="text-2xl font-bold text-brand-gold font-serif" style="font-family: 'Caudex', serif;">Connecting to Your Session</h2>
+                    <p class="text-sm text-on-surface-variant mt-2 leading-relaxed">
+                        We are launching your live lesson window. If your browser does not support full embedding or Zoom configuration is pending, please click the button below to join the live call immediately in the Zoom App.
+                    </p>
+                </div>
+                
+                <div class="w-full pt-4 flex flex-col sm:flex-row gap-4 justify-center">
+                    <button id="direct-zoom-link" class="bg-brand-gold text-primary hover:opacity-90 px-8 py-3.5 rounded-full font-bold shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm w-full sm:w-auto">
+                        <span class="material-symbols-outlined">open_in_new</span> Launch in Zoom App
+                    </button>
+                    
+                    <button id="try-embedded-btn" class="bg-white/10 hover:bg-white/20 border border-white/10 px-8 py-3.5 rounded-full font-bold transition-all active:scale-[0.98] flex items-center justify-center gap-2 text-sm w-full sm:w-auto">
+                        <span class="material-symbols-outlined">view_in_ar</span> Start Embedded Web SDK
+                    </button>
+                </div>
+            </div>
+
+            <!-- Embedded Zoom App Viewport -->
+            <div id="meeting-viewport" class="hidden w-full h-[500px] rounded-2xl overflow-hidden border border-white/10 bg-black relative">
+                <div id="zmmtg-viewport" class="w-full h-full"></div>
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- Zoom SDK Scripts -->
+    <script src="https://source.zoom.us/2.18.0/lib/vendor/react.min.js"></script>
+    <script src="https://source.zoom.us/2.18.0/lib/vendor/react-dom.min.js"></script>
+    <script src="https://source.zoom.us/2.18.0/lib/vendor/redux.min.js"></script>
+    <script src="https://source.zoom.us/2.18.0/lib/vendor/redux-thunk.min.js"></script>
+    <script src="https://source.zoom.us/2.18.0/lib/vendor/lodash.min.js"></script>
+    <script src="https://source.zoom.us/zoom-meeting-2.18.0.min.js"></script>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const zoomUrl = urlParams.get('zoomUrl');
+
+        if (zoomUrl) {
+            document.getElementById('direct-zoom-link').onclick = () => {
+                window.open(zoomUrl, '_blank');
+            };
+        } else {
+            alert('No Zoom Link Found. Returning to Dashboard.');
+            window.location.href = 'dashboard.html';
+        }
+
+        // Helper to parse Zoom details from URL
+        function parseZoomUrl(url) {
+            try {
+                // Example: https://zoom.us/j/123456789?pwd=xxxx
+                const urlObj = new URL(url);
+                const pathParts = urlObj.pathname.split('/');
+                const meetingNumber = pathParts[pathParts.length - 1];
+                const passcode = urlObj.searchParams.get('pwd') || '';
+                return { meetingNumber, passcode };
+            } catch (e) {
+                console.error("Failed to parse Zoom URL:", e);
+                return null;
+            }
+        }
+
+        // Start Web Meeting SDK
+        document.getElementById('try-embedded-btn').onclick = async () => {
+            const parsed = parseZoomUrl(zoomUrl);
+            if (!parsed || !parsed.meetingNumber) {
+                alert("This custom live link cannot be embedded directly. Please use the 'Launch in Zoom App' button instead.");
+                return;
+            }
+
+            document.getElementById('fallback-panel').classList.add('hidden');
+            document.getElementById('meeting-viewport').classList.remove('hidden');
+
+            try {
+                // Fetch Signature from backend
+                const sigRes = await fetch('/api/zoom-signature', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ meetingNumber: parsed.meetingNumber, role: 0 })
+                });
+                const sigData = await sigRes.json();
+                
+                if (!sigRes.ok || !sigData.signature) {
+                    throw new Error("SDK Key/Secret credentials missing or signature generation failed.");
+                }
+
+                ZoomMtg.setZoomJSLib('https://source.zoom.us/2.18.0/lib', '/av');
+                ZoomMtg.preLoadWasm();
+                ZoomMtg.prepareWebSDK();
+
+                ZoomMtg.init({
+                    leaveUrl: window.location.origin + '/dashboard.html',
+                    patchJsMedia: true,
+                    success: function () {
+                        ZoomMtg.join({
+                            meetingNumber: parsed.meetingNumber,
+                            signature: sigData.signature,
+                            sdkKey: sigData.sdkKey,
+                            userName: 'Awaken IQ Student',
+                            passWord: parsed.passcode,
+                            success: function () {
+                                console.log("Meeting joined successfully via Web SDK.");
+                            },
+                            error: function (joinError) {
+                                console.error("Join Error:", joinError);
+                            }
+                        });
+                    },
+                    error: function (initError) {
+                        console.error("Init Error:", initError);
+                    }
+                });
+
+            } catch (err) {
+                alert(`SDK Launch Error: ${err.message}. Defaulting back to Zoom App launch.`);
+                document.getElementById('fallback-panel').classList.remove('hidden');
+                document.getElementById('meeting-viewport').classList.add('hidden');
+            }
+        };
+    </script>
+</body>
+</html>
