@@ -98,6 +98,29 @@ function rewriteAssetsAndLinks(html) {
   html = html.replace(/url\(["']?\/wp-(content|includes)/g, 'url("https://awakeniq.com/wp-$1');
   html = html.replace(/url\(\/wp-(content|includes)/g, 'url(https://awakeniq.com/wp-$1');
 
+  // 6. Inject dynamic Portal Login script before </body>
+  const dynamicScript = `
+<script>
+  window.addEventListener('DOMContentLoaded', async () => {
+    try {
+      const response = await fetch('/api/session');
+      if (response.ok) {
+        const portalLinks = document.querySelectorAll('a[href="login.html"]');
+        portalLinks.forEach(link => {
+          if (link.textContent.trim() === 'Portal Login') {
+            link.href = 'dashboard.html';
+            link.textContent = 'Dashboard';
+          }
+        });
+      }
+    } catch (e) {
+      // Not logged in
+    }
+  });
+</script>
+`;
+  html = html.replace(/<\/body>/i, dynamicScript + '\n</body>');
+
   return html;
 }
 

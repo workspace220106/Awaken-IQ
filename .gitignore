@@ -9,3 +9,6 @@ logo (1).png
 .env*
 backend/*.json
 scraped_site/
+
+.vercel
+.env*
