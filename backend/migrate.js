@@ -4,13 +4,13 @@ const fs = require('fs');
 const path = require('path');
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCchu0t7PaQeTwqHDEDvbE9Q6YCzZZS9yM",
-  authDomain: "awakeniq-2d15a.firebaseapp.com",
-  projectId: "awakeniq-2d15a",
-  storageBucket: "awakeniq-2d15a.firebasestorage.app",
-  messagingSenderId: "453380259614",
-  appId: "1:453380259614:web:648cad3b51d92eb0f7130f",
-  measurementId: "G-G3100S0YD9"
+  apiKey: process.env.FIREBASE_API_KEY || "YOUR_API_KEY",
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN || "your-app.firebaseapp.com",
+  projectId: process.env.FIREBASE_PROJECT_ID || "your-app",
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET || "your-app.firebasestorage.app",
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || "YOUR_SENDER_ID",
+  appId: process.env.FIREBASE_APP_ID || "YOUR_APP_ID",
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID || "YOUR_MEASUREMENT_ID"
 };
 
 const app = initializeApp(firebaseConfig);
