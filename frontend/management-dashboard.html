@@ -169,6 +169,15 @@
             </div>
         </div>
 
+        <!-- Unclaimed Payments (paid, but no enrolment) -->
+        <div class="glass-card rounded-[24px] p-8 mt-12 text-left space-y-6">
+            <h2 class="text-2xl font-bold text-primary font-serif" style="font-family: 'Caudex', serif;">Unclaimed Payments</h2>
+            <p class="text-on-surface-variant text-sm">Payments Razorpay confirmed that never became an enrolment (parent closed the browser, or registration failed). Link each one to the right student so nobody is charged twice.</p>
+            <div id="unclaimed-orders-list" class="space-y-3">
+                <p class="text-xs text-on-surface-variant italic text-center py-6">Loading...</p>
+            </div>
+        </div>
+
         <!-- Student Groups & Zoom Control Section -->
         <div class="glass-card rounded-[24px] p-8 mt-12 text-left space-y-6">
             <h2 class="text-2xl font-bold text-primary font-serif" style="font-family: 'Caudex', serif;">Student Groups & Zoom Class Manager</h2>
@@ -654,6 +663,64 @@
 
             await loadGroupStudentsList();
             await loadGroupsList();
+
+            // --- Unclaimed payments reconciliation ---
+            const ordersEl = document.getElementById('unclaimed-orders-list');
+            const loadUnclaimedOrders = async () => {
+                try {
+                    const data = await api('/api/admin/orders/unclaimed');
+                    const orders = data.orders || [];
+                    if (orders.length === 0) {
+                        ordersEl.innerHTML = '<p class="text-xs text-on-surface-variant italic text-center py-6">No unclaimed payments. Every confirmed payment is linked to a student.</p>';
+                        return;
+                    }
+                    const studentOptions = allStudents
+                        .map(st => `<option value="${esc(st.id)}">${esc(st.name)} — ${esc(st.parentEmail || '')}${st.paymentStatus === 'Paid' ? ' (already paid)' : ''}</option>`)
+                        .join('');
+                    ordersEl.innerHTML = orders.map(o => `
+                        <div class="p-4 rounded-xl border border-amber-200 bg-amber-50/60 flex flex-col md:flex-row md:items-center gap-3" data-order-id="${esc(o.id)}">
+                            <div class="flex-grow min-w-0 text-left">
+                                <p class="font-bold text-sm text-primary">${esc(o.email || 'unknown email')} <span class="font-normal text-on-surface-variant">· ₹${esc(((o.amount || 0) / 100).toFixed(2))}</span></p>
+                                <p class="text-xs text-on-surface-variant truncate">${esc(o.programName || o.programKey || 'Program not recorded')} · Paid ${esc(o.paidAt ? new Date(o.paidAt).toLocaleString() : '-')} via ${esc(o.paidVia)} · ${esc(o.paymentId || '')}</p>
+                            </div>
+                            <div class="flex items-center gap-2 shrink-0">
+                                <select class="assign-student rounded-lg border-outline-variant text-xs py-1.5 px-2 max-w-[260px]">
+                                    <option value="">Select student…</option>${studentOptions}
+                                </select>
+                                <button type="button" class="assign-order-btn bg-primary text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow hover:opacity-90 active:scale-95 transition-all">Link</button>
+                            </div>
+                        </div>
+                    `).join('');
+                    ordersEl.querySelectorAll('[data-order-id]').forEach(row => {
+                        const select = row.querySelector('.assign-student');
+                        // Pre-select the student whose parent email matches the payment
+                        const order = orders.find(o => o.id === row.dataset.orderId);
+                        const match = allStudents.find(st => st.parentEmail && order.email && st.parentEmail.toLowerCase() === order.email.toLowerCase());
+                        if (match) select.value = match.id;
+                        row.querySelector('.assign-order-btn').addEventListener('click', async () => {
+                            const studentId = select.value;
+                            if (!studentId) { alert('Choose the student this payment belongs to.'); return; }
+                            const st = allStudents.find(x => x.id === studentId);
+                            if (!confirm(`Link this payment to ${st ? st.name : 'the selected student'} and mark them as PAID?`)) return;
+                            try {
+                                await api(`/api/admin/orders/${encodeURIComponent(row.dataset.orderId)}/assign`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ studentId })
+                                });
+                                await loadGroupStudentsList();
+                                await loadUnclaimedOrders();
+                            } catch (err) {
+                                alert('Error: ' + err.message);
+                            }
+                        });
+                    });
+                } catch (err) {
+                    console.error('Error loading unclaimed orders:', err);
+                    ordersEl.innerHTML = '<p class="text-xs text-red-600 text-center py-6">Failed to load unclaimed payments.</p>';
+                }
+            };
+            await loadUnclaimedOrders();
         });
 
         // Fullscreen player for legacy locally-hosted videos

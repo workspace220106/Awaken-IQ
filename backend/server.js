@@ -11,6 +11,7 @@ const Razorpay = require('razorpay');
 const bcrypt = require('bcryptjs');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const nodemailer = require('nodemailer');
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore, FieldValue } = require('firebase-admin/firestore');
 
@@ -35,6 +36,17 @@ const RAZORPAY_KEY_ID = requireEnv('RAZORPAY_KEY_ID');
 const RAZORPAY_KEY_SECRET = requireEnv('RAZORPAY_KEY_SECRET');
 const ADMIN_USERNAME = requireEnv('ADMIN_USERNAME');
 const ADMIN_PASSWORD = requireEnv('ADMIN_PASSWORD');
+const RAZORPAY_WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET || '';
+// Public origin used in emails (never derived from the request Host header).
+const APP_URL = (process.env.APP_URL
+    || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : `http://localhost:${PORT}`)).replace(/\/$/, '');
+const SMTP = {
+    host: process.env.SMTP_HOST || '',
+    port: parseInt(process.env.SMTP_PORT || '465', 10),
+    user: process.env.SMTP_USER || '',
+    pass: process.env.SMTP_PASS || '',
+    from: process.env.MAIL_FROM || process.env.SMTP_USER || ''
+};
 const ZOOM_SDK_KEY = process.env.ZOOM_SDK_KEY || '';
 const ZOOM_SDK_SECRET = process.env.ZOOM_SDK_SECRET || '';
 // "AwakenIQ" shared folder: student folders and DMIT reports are created underneath it.
@@ -61,6 +73,12 @@ const ordersCol = db.collection('orders');
 const groupsCol = db.collection('groups');
 const feedbacksCol = db.collection('feedbacks');
 const attendanceCol = db.collection('attendance');
+const passwordResetsCol = db.collection('passwordResets');
+
+const mailer = SMTP.host && SMTP.user && SMTP.pass
+    ? nodemailer.createTransport({ host: SMTP.host, port: SMTP.port, secure: SMTP.port === 465, auth: { user: SMTP.user, pass: SMTP.pass } })
+    : null;
+if (!mailer) console.warn('SMTP_* not set: password reset emails are disabled.');
 
 const razorpay = new Razorpay({ key_id: RAZORPAY_KEY_ID, key_secret: RAZORPAY_KEY_SECRET });
 
@@ -80,6 +98,12 @@ app.set('trust proxy', 1); // Vercel / reverse proxy: needed for correct client 
 app.disable('x-powered-by');
 
 app.use(helmet({ contentSecurityPolicy: false })); // CSP is set per-route in vercel.json; API responses are JSON
+
+// Razorpay webhook: signature is computed over the raw body, so this route is mounted before the JSON parser.
+app.post('/api/razorpay-webhook', express.raw({ type: '*/*', limit: '200kb' }), (req, res, next) => {
+    handleRazorpayWebhook(req, res).catch(next);
+});
+
 app.use(express.json({ limit: '100kb' }));
 app.use(express.urlencoded({ extended: false, limit: '100kb' }));
 app.use(cookieParser(SESSION_SECRET));
@@ -288,6 +312,10 @@ app.post('/api/register', authLimiter, wrap(async (req, res) => {
         order = orderSnap.data();
         if (order.status !== 'paid') throw new HttpError(400, 'Payment for this order has not been verified.');
         if (order.email !== parentEmail) throw new HttpError(400, 'Payment order does not belong to this email.');
+    } else {
+        // The browser may have lost the order id (closed tab, retry). If this email already
+        // has a paid order nobody has claimed, attach it so the parent is not charged twice.
+        order = await findUnclaimedPaidOrder(parentEmail);
     }
 
     const programKey = order ? order.programKey : courseInfo.key;
@@ -367,6 +395,72 @@ app.post('/api/login', authLimiter, wrap(async (req, res) => {
     setSession(res, { uid: user.id, role: 'user' });
     res.json({ message: 'Login successful', userId: user.id });
 }));
+
+// ---------------------------------------------------------------------------
+// Password reset — token is random, stored hashed, single-use, expires in 1 hour.
+// Responses never reveal whether an email is registered.
+// ---------------------------------------------------------------------------
+const RESET_TTL_MS = 60 * 60 * 1000;
+const hashToken = (t) => crypto.createHash('sha256').update(t).digest('hex');
+
+app.post('/api/forgot-password', authLimiter, wrap(async (req, res) => {
+    const emailAddr = V.email(req.body && req.body.email);
+    const generic = { message: 'If that email is registered, a reset link has been sent.' };
+    if (!mailer) throw new HttpError(503, 'Password reset by email is not configured. Please contact Awaken IQ support.');
+
+    const user = await getUserByEmail(emailAddr) || await getUserByEmail(req.body.email);
+    if (!user) return res.json(generic);
+
+    const token = crypto.randomBytes(32).toString('base64url');
+    await passwordResetsCol.doc(hashToken(token)).set({
+        uid: user.id,
+        createdAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + RESET_TTL_MS).toISOString(),
+        used: false
+    });
+
+    const link = `${APP_URL}/reset-password.html?token=${token}`;
+    await mailer.sendMail({
+        from: SMTP.from,
+        to: user.parentEmail,
+        subject: 'Reset your Awaken IQ portal password',
+        text: `Hello ${user.parentName || ''},\n\nWe received a request to reset the password for the Awaken IQ student portal.\n\nReset it here (valid for 1 hour):\n${link}\n\nIf you did not request this, you can ignore this email.\n\n— Awaken IQ`,
+        html: `<p>Hello ${escapeHtml(user.parentName || '')},</p>
+<p>We received a request to reset the password for the Awaken IQ student portal.</p>
+<p><a href="${link}" style="display:inline-block;padding:12px 20px;background:#1E4D3B;color:#fff;border-radius:999px;text-decoration:none;font-weight:bold">Reset my password</a></p>
+<p style="color:#555;font-size:13px">This link is valid for 1 hour. If you did not request this, you can ignore this email.</p>
+<p>— Awaken IQ</p>`
+    });
+    res.json(generic);
+}));
+
+app.post('/api/reset-password', authLimiter, wrap(async (req, res) => {
+    const token = V.str(req.body && req.body.token, { name: 'Token', max: 128, required: true, pattern: /^[A-Za-z0-9_-]+$/ });
+    const plainPassword = V.password(req.body && req.body.password);
+    const ref = passwordResetsCol.doc(hashToken(token));
+
+    const uid = await db.runTransaction(async (tx) => {
+        const snap = await tx.get(ref);
+        const r = snap.exists ? snap.data() : null;
+        if (!r || r.used || new Date(r.expiresAt).getTime() < Date.now()) {
+            throw new HttpError(400, 'This reset link is invalid or has expired. Please request a new one.');
+        }
+        tx.update(ref, { used: true, usedAt: new Date().toISOString() });
+        return r.uid;
+    });
+
+    await usersCol.doc(uid).update({
+        passwordHash: await bcrypt.hash(plainPassword, 12),
+        password: FieldValue.delete(),
+        passwordChangedAt: new Date().toISOString()
+    });
+    clearSession(res);
+    res.json({ message: 'Password updated. You can now log in.' });
+}));
+
+function escapeHtml(v) {
+    return String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
 
 app.post('/api/logout', (req, res) => {
     clearSession(res);
@@ -461,7 +555,13 @@ app.get('/api/my-attendance', requireUser, wrap(async (req, res) => {
     const sessions = [];
     snap.forEach((doc) => {
         const s = doc.data();
-        const record = (s.records || []).find((r) => r && (r.studentId === me.id || (r.name && String(r.name).toLowerCase() === name)));
+        // Match by id. Rows saved before ids were recorded fall back to name, but only if
+        // exactly one record in that session carries the name (duplicate names are common).
+        let record = (s.records || []).find((r) => r && r.studentId === me.id);
+        if (!record && name) {
+            const byName = (s.records || []).filter((r) => r && !r.studentId && r.name && String(r.name).toLowerCase() === name);
+            if (byName.length === 1) record = byName[0];
+        }
         if (record) sessions.push({ date: s.date, savedAt: s.savedAt, present: !!record.present });
     });
     sessions.sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
@@ -530,18 +630,105 @@ app.post('/api/verify-payment', wrap(async (req, res) => {
         throw new HttpError(400, 'Signature verification failed.');
     }
 
-    const orderRef = ordersCol.doc(orderId);
-    const orderSnap = await orderRef.get();
-    if (!orderSnap.exists) throw new HttpError(400, 'Unknown order.');
-    if (orderSnap.data().status === 'created') {
-        await orderRef.update({ status: 'paid', paymentId, paidAt: new Date().toISOString() });
-    }
+    if (!(await ordersCol.doc(orderId).get()).exists) throw new HttpError(400, 'Unknown order.');
+    await markOrderPaid(orderId, paymentId, 'checkout');
     res.json({ status: 'ok', message: 'Payment verified successfully.' });
 }));
+
+async function findUnclaimedPaidOrder(emailAddr) {
+    const snap = await ordersCol.where('email', '==', emailAddr).where('status', '==', 'paid').limit(1).get();
+    return snap.empty ? null : snap.docs[0].data();
+}
+
+// Marks an order paid from a trusted source (signature-verified checkout or webhook).
+async function markOrderPaid(orderId, paymentId, source, extra = {}) {
+    const ref = ordersCol.doc(orderId);
+    const snap = await ref.get();
+    if (!snap.exists) {
+        // Order created outside this app (e.g. Razorpay dashboard / payment link): keep a record so it can be reconciled.
+        await ref.set({
+            id: orderId, status: 'paid', paymentId, paidVia: source, ...extra,
+            programKey: extra.programKey || null, email: extra.email || null,
+            createdAt: new Date().toISOString(), paidAt: new Date().toISOString()
+        });
+        return;
+    }
+    if (snap.data().status === 'created') {
+        await ref.update({ status: 'paid', paymentId, paidAt: new Date().toISOString(), paidVia: source });
+    }
+}
+
+// Razorpay calls this server-to-server on payment events, independent of the parent's browser.
+// Configure in Razorpay Dashboard -> Webhooks with events payment.captured and order.paid.
+async function handleRazorpayWebhook(req, res) {
+    if (!RAZORPAY_WEBHOOK_SECRET) return res.status(503).json({ error: 'Webhook not configured' });
+    const signature = req.get('x-razorpay-signature') || '';
+    const raw = Buffer.isBuffer(req.body) ? req.body : Buffer.from('');
+    const expected = crypto.createHmac('sha256', RAZORPAY_WEBHOOK_SECRET).update(raw).digest('hex');
+    if (!/^[a-f0-9]{64}$/.test(signature) || !safeEqual(expected, signature)) {
+        console.error('Razorpay webhook signature mismatch');
+        return res.status(400).json({ error: 'Invalid signature' });
+    }
+
+    let event;
+    try { event = JSON.parse(raw.toString('utf8')); } catch { return res.status(400).json({ error: 'Malformed payload' }); }
+
+    const payment = event.payload && event.payload.payment && event.payload.payment.entity;
+    if ((event.event === 'payment.captured' || event.event === 'order.paid') && payment && payment.order_id && payment.id) {
+        const notes = payment.notes || {};
+        await markOrderPaid(payment.order_id, payment.id, 'webhook', {
+            email: typeof notes.email === 'string' ? notes.email.toLowerCase() : (payment.email ? String(payment.email).toLowerCase() : null),
+            programKey: typeof notes.programKey === 'string' ? notes.programKey : null,
+            amount: payment.amount, currency: payment.currency, method: payment.method || null
+        });
+    }
+    // Always 200 so Razorpay does not retry events we intentionally ignore.
+    res.json({ received: true });
+}
 
 // ---------------------------------------------------------------------------
 // Management console
 // ---------------------------------------------------------------------------
+
+// Paid orders that never turned into an enrolment (parent paid, registration failed / abandoned).
+app.get('/api/admin/orders/unclaimed', requireAdmin, wrap(async (req, res) => {
+    const snap = await ordersCol.where('status', '==', 'paid').get();
+    const orders = [];
+    snap.forEach((doc) => {
+        const o = doc.data();
+        const program = getProgram(o.programKey);
+        orders.push({
+            id: o.id, email: o.email, programKey: o.programKey, programName: o.programName || (program ? program.name : null),
+            amount: o.amount, paymentId: o.paymentId, paidAt: o.paidAt, paidVia: o.paidVia || 'checkout'
+        });
+    });
+    orders.sort((a, b) => new Date(b.paidAt || 0) - new Date(a.paidAt || 0));
+    res.json({ orders });
+}));
+
+// Attach an unclaimed paid order to an existing student account.
+app.post('/api/admin/orders/:id/assign', requireAdmin, wrap(async (req, res) => {
+    const orderId = V.str(req.params.id, { name: 'Order ID', max: 64, required: true, pattern: /^order_[A-Za-z0-9]+$/ });
+    const studentId = V.idString(req.body && req.body.studentId, 'Student ID');
+    const orderRef = ordersCol.doc(orderId);
+    const userRef = usersCol.doc(studentId);
+
+    await db.runTransaction(async (tx) => {
+        const [orderSnap, userSnap] = await Promise.all([tx.get(orderRef), tx.get(userRef)]);
+        if (!orderSnap.exists || orderSnap.data().status !== 'paid') throw new HttpError(400, 'Order is not an unclaimed paid order.');
+        if (!userSnap.exists) throw new HttpError(404, 'Student not found.');
+        const order = orderSnap.data();
+        const program = getProgram(order.programKey);
+        const userUpdate = {
+            paymentStatus: 'Paid', paymentMethod: 'Razorpay', paymentId: order.paymentId || null, orderId,
+            paymentUpdatedAt: new Date().toISOString()
+        };
+        if (program) { userUpdate.enrolledProgram = program.name; userUpdate.duration = program.duration; }
+        tx.update(userRef, userUpdate);
+        tx.update(orderRef, { status: 'consumed', userId: studentId, consumedAt: new Date().toISOString(), consumedBy: 'admin' });
+    });
+    res.json({ message: 'Order assigned to student' });
+}));
 app.get('/api/admin/students', requireAdmin, wrap(async (req, res) => {
     const snap = await usersCol.get();
     const students = [];
