@@ -37,7 +37,8 @@ const ADMIN_USERNAME = requireEnv('ADMIN_USERNAME');
 const ADMIN_PASSWORD = requireEnv('ADMIN_PASSWORD');
 const ZOOM_SDK_KEY = process.env.ZOOM_SDK_KEY || '';
 const ZOOM_SDK_SECRET = process.env.ZOOM_SDK_SECRET || '';
-const DRIVE_PARENT_FOLDER_ID = process.env.DRIVE_PARENT_FOLDER_ID || '1547TNnAafDreFOQgq-EuEQnFZtaTWRke';
+// "AwakenIQ" shared folder: student folders and DMIT reports are created underneath it.
+const DRIVE_PARENT_FOLDER_ID = process.env.DRIVE_PARENT_FOLDER_ID || '19SlDbrSRTabzTe9uAfnkLbqZdaIwZq-Z';
 
 // Credentials JSON: env var in production; a git-ignored local file is allowed for development only.
 function loadCredentialJson(envName, localFileName) {
