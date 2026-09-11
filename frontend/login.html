@@ -503,17 +503,31 @@
             selectionState.classList.remove('hidden');
         });
 
-        mgtVerifyBtn.addEventListener('click', () => {
-            const userId = mgtUseridInput.value;
+        mgtVerifyBtn.addEventListener('click', async () => {
+            const username = mgtUseridInput.value.trim();
             const password = mgtPasswordInput.value;
-            
-            if (userId === "12345" && password === "67890") {
+            if (!username || !password) {
+                mgtError.textContent = 'Please enter your User ID and Password.';
+                mgtError.classList.remove('hidden');
+                return;
+            }
+            mgtVerifyBtn.disabled = true;
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) throw new Error(data.error || 'Invalid User ID or Password.');
                 mgtError.classList.add('hidden');
                 closeTypeModal();
-                // Redirect to management dashboard
                 window.location.href = "management-dashboard.html";
-            } else {
+            } catch (err) {
+                mgtError.textContent = err.message;
                 mgtError.classList.remove('hidden');
+            } finally {
+                mgtVerifyBtn.disabled = false;
             }
         });
     </script>

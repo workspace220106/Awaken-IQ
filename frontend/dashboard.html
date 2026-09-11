@@ -304,61 +304,28 @@
                 document.getElementById('billing-status').textContent = user.paymentStatus || 'Pending';
                 document.getElementById('billing-method').textContent = user.paymentMethod || 'Credit/Debit';
 
-                // Fetch attendance history for the active student
+                // Fetch this student's own attendance history
                 try {
-                    const attResponse = await fetch('/api/attendance');
+                    const attResponse = await fetch('/api/my-attendance');
                     const attResult = await attResponse.json();
-                    
-                    if (attResponse.ok && attResult.attendance && attResult.attendance.length > 0) {
-                        const studentName = user.studentName;
-                        let presentCount = 0;
-                        let totalSessions = 0;
-                        let latestStatus = 'Not Recorded';
-                        
-                        // Sort by date/savedAt descending to get latest
-                        const sortedSessions = attResult.attendance.sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
-                        
-                        sortedSessions.forEach((session, index) => {
-                            const record = session.records.find(r => r.name.toLowerCase() === studentName.toLowerCase() || r.studentId === user.id);
-                            if (record) {
-                                totalSessions++;
-                                if (record.present) {
-                                    presentCount++;
-                                    if (index === 0) latestStatus = 'Present';
-                                } else {
-                                    if (index === 0) latestStatus = 'Absent';
-                                }
-                            }
-                        });
-                        
-                        if (totalSessions > 0) {
-                            const rate = Math.round((presentCount / totalSessions) * 100);
-                            const rateEl = document.getElementById('attendance-rate');
-                            if (rateEl) rateEl.textContent = `${rate}% (${presentCount}/${totalSessions})`;
-                            
-                            const statusEl = document.getElementById('attendance-status');
-                            if (statusEl) {
-                                statusEl.textContent = latestStatus;
-                                if (latestStatus === 'Present') {
-                                    statusEl.className = "bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold";
-                                } else if (latestStatus === 'Absent') {
-                                    statusEl.className = "bg-rose-100 text-rose-800 px-3 py-1 rounded-full text-xs font-semibold";
-                                }
-                            }
-                        } else {
-                            // Default mock fallback if student is new
-                            const rateEl = document.getElementById('attendance-rate');
-                            if (rateEl) rateEl.textContent = "100% (Default)";
-                            const statusEl = document.getElementById('attendance-status');
-                            if (statusEl) {
-                                statusEl.textContent = "Present";
-                                statusEl.className = "bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold";
-                            }
+                    const rateEl = document.getElementById('attendance-rate');
+                    const statusEl = document.getElementById('attendance-status');
+
+                    if (attResponse.ok && attResult.sessions && attResult.sessions.length > 0) {
+                        const sessions = attResult.sessions; // newest first
+                        const totalSessions = sessions.length;
+                        const presentCount = sessions.filter(s => s.present).length;
+                        const latestStatus = sessions[0].present ? 'Present' : 'Absent';
+                        const rate = Math.round((presentCount / totalSessions) * 100);
+                        if (rateEl) rateEl.textContent = `${rate}% (${presentCount}/${totalSessions})`;
+                        if (statusEl) {
+                            statusEl.textContent = latestStatus;
+                            statusEl.className = latestStatus === 'Present'
+                                ? "bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold"
+                                : "bg-rose-100 text-rose-800 px-3 py-1 rounded-full text-xs font-semibold";
                         }
                     } else {
-                        const rateEl = document.getElementById('attendance-rate');
                         if (rateEl) rateEl.textContent = "N/A";
-                        const statusEl = document.getElementById('attendance-status');
                         if (statusEl) statusEl.textContent = "No Records";
                     }
                 } catch (err) {

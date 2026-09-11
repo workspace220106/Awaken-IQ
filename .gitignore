@@ -1,17 +1,21 @@
 node_modules/
-frontend/uploads/
-dummy.mp4
-Attendance Report 2.pdf
-logo (1).png
-.env
-
 .vercel
-.env*
-backend/*.json
+.env
+.env.*
+!.env.example
 
-# Firebase credentials and keys
+# Credentials — never commit
+backend/*.json
 *firebase-adminsdk*.json
 firebaseServiceAccount.json
 firebase-config.json
 frontend/firebase-init.js
+
+# Local data / scratch
+database/
+scratch/
 scraped_site/
+frontend/uploads/
+dummy.mp4
+Attendance Report 2.pdf
+logo (1).png

@@ -108,8 +108,8 @@
 
             <!-- Empty state -->
             <div id="empty-state" class="hidden glass-card rounded-[24px] p-12 text-center space-y-4">
-                <h3 class="text-xl font-bold text-primary" style="font-family: 'Caudex', serif;">No Active Course Found</h3>
-                <p class="text-on-surface-variant max-w-md mx-auto text-sm">You are not currently enrolled in any of our specialized cognitive development programs.</p>
+                <h3 id="empty-state-title" class="text-xl font-bold text-primary" style="font-family: 'Caudex', serif;">No Active Course Found</h3>
+                <p id="empty-state-text" class="text-on-surface-variant max-w-md mx-auto text-sm">You are not currently enrolled in any of our specialized cognitive development programs.</p>
                 <a href="courses.html" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:opacity-90 active:scale-95 transition-all shadow-md">
                     Browse Course Catalog
                 </a>
@@ -148,28 +148,21 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Video Add Form -->
                 <div class="lg:col-span-1 glass-card rounded-[24px] p-6 space-y-4">
-                    <h3 class="text-lg font-bold text-primary font-serif" style="font-family: 'Caudex', serif;">Add Improvement Video</h3>
-                    <form id="add-video-form" class="space-y-4 text-left" enctype="multipart/form-data">
-                        <div>
-                            <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1">Video Title</label>
-                            <input type="text" id="video-title" required placeholder="e.g. Day 10 Blindfold Reading" class="w-full rounded-lg border-gray-300 focus:border-primary focus:ring-primary text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1">Upload Video File</label>
-                            <input type="file" id="video-file" accept="video/*" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20">
-                        </div>
-                        <button id="submit-btn" type="submit" class="w-full bg-primary text-white font-bold py-2.5 rounded-lg text-sm hover:opacity-90 active:scale-95 transition-all shadow-md">
-                            Upload Video
-                        </button>
-                    </form>
+                    <h3 class="text-lg font-bold text-primary font-serif" style="font-family: 'Caudex', serif;">Share Improvement Videos</h3>
+                    <p class="text-sm text-on-surface-variant text-left">Your child has a private Google Drive folder. Open it and drop in videos of their progress — our team reviews every upload.</p>
+                    <button id="open-drive-btn" type="button" class="w-full bg-primary text-white font-bold py-2.5 rounded-lg text-sm hover:opacity-90 active:scale-95 transition-all shadow-md flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+                        Open My Drive Folder
+                    </button>
+                    <p id="drive-error" class="hidden text-xs text-rose-600 text-left"></p>
                 </div>
 
                 <!-- Video List -->
                 <div class="lg:col-span-2 glass-card rounded-[24px] p-6 space-y-4 flex flex-col">
-                    <h3 class="text-lg font-bold text-primary mb-2 font-serif" style="font-family: 'Caudex', serif;">Submitted Progress Videos</h3>
+                    <h3 class="text-lg font-bold text-primary mb-2 font-serif" style="font-family: 'Caudex', serif;">Previously Submitted Videos</h3>
                     <div id="videos-list" class="space-y-3 overflow-y-auto max-h-[300px] flex-grow pr-2">
                         <!-- Dynamic list of videos -->
-                        <p class="text-sm text-on-surface-variant text-center py-8">No improvement videos submitted yet.</p>
+                        <p class="text-sm text-on-surface-variant text-center py-8">No videos on record here — new uploads live in your Drive folder.</p>
                     </div>
                 </div>
             </div>
@@ -216,10 +209,17 @@
     </footer>
 
     <script>
+        // Escape untrusted text before it goes into innerHTML.
+        const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        const safeHref = (u) => (/^https?:\/\//i.test(String(u || '')) ? String(u) : '#');
+        // Optional: paste a single shared Drive folder link here to use it for every student
+        // instead of the per-student folder the server creates automatically.
+        const DRIVE_UPLOAD_FALLBACK_LINK = '';
+
         const renderVideos = (videos) => {
             const listEl = document.getElementById('videos-list');
             if (!videos || videos.length === 0) {
-                listEl.innerHTML = '<p class="text-sm text-on-surface-variant text-center py-8">No improvement videos submitted yet.</p>';
+                listEl.innerHTML = '<p class="text-sm text-on-surface-variant text-center py-8">No videos on record here — new uploads live in your Drive folder.</p>';
                 return;
             }
             
@@ -227,14 +227,14 @@
                 let iconSvg = `<svg class="w-5 h-5 text-primary shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>`;
                     
                 return `
-                    <div onclick="openFullscreenVideo('${vid.url}')" class="flex items-center justify-between p-4 rounded-xl bg-white border border-primary/5 hover:border-primary/20 hover:bg-primary/5 cursor-pointer transition-all shadow-sm group">
+                    <div data-video-url="${esc(vid.url)}" class="legacy-video flex items-center justify-between p-4 rounded-xl bg-white border border-primary/5 hover:border-primary/20 hover:bg-primary/5 cursor-pointer transition-all shadow-sm group">
                         <div class="flex items-center gap-3 min-w-0">
                             <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all">
                                 <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                             </div>
                             <div class="min-w-0 text-left">
-                                <h4 class="font-semibold text-sm text-primary truncate group-hover:text-brand-gold transition-colors">${vid.title}</h4>
-                                <p class="text-xs text-on-surface-variant truncate">${new Date(vid.addedAt).toLocaleDateString()}</p>
+                                <h4 class="font-semibold text-sm text-primary truncate group-hover:text-brand-gold transition-colors">${esc(vid.title)}</h4>
+                                <p class="text-xs text-on-surface-variant truncate">${esc(new Date(vid.addedAt).toLocaleDateString())}</p>
                             </div>
                         </div>
                         <span class="text-xs font-bold text-brand-gold group-hover:underline transition-colors shrink-0 flex items-center gap-1">
@@ -244,6 +244,13 @@
                     </div>
                 `;
             }).join('');
+            listEl.querySelectorAll('.legacy-video').forEach(el => {
+                el.addEventListener('click', () => {
+                    const url = el.dataset.videoUrl;
+                    if (/^https?:\/\//i.test(url)) window.open(url, '_blank', 'noopener');
+                    else if (url.startsWith('/')) openFullscreenVideo(url);
+                });
+            });
         };
 
         window.addEventListener('DOMContentLoaded', async () => {
@@ -259,7 +266,12 @@
                 document.getElementById('header-user-email').textContent = user.parentEmail;
                 document.getElementById('loading-state').classList.add('hidden');
 
-                if (user.enrolledProgram && user.enrolledProgram !== 'No Active Program') {
+                const isPaid = user.paymentStatus === 'Paid';
+                if (user.enrolledProgram && user.enrolledProgram !== 'No Active Program' && user.enrolledProgram !== 'None Selected' && !isPaid) {
+                    document.getElementById('empty-state-title').textContent = 'Payment Pending';
+                    document.getElementById('empty-state-text').textContent = `Your enrollment in ${user.enrolledProgram} is awaiting payment confirmation. Course content unlocks once payment is verified.`;
+                    document.getElementById('empty-state').classList.remove('hidden');
+                } else if (user.enrolledProgram && user.enrolledProgram !== 'No Active Program' && user.enrolledProgram !== 'None Selected') {
                     const card = document.getElementById('active-course-card');
                     card.classList.remove('hidden');
                     document.getElementById('improvements-section').classList.remove('hidden');
@@ -296,7 +308,7 @@
                         if (user.dmitReport) {
                             metaEl.textContent = `Uploaded on ${new Date(user.dmitReport.uploadedAt).toLocaleDateString()}`;
                             actionsEl.innerHTML = `
-                                <a href="${user.dmitReport.url}" target="_blank" class="inline-flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-semibold hover:opacity-90 active:scale-95 transition-all shadow-md w-full md:w-auto">
+                                <a href="${esc(safeHref(user.dmitReport.url))}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-semibold hover:opacity-90 active:scale-95 transition-all shadow-md w-full md:w-auto">
                                     View / Download Report
                                     <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path>
@@ -316,43 +328,28 @@
                     // Render existing progress videos
                     renderVideos(user.videos);
 
-                    // Add progress video submit form handler
-                    document.getElementById('add-video-form').addEventListener('submit', async (e) => {
-                        e.preventDefault();
-                        const titleInput = document.getElementById('video-title');
-                        const fileInput = document.getElementById('video-file');
-                        const submitBtn = document.getElementById('submit-btn');
-
-                        const file = fileInput.files[0];
-                        if (!file) {
-                            alert('Please select a video file to upload.');
-                            return;
-                        }
-
-                        const formData = new FormData();
-                        formData.append('title', titleInput.value);
-                        formData.append('videoFile', file);
-
+                    // Open the student's Drive folder (created and shared on first use)
+                    const driveBtn = document.getElementById('open-drive-btn');
+                    const driveError = document.getElementById('drive-error');
+                    driveBtn.addEventListener('click', async () => {
+                        driveError.classList.add('hidden');
+                        driveBtn.disabled = true;
+                        driveBtn.textContent = 'Opening your folder...';
                         try {
-                            submitBtn.disabled = true;
-                            submitBtn.textContent = 'Uploading...';
-
-                            const res = await fetch('/api/improvements', {
-                                method: 'POST',
-                                body: formData
-                            });
-                            const data = await res.json();
-                            if (!res.ok) throw new Error(data.error || 'Failed to upload video');
-
-                            alert('Progress video uploaded and saved successfully!');
-                            renderVideos(data.videos);
-                            titleInput.value = '';
-                            fileInput.value = '';
+                            let link = DRIVE_UPLOAD_FALLBACK_LINK;
+                            if (!link) {
+                                const res = await fetch('/api/drive-folder');
+                                const data = await res.json().catch(() => ({}));
+                                if (!res.ok || !data.link) throw new Error(data.error || 'Could not open your Drive folder. Please try again later.');
+                                link = data.link;
+                            }
+                            window.open(link, '_blank', 'noopener');
                         } catch (err) {
-                            alert('Error: ' + err.message);
+                            driveError.textContent = err.message;
+                            driveError.classList.remove('hidden');
                         } finally {
-                            submitBtn.disabled = false;
-                            submitBtn.textContent = 'Upload Video';
+                            driveBtn.disabled = false;
+                            driveBtn.innerHTML = '<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg> Open My Drive Folder';
                         }
                     });
 

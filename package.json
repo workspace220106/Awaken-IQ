@@ -5,7 +5,9 @@
   "main": "backend/server.js",
   "scripts": {
     "start": "node backend/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node --watch backend/server.js",
+    "test": "node --test \"backend/test/**/*.test.js\"",
+    "audit": "npm audit --omit=dev"
   },
   "repository": {
     "type": "git",
@@ -19,14 +21,19 @@
   },
   "homepage": "https://github.com/workspace220106/Awaken-IQ#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
-    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "firebase": "^12.16.0",
+    "express-rate-limit": "^8.7.0",
     "firebase-admin": "^14.2.0",
     "googleapis": "^173.0.0",
+    "helmet": "^8.3.0",
     "multer": "^2.1.1",
     "razorpay": "^2.9.6"
-  }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "private": true
 }

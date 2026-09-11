@@ -384,7 +384,7 @@ Chat with an Admissions Advisor
 
         // Payment Info
         document.getElementById('review-total-due').textContent = courseInfo.totalPayable || courseInfo.price || '₹1,180';
-        document.getElementById('review-payment-method').textContent = `${paymentInfo.method || 'Credit/Debit Card'} (Success)`;
+        document.getElementById('review-payment-method').textContent = paymentInfo.orderId ? `${paymentInfo.method || 'Razorpay'} (Success)` : 'Not paid yet — enrollment will stay pending until payment is verified';
     });
 
     // Confirm Button Interaction and Registration Submit
@@ -403,8 +403,8 @@ Chat with an Admissions Advisor
                     body: JSON.stringify({
                         studentInfo,
                         parentInfo,
-                        courseInfo,
-                        paymentInfo,
+                        courseInfo: { key: courseInfo.key },
+                        paymentInfo: { orderId: paymentInfo.orderId || null },
                         password: parentInfo.password
                     })
                 });

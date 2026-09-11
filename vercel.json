@@ -1,35 +1,24 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "backend/server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "frontend/**",
-      "use": "@vercel/static"
-    }
+    { "src": "backend/server.js", "use": "@vercel/node" },
+    { "src": "frontend/**", "use": "@vercel/static" }
   ],
   "routes": [
     {
-      "src": "/$",
-      "dest": "frontend/initial_index.html"
-    },
-    {
-      "src": "/index\\.html$",
-      "dest": "frontend/initial_index.html"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "backend/server.js"
-    },
-    {
-      "src": "/uploads/(.*)",
-      "dest": "backend/server.js"
-    },
-    {
       "src": "/(.*)",
-      "dest": "frontend/$1"
-    }
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Permissions-Policy": "geolocation=(), payment=(self \"https://checkout.razorpay.com\"), camera=(self), microphone=(self)"
+      },
+      "continue": true
+    },
+    { "src": "/$", "dest": "frontend/initial_index.html" },
+    { "src": "/index\\.html$", "dest": "frontend/initial_index.html" },
+    { "src": "/api/(.*)", "dest": "backend/server.js" },
+    { "src": "/(.*)", "dest": "frontend/$1" }
   ]
 }
