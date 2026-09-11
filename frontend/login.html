@@ -306,6 +306,10 @@
                     const result = await response.json();
 
                     if (!response.ok) {
+                        if (result.code === 'PASSWORD_RESET_REQUIRED') {
+                            window.location.href = 'forgot-password.html?reason=required&email=' + encodeURIComponent(email);
+                            return;
+                        }
                         throw new Error(result.error || 'Login failed');
                     }
 
