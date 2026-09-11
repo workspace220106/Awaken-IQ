@@ -5,6 +5,7 @@ Marketing site + student/parent portal + management console for Awaken IQ.
 - `frontend/` — static HTML (served directly by Vercel). `initial_*.html` are the public marketing pages; the rest are the portal.
 - `backend/server.js` — Express API (Vercel serverless function). Firestore for data, Google Drive for files, Razorpay for payments.
 - `backend/lib/` — pure modules (pricing, validation) covered by `npm test`.
+- `frontend/assets/css/<page>.css` — **generated** Tailwind output, one file per portal page, committed so Vercel needs no build step. After changing classes in any portal page run `npm run build:css` and commit the result (each page keeps its own colour tokens, which is why there is one file per page).
 
 ## Run locally
 
@@ -29,6 +30,7 @@ Set every variable from `.env.example` in **Project → Settings → Environment
 - **Password reset** — `POST /api/forgot-password` emails a single-use link (`reset-password.html?token=…`, 1-hour expiry, token stored hashed in `passwordResets/`); `POST /api/reset-password` sets the new bcrypt hash. Requires `SMTP_*` env vars; responses never reveal whether an email exists.
 - **Progress videos** — each student has a Drive folder under `DRIVE_PARENT_FOLDER_ID`, created and shared with the parent on first use (`GET /api/drive-folder`). Parents upload directly to Drive; management opens the folder from the console. To use one shared folder for everyone instead, set `DRIVE_UPLOAD_FALLBACK_LINK` in `frontend/my-courses.html`.
 - **DMIT reports** — PDF only, streamed to a `DMIT Reports` Drive folder; the student's record stores the Drive file id and view link.
+- **CSP** — `vercel.json` sends `Content-Security-Policy-Report-Only`; violations are POSTed to `/api/csp-report` and appear in Vercel logs as `CSP violation …`. Once production logs are clean, rename the header to `Content-Security-Policy` to enforce it.
 - **Zoom** — attendance is only recorded for the link currently assigned to the student's group; Web SDK signatures are participant-only and only for that meeting.
 
 ## Scripts
@@ -39,3 +41,4 @@ Set every variable from `.env.example` in **Project → Settings → Environment
 | `npm run dev` | run with file watching |
 | `npm test` | unit tests (`node --test`) |
 | `npm run audit` | dependency vulnerability scan |
+| `npm run build:css` | rebuild the per-page Tailwind stylesheets |

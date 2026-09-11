@@ -1,8 +1,14 @@
 {
   "version": 2,
   "builds": [
-    { "src": "backend/server.js", "use": "@vercel/node" },
-    { "src": "frontend/**", "use": "@vercel/static" }
+    {
+      "src": "backend/server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "frontend/**",
+      "use": "@vercel/static"
+    }
   ],
   "routes": [
     {
@@ -12,13 +18,26 @@
         "X-Frame-Options": "DENY",
         "Referrer-Policy": "strict-origin-when-cross-origin",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "Permissions-Policy": "geolocation=(), payment=(self \"https://checkout.razorpay.com\"), camera=(self), microphone=(self)"
+        "Permissions-Policy": "geolocation=(), payment=(self \"https://checkout.razorpay.com\"), camera=(self), microphone=(self)",
+        "Content-Security-Policy-Report-Only": "default-src 'self'; script-src 'self' 'unsafe-inline' https://checkout.razorpay.com https://source.zoom.us https://*.zoom.us https://awakeniq.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://awakeniq.com; font-src 'self' data: https://fonts.gstatic.com https://awakeniq.com; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' https://*.razorpay.com https://*.zoom.us wss://*.zoom.us https://source.zoom.us https://awakeniq.com https://*.google-analytics.com https://*.googletagmanager.com; frame-src https://api.razorpay.com https://checkout.razorpay.com https://*.zoom.us https://www.youtube.com https://www.google.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; report-uri /api/csp-report"
       },
       "continue": true
     },
-    { "src": "/$", "dest": "frontend/initial_index.html" },
-    { "src": "/index\\.html$", "dest": "frontend/initial_index.html" },
-    { "src": "/api/(.*)", "dest": "backend/server.js" },
-    { "src": "/(.*)", "dest": "frontend/$1" }
+    {
+      "src": "/$",
+      "dest": "frontend/initial_index.html"
+    },
+    {
+      "src": "/index\\.html$",
+      "dest": "frontend/initial_index.html"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/$1"
+    }
   ]
 }

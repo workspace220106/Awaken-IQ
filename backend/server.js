@@ -104,6 +104,18 @@ app.post('/api/razorpay-webhook', express.raw({ type: '*/*', limit: '200kb' }), 
     handleRazorpayWebhook(req, res).catch(next);
 });
 
+// CSP violation reports (policy is Report-Only until it is proven clean in production).
+app.post('/api/csp-report', express.json({ type: ['application/csp-report', 'application/reports+json', 'application/json'], limit: '20kb' }), (req, res) => {
+    const r = (req.body && (req.body['csp-report'] || req.body)) || {};
+    const pick = (o) => ({
+        doc: o['document-uri'] || o.documentURL, directive: o['effective-directive'] || o.effectiveDirective || o['violated-directive'],
+        blocked: o['blocked-uri'] || o.blockedURL, line: o['line-number'] || o.lineNumber
+    });
+    const items = Array.isArray(r) ? r.map((x) => pick(x.body || x)) : [pick(r)];
+    for (const i of items) if (i.directive || i.blocked) console.warn('CSP violation', JSON.stringify(i));
+    res.status(204).end();
+});
+
 app.use(express.json({ limit: '100kb' }));
 app.use(express.urlencoded({ extended: false, limit: '100kb' }));
 app.use(cookieParser(SESSION_SECRET));
@@ -129,14 +141,15 @@ app.use('/api/', apiLimiter);
 // ---------------------------------------------------------------------------
 const SESSION_COOKIE = 'session';
 const SESSION_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+const REMEMBER_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
 
-function setSession(res, payload) {
+function setSession(res, payload, { remember = false } = {}) {
     res.cookie(SESSION_COOKIE, payload, {
         signed: true,
         httpOnly: true,
         sameSite: 'lax',
         secure: IS_PROD,
-        maxAge: SESSION_MAX_AGE_MS,
+        maxAge: remember ? REMEMBER_MAX_AGE_MS : SESSION_MAX_AGE_MS,
         path: '/'
     });
 }
@@ -392,7 +405,7 @@ app.post('/api/login', authLimiter, wrap(async (req, res) => {
     }
     if (!ok) return invalid();
 
-    setSession(res, { uid: user.id, role: 'user' });
+    setSession(res, { uid: user.id, role: 'user' }, { remember: V.bool(req.body.remember) });
     res.json({ message: 'Login successful', userId: user.id });
 }));
 
