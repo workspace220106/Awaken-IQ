@@ -11,6 +11,8 @@ const Razorpay = require('razorpay');
 const bcrypt = require('bcryptjs');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const { Ratelimit } = require('@upstash/ratelimit');
+const { Redis } = require('@upstash/redis');
 const nodemailer = require('nodemailer');
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore, FieldValue } = require('firebase-admin/firestore');
@@ -120,20 +122,47 @@ app.use(express.json({ limit: '100kb' }));
 app.use(express.urlencoded({ extended: false, limit: '100kb' }));
 app.use(cookieParser(SESSION_SECRET));
 
-const authLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    limit: 20,
-    standardHeaders: 'draft-7',
-    legacyHeaders: false,
-    message: { error: 'Too many attempts. Please try again in 15 minutes.' }
-});
-const apiLimiter = rateLimit({
-    windowMs: 60 * 1000,
-    limit: 120,
-    standardHeaders: 'draft-7',
-    legacyHeaders: false,
-    message: { error: 'Too many requests. Please slow down.' }
-});
+// Rate limiting. On Vercel each function instance has its own memory, so an in-memory
+// limiter only counts per instance. When Upstash Redis is configured (UPSTASH_REDIS_REST_URL /
+// _TOKEN, or the KV_REST_API_* names the Vercel marketplace integration injects), counts are
+// shared across every instance and region. Without it we fall back to the in-memory limiter.
+const REDIS_URL = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL || '';
+const REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN || '';
+const redis = REDIS_URL && REDIS_TOKEN ? new Redis({ url: REDIS_URL, token: REDIS_TOKEN }) : null;
+console.log(redis ? 'Rate limiting: shared (Upstash Redis)' : 'Rate limiting: in-memory (per instance) — set UPSTASH_REDIS_REST_URL/TOKEN for shared limits');
+
+function makeLimiter({ name, windowMs, limit, message }) {
+    if (!redis) {
+        return rateLimit({ windowMs, limit, standardHeaders: 'draft-7', legacyHeaders: false, message: { error: message } });
+    }
+    const rl = new Ratelimit({
+        redis,
+        limiter: Ratelimit.slidingWindow(limit, `${Math.round(windowMs / 1000)} s`),
+        prefix: `rl:${name}`,
+        analytics: false
+    });
+    return async (req, res, next) => {
+        try {
+            const key = req.ip || req.socket.remoteAddress || 'unknown';
+            const r = await rl.limit(key);
+            res.set('RateLimit-Limit', String(r.limit));
+            res.set('RateLimit-Remaining', String(Math.max(0, r.remaining)));
+            res.set('RateLimit-Reset', String(Math.max(0, Math.ceil((r.reset - Date.now()) / 1000))));
+            if (!r.success) {
+                res.set('Retry-After', String(Math.max(1, Math.ceil((r.reset - Date.now()) / 1000))));
+                return res.status(429).json({ error: message });
+            }
+            next();
+        } catch (err) {
+            // Redis unreachable: fail open rather than lock everyone out, but say so in the logs.
+            console.error('Rate limiter error (failing open):', err.message);
+            next();
+        }
+    };
+}
+
+const authLimiter = makeLimiter({ name: 'auth', windowMs: 15 * 60 * 1000, limit: 20, message: 'Too many attempts. Please try again in 15 minutes.' });
+const apiLimiter = makeLimiter({ name: 'api', windowMs: 60 * 1000, limit: 120, message: 'Too many requests. Please slow down.' });
 app.use('/api/', apiLimiter);
 
 // ---------------------------------------------------------------------------
