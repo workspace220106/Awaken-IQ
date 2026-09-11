@@ -1,0 +1,154 @@
+{
+  "darkMode": "class",
+  "theme": {
+    "extend": {
+      "colors": {
+        "inverse-on-surface": "#eff1f3",
+        "tertiary-container": "#d6e6df",
+        "on-error-container": "#93000a",
+        "primary-fixed-dim": "#9fd1b9",
+        "outline-variant": "#c0c9c2",
+        "on-surface": "#191c1e",
+        "on-primary-container": "#3f6e5a",
+        "on-error": "#ffffff",
+        "surface-tint": "#386754",
+        "primary": "#386754",
+        "error-container": "#ffdad6",
+        "surface-dim": "#d8dadc",
+        "primary-fixed": "#bbeed5",
+        "tertiary": "#1E4D3B",
+        "surface-container-highest": "#e0e3e5",
+        "surface-variant": "#e0e3e5",
+        "secondary-fixed-dim": "#a7c9bc",
+        "outline": "#717974",
+        "surface-bright": "#f7f9fb",
+        "on-tertiary-container": "#0b2018",
+        "on-secondary-fixed": "#071e16",
+        "on-primary-fixed": "#002115",
+        "tertiary-fixed-dim": "#9fd1b9",
+        "background": "#f7f9fb",
+        "on-secondary-fixed-variant": "#153328",
+        "on-primary-fixed-variant": "#1f4f3d",
+        "surface-container-lowest": "#ffffff",
+        "on-tertiary-fixed": "#002115",
+        "on-primary": "#ffffff",
+        "on-surface-variant": "#414944",
+        "inverse-surface": "#2d3133",
+        "on-background": "#191c1e",
+        "error": "#ba1a1a",
+        "on-secondary": "#ffffff",
+        "surface": "#f7f9fb",
+        "secondary-container": "#c4dfd4",
+        "inverse-primary": "#9fd1b9",
+        "surface-container-low": "#f2f4f6",
+        "on-tertiary-fixed-variant": "#153328",
+        "primary-container": "#bbeed5",
+        "tertiary-fixed": "#bbeed5",
+        "surface-container": "#eceef0",
+        "on-secondary-container": "#153328",
+        "surface-container-high": "#e6e8ea",
+        "secondary-fixed": "#bbeed5",
+        "secondary": "#386754",
+        "on-tertiary": "#ffffff",
+        "gold": "#D4AF37"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "base": "8px",
+        "gutter": "24px",
+        "container-max": "1280px",
+        "margin-mobile": "16px",
+        "margin-desktop": "64px",
+        "section-gap": "120px"
+      },
+      "fontFamily": {
+        "headline-lg": [
+          "Caudex",
+          "serif"
+        ],
+        "label-lg": [
+          "Raleway",
+          "sans-serif"
+        ],
+        "headline-md": [
+          "Caudex",
+          "serif"
+        ],
+        "label-md": [
+          "Raleway",
+          "sans-serif"
+        ],
+        "body-lg": [
+          "Raleway",
+          "sans-serif"
+        ],
+        "display-lg": [
+          "Caudex",
+          "serif"
+        ],
+        "body-md": [
+          "Raleway",
+          "sans-serif"
+        ]
+      },
+      "fontSize": {
+        "headline-lg": [
+          "32px",
+          {
+            "lineHeight": "40px",
+            "fontWeight": "700"
+          }
+        ],
+        "label-lg": [
+          "14px",
+          {
+            "lineHeight": "20px",
+            "letterSpacing": "0.05em",
+            "fontWeight": "600"
+          }
+        ],
+        "headline-md": [
+          "24px",
+          {
+            "lineHeight": "32px",
+            "fontWeight": "700"
+          }
+        ],
+        "label-md": [
+          "12px",
+          {
+            "lineHeight": "16px",
+            "fontWeight": "500"
+          }
+        ],
+        "body-lg": [
+          "18px",
+          {
+            "lineHeight": "28px",
+            "fontWeight": "400"
+          }
+        ],
+        "display-lg": [
+          "56px",
+          {
+            "lineHeight": "64px",
+            "letterSpacing": "-0.02em",
+            "fontWeight": "700"
+          }
+        ],
+        "body-md": [
+          "16px",
+          {
+            "lineHeight": "24px",
+            "fontWeight": "400"
+          }
+        ]
+      }
+    }
+  }
+}

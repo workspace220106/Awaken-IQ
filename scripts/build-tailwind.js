@@ -1,20 +1,21 @@
 #!/usr/bin/env node
-// Builds one static Tailwind stylesheet per portal page, using that page's own
-// inline `tailwind.config = {...}` block, so the output is pixel-identical to what the
-// Play CDN produced. Output: frontend/assets/css/<page>.css
+// Builds one static Tailwind stylesheet per portal page from tailwind/<page>.config.json
+// (the page's former inline `tailwind.config`, preserved so each page keeps its own colour
+// tokens). Output: frontend/assets/css/<page>.css — commit it; Vercel runs no build step.
 //
 //   node scripts/build-tailwind.js          # build all
 //   node scripts/build-tailwind.js login    # build one page
 //
+// Adding a page: copy the closest tailwind/*.config.json to tailwind/<page>.config.json.
 // Marketing pages (initial_*.html) are scraped WordPress output and do not use Tailwind.
 
 const fs = require('fs');
 const path = require('path');
-const vm = require('vm');
 const { execFileSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
 const FRONTEND = path.join(ROOT, 'frontend');
+const CONFIG_DIR = path.join(ROOT, 'tailwind');
 const OUT_DIR = path.join(FRONTEND, 'assets', 'css');
 const TMP_DIR = path.join(ROOT, '.tailwind-tmp');
 
@@ -26,23 +27,19 @@ const pages = fs.readdirSync(FRONTEND)
 fs.mkdirSync(OUT_DIR, { recursive: true });
 fs.mkdirSync(TMP_DIR, { recursive: true });
 
-function extractConfig(html, page) {
-    const m = html.match(/<script id="tailwind-config">([\s\S]*?)<\/script>/);
-    if (!m) return null;
-    const sandbox = { tailwind: {} };
-    vm.runInNewContext(m[1], sandbox, { filename: `${page}#tailwind-config` });
-    return sandbox.tailwind.config;
+function loadConfig(name) {
+    const file = path.join(CONFIG_DIR, `${name}.config.json`);
+    return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : null;
 }
 
 let built = 0;
 for (const page of pages) {
-    const html = fs.readFileSync(path.join(FRONTEND, page), 'utf8');
-    const config = extractConfig(html, page);
+    const name = page.replace(/\.html$/, '');
+    const config = loadConfig(name);
     if (!config) {
-        console.log(`skip  ${page} (no inline tailwind config)`);
+        console.log(`skip  ${page} (no tailwind/${name}.config.json)`);
         continue;
     }
-    const name = page.replace(/\.html$/, '');
     const configPath = path.join(TMP_DIR, `${name}.config.js`);
     const inputPath = path.join(TMP_DIR, `${name}.input.css`);
     const outPath = path.join(OUT_DIR, `${name}.css`);

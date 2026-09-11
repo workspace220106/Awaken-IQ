@@ -5,7 +5,8 @@ Marketing site + student/parent portal + management console for Awaken IQ.
 - `frontend/` — static HTML (served directly by Vercel). `initial_*.html` are the public marketing pages; the rest are the portal.
 - `backend/server.js` — Express API (Vercel serverless function). Firestore for data, Google Drive for files, Razorpay for payments.
 - `backend/lib/` — pure modules (pricing, validation) covered by `npm test`.
-- `frontend/assets/css/<page>.css` — **generated** Tailwind output, one file per portal page, committed so Vercel needs no build step. After changing classes in any portal page run `npm run build:css` and commit the result (each page keeps its own colour tokens, which is why there is one file per page).
+- `tailwind/<page>.config.json` — each portal page's Tailwind theme (colours, fonts). One per page because the pages use different token values.
+- `frontend/assets/css/<page>.css` — **generated** from the config above, committed so Vercel needs no build step. After changing classes in any portal page run `npm run build:css` and commit the result.
 
 ## Run locally
 

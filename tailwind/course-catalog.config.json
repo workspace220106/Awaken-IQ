@@ -1,0 +1,17 @@
+{
+  "darkMode": "class",
+  "theme": {
+    "extend": {
+      "colors": {
+        "primary": "#1E4D3B",
+        "secondary": "#386754",
+        "brand-gold": "#D4AF37",
+        "background": "#f7f9fb",
+        "on-surface": "#191c1e",
+        "on-surface-variant": "#414944",
+        "surface-container-low": "#f2f4f6",
+        "surface-container-lowest": "#ffffff"
+      }
+    }
+  }
+}
