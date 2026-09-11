@@ -423,7 +423,15 @@ app.post('/api/login', authLimiter, wrap(async (req, res) => {
     if (user.passwordHash) {
         ok = await bcrypt.compare(plainPassword, user.passwordHash);
     } else if (typeof user.password === 'string') {
-        // Legacy plaintext row: verify once, then upgrade to a hash and drop the plaintext.
+        // Legacy plaintext row. These passwords were exposed in old git history, so once email
+        // reset is available the account must be reset instead of logged into. Until SMTP is
+        // configured, verify once and upgrade to a hash so nobody is locked out.
+        if (mailer) {
+            return res.status(403).json({
+                error: 'For your security, please set a new password before logging in. Use "Forgot Password" to receive a reset link.',
+                code: 'PASSWORD_RESET_REQUIRED'
+            });
+        }
         ok = safeEqual(user.password, plainPassword);
         if (ok) {
             await usersCol.doc(user.id).update({
